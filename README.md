@@ -208,6 +208,7 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 반응형 | 데스크톱 1280·모바일 390 모두 가로 오버플로 0, 탭 줄 스크롤 없음(608/608 · 306/306) |
 | 콘솔 에러 | **0건** (pageerror 포함) |
 | 테스트 스크립트 | `tests/test-v3.py` · 결과 `tests/shots/v3-report.json` · 스크린숏 `tests/shots/v3-tags-block.png`, `v3-note-chips.png` |
+| 배포본 재검증 | `https://sunminkimsia-collab.github.io/lessoncard/` 에서 같은 스크립트 全 항목 통과(실패 0 · 콘솔 에러 0) · 배포본과 저장소 `index.html` MD5 일치(`abb600a4…`) · 결과 `tests/shots/v3-live-report.json` |
 
 ---
 
