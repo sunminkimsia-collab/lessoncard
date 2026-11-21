@@ -211,6 +211,31 @@
   .chip:disabled{opacity:.42;cursor:not-allowed}
   .chip:disabled:hover{border-color:var(--line-2);color:var(--ink-2);background:#fff}
 
+  /* ── 과목·악기 세그먼트 탭 ─────────────────────────────── */
+  .tag-tabs{display:flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .tag-tab{
+    flex:1 1 0;min-width:0;display:inline-flex;align-items:center;justify-content:center;
+    font-family:inherit;font-size:11.9px;font-weight:600;letter-spacing:-.01em;line-height:1.35;
+    color:var(--muted);background:transparent;border:0;border-radius:7.5px;
+    padding:6px 4px;cursor:pointer;white-space:nowrap;
+    transition:background .15s ease,color .15s ease,box-shadow .15s ease;
+  }
+  .tag-tab:hover{color:var(--gold-deep);background:#FFFCF7}
+  .tag-tab.is-on{background:var(--gold-soft);color:var(--gold-deep);font-weight:700;box-shadow:inset 0 0 0 1px var(--gold-line)}
+  .tag-tab:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
+  /* ── 한마디 원클릭 문구 칩 ─────────────────────────────── */
+  .note-presets{display:flex;flex-wrap:wrap;gap:6px}
+  .note-chip{
+    display:inline-flex;align-items:center;
+    font-family:inherit;font-size:11.9px;font-weight:500;color:var(--ink-2);line-height:1.4;
+    background:#fff;border:1px dashed var(--line-2);border-radius:999px;
+    padding:5px 11px;cursor:pointer;transition:.15s ease;
+  }
+  .note-chip:hover{border-color:var(--gold);color:var(--gold-deep);background:#FFFCF7}
+  .note-chip.is-on{border-style:solid;border-color:var(--gold-line);background:var(--gold-soft);color:var(--gold-deep);font-weight:700}
+  .note-chip:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
   .custom-tag{display:flex;gap:7px}
   .custom-tag .input{flex:1;background:#fff;padding:8px 12px;font-size:13px}
   .custom-tag .btn{height:36px;padding:0 13px;font-size:12.5px;border-radius:10px;border:1px solid var(--line-2);background:#fff;color:var(--ink-2)}
@@ -512,6 +537,9 @@
     .form-body{gap:16px}
     .chip{font-size:11.8px;padding:5px 10px}
     .tag-block{padding:11px;gap:8px}
+    .tag-tab{font-size:11.1px;padding:5px 3px}
+    .note-chip{font-size:11.2px;padding:4px 9px}
+    .note-presets{gap:5px}
     .panel-head h2{font-size:16.5px}
     .btn-sm{height:32px;padding:0 9px;font-size:12px}
     .students-block,.logo-field{padding:11px;gap:9px}
@@ -655,6 +683,7 @@
             <span class="hint" id="tagCount">0 / 4 선택</span>
           </div>
           <div class="tag-block">
+            <div class="tag-tabs" id="tagTabs" role="group" aria-label="과목·악기별 추천 태그"></div>
             <div class="chip-wrap" id="chipWrap" role="group" aria-labelledby="tagsLabel"></div>
             <div class="custom-tag">
               <input class="input" id="customTag" type="text" maxlength="20" placeholder="직접 입력 (예: 왼손 스타카토 정확)">
@@ -670,6 +699,7 @@
 
         <div class="field">
           <div class="label-row"><label for="note">다음 레슨 안내 · 한마디</label><span class="hint" id="noteCount">0 / 110</span></div>
+          <div class="note-presets" id="notePresets" role="group" aria-label="상황별 한마디 문구"></div>
           <textarea class="textarea" id="note" name="note" rows="2" maxlength="110" placeholder="다음 주에는 처음부터 끝까지 천천히 이어서 들어볼게요."></textarea>
         </div>
       </form>
@@ -1378,15 +1408,50 @@
   /* ══════════════════════════════════════════════════════════
      2. 데이터 · 상태
      ══════════════════════════════════════════════════════════ */
-  var PRESET_TAGS = [
-    '박자감이 좋아요', '손목 힘이 빠졌어요', '페달링이 안정됐어요', '표현력이 자랐어요',
-    '집중력이 좋아요', '악보 읽기가 빨라졌어요', '연습 습관이 잡혔어요', '음색이 맑아졌어요'
+  var SUBJECTS = [
+    {
+      id: 'piano', label: '피아노',
+      tags: [
+        '박자감이 좋아요', '손목 힘이 빠졌어요', '페달링이 안정됐어요', '표현력이 자랐어요',
+        '집중력이 좋아요', '악보 읽기가 빨라졌어요', '연습 습관이 잡혔어요', '음색이 맑아졌어요'
+      ]
+    },
+    {
+      id: 'vocal', label: '보컬·성악',
+      tags: [
+        '호흡 지지가 탄탄해요', '발성이 편해졌어요', '음정이 안정적이에요', '가사 전달이 좋아요',
+        '고음 연결이 부드러워요', '리듬감이 좋아요', '표현력이 깊어졌어요', '목 컨디션 관리가 좋아요'
+      ]
+    },
+    {
+      id: 'strings', label: '현악·관악',
+      tags: [
+        '활·호흡 컨트롤이 좋아요', '음정이 정확해졌어요', '자세가 안정적이에요', '박자감이 좋아요',
+        '톤이 따뜻해졌어요', '비브라토가 자연스러워요', '악보 읽기가 빨라졌어요', '집중력이 좋아요'
+      ]
+    },
+    {
+      id: 'common', label: '공통·예체능',
+      tags: [
+        '집중력이 좋아요', '기본기가 탄탄해졌어요', '표현력이 풍부해졌어요', '지난주보다 늘었어요',
+        '성실하게 연습했어요', '스스로 교정할 줄 알아요', '자신감이 붙었어요', '꾸준히 참여했어요'
+      ]
+    }
+  ];
+  var PRESET_TAGS = SUBJECTS[0].tags;   // 기본(피아노) 추천 태그
+  var NOTE_PRESETS = [
+    { label: '잘했을 때', text: '이번 주 연습 정말 성실하게 해 왔어요! 다음 주에는 한 단계 더 깊이 다듬어 볼게요.' },
+    { label: '조금 부족할 때', text: '바쁜 한 주였지만 끝까지 집중해 줘서 고마워요. 이번 주엔 하루 10분만 가볍게 잡아 봐요!' },
+    { label: '발표회·콩쿠르 전', text: '무대 준비가 차근차근 잘 올라오고 있어요! 떨리지 않게 천천히 호흡하며 맞춰 봐요.' },
+    { label: '첫 달·초보 응원', text: '처음 배우는데도 소리를 아주 잘 듣고 있어요. 즐겁게 한 걸음씩 익혀 가 봅시다!' },
+    { label: '일정·보강 안내', text: '다음 레슨은 일정 변동 없이 같은 시간에 뵐게요. 궁금한 점은 편하게 카톡 주세요!' }
   ];
   var MAX_TAGS = 4;
   var FREE_LIMIT = 3;
   var LS_DRAFT = 'lessoncard.draft.v1';
   var LS_USAGE = 'lessoncard.usage.v1';
   var LS_THEME = 'lessoncard.theme.v1';
+  var LS_SUBJECT = 'lessoncard.subject.v1';
   var LS_STUDENTS = 'lessoncard.students.v1';
   var LS_LOGO = 'lessoncard.logo.v1';
   var LOGO_MAX = 420;      // 로고는 긴 변 기준 420px까지만 보관 (1080px 카드에 충분)
@@ -1424,6 +1489,7 @@
 
   var state = {
     theme: 'cream',
+    subject: 'piano',
     tags: [],
     usage: 0,
     lastLayout: null,
@@ -1500,16 +1566,97 @@
     els.noteCount.textContent = els.note.value.length + ' / 110';
   }
 
+  function subjectById(id) {
+    for (var i = 0; i < SUBJECTS.length; i++) {
+      if (SUBJECTS[i].id === id) return SUBJECTS[i];
+    }
+    return null;
+  }
+
+  function currentPresets() {
+    var s = subjectById(state.subject);
+    return (s || SUBJECTS[0]).tags;
+  }
+
+  function renderSubjectTabs() {
+    var wrap = els.tagTabs;
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    SUBJECTS.forEach(function (s) {
+      var isOn = state.subject === s.id;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tag-tab' + (isOn ? ' is-on' : '');
+      btn.setAttribute('data-subject', s.id);
+      btn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+      btn.textContent = s.label;
+      btn.addEventListener('click', function () { setSubject(s.id); });
+      wrap.appendChild(btn);
+    });
+  }
+
+  // 과목 탭만 바꾼다 — 이미 선택한 태그는 그대로 두고 추천 목록만 갈아끼운다
+  function setSubject(id, opts) {
+    if (!subjectById(id)) id = SUBJECTS[0].id;
+    var changed = state.subject !== id;
+    state.subject = id;
+    safeSet(LS_SUBJECT, id);
+    renderSubjectTabs();
+    renderChips();
+    if (changed && opts && opts.toast) {
+      toast(subjectById(id).label + ' 추천 태그로 바뀌었어요');
+    }
+  }
+
+  function renderNotePresets() {
+    var wrap = els.notePresets;
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    NOTE_PRESETS.forEach(function (p) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'note-chip';
+      btn.setAttribute('data-note', p.label);
+      btn.setAttribute('aria-pressed', 'false');
+      btn.textContent = p.label;
+      btn.addEventListener('click', function () { applyNotePreset(p.text); });
+      wrap.appendChild(btn);
+    });
+    syncNotePresetState();
+  }
+
+  // 지금 한마디 내용이 어떤 문구 칩과 똑같은지 표시
+  function syncNotePresetState() {
+    var wrap = els.notePresets;
+    if (!wrap || !els.note) return;
+    var val = (els.note.value || '').trim();
+    Array.prototype.forEach.call(wrap.querySelectorAll('.note-chip'), function (btn, i) {
+      var on = !!(NOTE_PRESETS[i] && NOTE_PRESETS[i].text === val);
+      btn.classList.toggle('is-on', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function applyNotePreset(text) {
+    if (!els.note) return;
+    els.note.value = text;
+    syncNotePresetState();
+    syncCounters();
+    scheduleRender(true);
+    saveDraft();
+  }
+
   function renderChips() {
     var wrap = els.chipWrap;
     wrap.innerHTML = '';
-    var all = PRESET_TAGS.slice();
+    var presets = currentPresets();
+    var all = presets.slice();
     state.tags.forEach(function (tag) {
       if (all.indexOf(tag) === -1) all.push(tag);
     });
     all.forEach(function (tag) {
       var isOn = state.tags.indexOf(tag) !== -1;
-      var isPreset = PRESET_TAGS.indexOf(tag) !== -1;
+      var isPreset = presets.indexOf(tag) !== -1;
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'chip' + (isOn ? ' is-on' : '') + (isPreset ? '' : ' is-custom');
@@ -1572,6 +1719,7 @@
     els.note.value = d.note || '';
     state.tags = (d.tags || []).slice(0, MAX_TAGS);
     renderChips();
+    syncNotePresetState();
     syncCounters();
     updateDateHint();
     render();
@@ -2139,6 +2287,7 @@
   function bind() {
     ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note',
      'customTag', 'addTagBtn', 'exampleBtn', 'resetBtn', 'chipWrap',
+     'tagTabs', 'notePresets',
      'tagCount', 'missionCount', 'noteCount', 'autosaveText',
      'studentChips', 'saveRecordBtn', 'logoPick', 'logoRemove', 'logoInput',
      'logoThumb', 'logoInfoText', 'toastAction'].forEach(function (k) {
@@ -2147,6 +2296,7 @@
 
     ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note'].forEach(function (k) {
       els[k].addEventListener('input', function () {
+        if (k === 'note') syncNotePresetState();
         syncCounters();
         scheduleRender();
         clearTimeout(els[k]._saveT);
@@ -2241,7 +2391,8 @@
     els = {
       studio: null, teacher: null, student: null, date: null, session: null, piece: null,
       mission: null, note: null, customTag: null, addTagBtn: null, exampleBtn: null, resetBtn: null,
-      chipWrap: null, tagCount: null, missionCount: null, noteCount: null, autosaveText: null,
+      chipWrap: null, tagTabs: null, notePresets: null,
+      tagCount: null, missionCount: null, noteCount: null, autosaveText: null,
       canvas: document.getElementById('cardCanvas'), downloadBtn: document.getElementById('downloadBtn'),
       mobileDownloadBtn: document.getElementById('mobileDownloadBtn'), copyBtn: document.getElementById('copyBtn'),
       copyIconBtn: document.getElementById('copyIconBtn'), mobileCopyBtn: document.getElementById('mobileCopyBtn'),
@@ -2276,6 +2427,11 @@
     var savedTheme = safeGet(LS_THEME);
     if (savedTheme && THEMES[savedTheme]) state.theme = savedTheme;
 
+    var savedSubject = safeGet(LS_SUBJECT);
+    if (subjectById(savedSubject)) state.subject = savedSubject;
+    renderSubjectTabs();
+    renderNotePresets();
+
     var usage = parseInt(safeGet(LS_USAGE) || '0', 10);
     state.usage = isNaN(usage) ? 0 : usage;
     updatePlan();
@@ -2308,6 +2464,11 @@
       render: render,
       renderNow: function () { render(); return state.lastLayout; },
       setTheme: setTheme,
+      setSubject: setSubject,
+      applyNotePreset: applyNotePreset,
+      subjects: SUBJECTS,
+      notePresets: NOTE_PRESETS,
+      subject: function () { return state.subject; },
       fillExample: function () { fillExample(false); },
       applyData: applyData,
       readData: readData,
@@ -2320,7 +2481,7 @@
       saveStudentRecord: function () { return persistStudent(true); },
       bumpSession: bumpSession,
       removeLogo: removeLogo,
-      keys: { students: LS_STUDENTS, logo: LS_LOGO }
+      keys: { students: LS_STUDENTS, logo: LS_LOGO, subject: LS_SUBJECT }
     };
   }
 
