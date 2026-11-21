@@ -216,6 +216,82 @@
   .custom-tag .btn{height:36px;padding:0 13px;font-size:12.5px;border-radius:10px;border:1px solid var(--line-2);background:#fff;color:var(--ink-2)}
   .custom-tag .btn:hover{border-color:var(--gold);color:var(--gold-deep)}
 
+  /* ── 내 학생 (학생별 누적 기록) ─────────────────────────── */
+  .students-block{
+    display:flex;flex-direction:column;gap:10px;
+    padding:13px 14px;border:1px solid var(--line);border-radius:var(--r-md);
+    background:linear-gradient(180deg,#FFFDF9 0%,var(--surface-2) 100%);
+  }
+  .students-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .students-title{display:flex;align-items:baseline;gap:7px;min-width:0}
+  .students-title .label{font-size:12.3px;font-weight:600;color:var(--ink-2);letter-spacing:.005em}
+  .students-title .hint{font-size:11.2px;color:var(--muted);font-weight:400}
+  .students-head .btn{flex:none;margin-left:auto}
+  .student-chips{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+  .student-chip{
+    display:inline-flex;align-items:stretch;
+    border:1px solid var(--line-2);border-radius:999px;background:#fff;
+    overflow:hidden;transition:border-color .15s ease, background .15s ease, box-shadow .15s ease;
+  }
+  .student-chip:hover{border-color:var(--gold);box-shadow:0 0 0 3px rgba(169,131,90,.08)}
+  .student-chip.is-active{border-color:var(--gold);background:var(--gold-soft)}
+  .student-chip-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    border:0;background:transparent;font-family:inherit;
+    font-size:12.7px;font-weight:600;color:var(--ink-2);letter-spacing:-.01em;
+    padding:6px 5px 6px 12px;cursor:pointer;line-height:1.45;white-space:nowrap;
+  }
+  .student-chip.is-active .student-chip-btn{color:var(--gold-deep)}
+  .student-chip-btn .sc-session{
+    font-size:10.8px;font-weight:500;color:var(--muted);
+    font-variant-numeric:tabular-nums;letter-spacing:0;
+  }
+  .student-chip.is-active .sc-session{color:var(--gold-deep);opacity:.8}
+  .student-chip-del{
+    display:grid;place-items:center;width:25px;flex:none;
+    border:0;border-left:1px solid var(--line);background:transparent;
+    color:var(--muted);font-family:inherit;font-size:13px;line-height:1;cursor:pointer;padding:0;
+    transition:background .15s ease, color .15s ease;
+  }
+  .student-chip-del:hover{background:rgba(29,26,22,.07);color:var(--ink)}
+  .student-chip-empty{font-size:11.8px;color:var(--muted)}
+  .student-new{
+    display:inline-flex;align-items:center;gap:4px;
+    border:1px dashed var(--line-2);border-radius:999px;background:transparent;
+    font-family:inherit;font-size:12.4px;font-weight:600;color:var(--muted);
+    padding:6px 12px;cursor:pointer;line-height:1.45;white-space:nowrap;transition:.15s ease;
+  }
+  .student-new:hover{border-color:var(--gold);color:var(--gold-deep);background:#FFFCF7}
+
+  /* ── 학원 로고 ─────────────────────────────────────────── */
+  .logo-field{
+    display:flex;flex-direction:column;gap:9px;
+    padding:13px 14px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-2);
+  }
+  .logo-field .label-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .logo-field .label{font-size:12.3px;font-weight:600;color:var(--ink-2);letter-spacing:.005em}
+  .logo-field .label .opt{font-weight:400;color:var(--muted);font-size:11.4px;margin-left:2px}
+  .pro-mini{
+    display:inline-flex;align-items:center;gap:5px;flex:none;
+    height:20px;padding:0 8px;border-radius:999px;
+    background:var(--gold-soft);border:1px solid var(--gold-line);color:var(--gold-deep);
+    font-family:var(--font-latin);font-size:10.6px;font-weight:600;letter-spacing:.06em;
+    white-space:nowrap;
+  }
+  .logo-row{display:flex;align-items:center;gap:11px}
+  .logo-thumb{
+    width:46px;height:46px;flex:none;border-radius:11px;
+    border:1px dashed var(--line-2);background:#fff;
+    display:grid;place-items:center;overflow:hidden;
+    color:#B0A79A;font-size:10.4px;font-weight:600;letter-spacing:.02em;
+  }
+  .logo-thumb.has-logo{border-style:solid;border-color:var(--line)}
+  .logo-thumb img{width:100%;height:100%;object-fit:contain;display:block}
+  .logo-info{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:7px}
+  .logo-info p{margin:0;font-size:11.5px;color:var(--muted);line-height:1.5}
+  .logo-actions{display:flex;gap:6px;flex-wrap:wrap}
+  #logoRemove[hidden]{display:none}
+
   .form-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line-2);flex-wrap:wrap}
   .autosave{display:inline-flex;align-items:center;gap:6px;font-size:11.6px;color:var(--muted)}
   .autosave .dot{width:5px;height:5px;border-radius:50%;background:#9AB58A}
@@ -371,6 +447,13 @@
   }
   .toast.is-on{opacity:1;visibility:visible;transform:translate(-50%,0)}
   .toast .ico{color:#C9A96A;flex:none}
+  .toast .toast-action{
+    flex:none;border:0;background:transparent;padding:0 0 0 1px;
+    font-family:inherit;font-size:12.5px;font-weight:700;color:#E7D3AE;
+    text-decoration:underline;text-underline-offset:2px;cursor:pointer;
+  }
+  .toast .toast-action:hover{color:#FFF8EA}
+  .toast .toast-action[hidden]{display:none}
 
   /* ── 모바일 하단 바 ────────────────────────────────────── */
   .mobile-bar{
@@ -431,6 +514,15 @@
     .tag-block{padding:11px;gap:8px}
     .panel-head h2{font-size:16.5px}
     .btn-sm{height:32px;padding:0 9px;font-size:12px}
+    .students-block,.logo-field{padding:11px;gap:9px}
+    .students-title .hint{display:none}
+    .students-head .btn{height:30px;padding:0 10px;font-size:11.6px}
+    .student-chip-btn{font-size:12px;padding:5px 4px 5px 11px}
+    .student-chip-del{width:23px}
+    .student-new{font-size:11.8px;padding:5px 11px}
+    .logo-row{gap:10px}
+    .logo-thumb{width:42px;height:42px}
+    .logo-info p{font-size:11.1px}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition-duration:.001ms !important;animation-duration:.001ms !important}
@@ -487,6 +579,17 @@
       </div>
 
       <form class="form-body" id="lessonForm" autocomplete="off" novalidate>
+        <div class="students-block" id="studentsBlock" aria-label="내 학생">
+          <div class="students-head">
+            <div class="students-title">
+              <span class="label" id="studentsLabel">내 학생</span>
+              <span class="hint">누르면 지난 기록 + 회차 1 올려서 불러와요</span>
+            </div>
+            <button class="btn btn-sm btn-outline" id="saveRecordBtn" type="button" title="지금 입력한 내용을 이 학생의 최근 기록으로 저장">학생 기록 저장</button>
+          </div>
+          <div class="student-chips" id="studentChips" role="group" aria-labelledby="studentsLabel"></div>
+        </div>
+
         <div class="grid-2">
           <div class="field">
             <div class="label-row"><label for="studio">스튜디오 이름</label></div>
@@ -496,6 +599,24 @@
             <div class="label-row"><label for="teacher">선생님 이름</label></div>
             <input class="input" id="teacher" name="teacher" type="text" maxlength="14" placeholder="김선민">
           </div>
+        </div>
+
+        <div class="logo-field">
+          <div class="label-row">
+            <span class="label" id="logoLabel">학원 로고 <span class="opt">(선택)</span></span>
+            <span class="pro-mini" title="Pro 플랜에서 제공될 기능을 미리 써 보세요">Pro 미리체험</span>
+          </div>
+          <div class="logo-row">
+            <div class="logo-thumb" id="logoThumb" aria-hidden="true"><span>로고</span></div>
+            <div class="logo-info">
+              <p id="logoInfoText">PNG · JPG 파일을 올리면 카드 좌측 상단 스튜디오 이름 옆에 함께 들어가요</p>
+              <div class="logo-actions">
+                <button class="btn btn-sm btn-outline" id="logoPick" type="button">로고 올리기</button>
+                <button class="btn btn-sm btn-ghost" id="logoRemove" type="button" hidden>삭제</button>
+              </div>
+            </div>
+          </div>
+          <input type="file" id="logoInput" accept="image/png,image/jpeg" hidden>
         </div>
 
         <div class="field">
@@ -698,6 +819,10 @@
         <span>입력한 학생 정보는 <b>서버에 남지 않고</b> 내 기기(브라우저)에만 안전하게 저장돼요.</span>
       </li>
       <li>
+        <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4.2 5.2h9.6M4.2 9h9.6M4.2 12.8h5.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span><b>내 학생</b> 칩을 누르면 지난 레슨 기록이 그대로 불러와지고, 회차는 자동으로 하나 올라가요.</span>
+      </li>
+      <li>
         <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="4.2" y="2.6" width="9.6" height="12.8" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M7.4 13h3.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         <span>모바일 브라우저 메뉴에서 <b>홈 화면에 추가</b>를 누르면 앱처럼 바로 켜서 쓸 수 있어요.</span>
       </li>
@@ -714,6 +839,7 @@
     <svg width="15" height="15" viewBox="0 0 18 18" fill="none"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </span>
   <span id="toastText"></span>
+  <button class="toast-action" id="toastAction" type="button" hidden></button>
 </div>
 
 <script>
@@ -954,10 +1080,33 @@
       ctx.restore();
     }
 
-    // 1. 헤더 (스튜디오 / 날짜·회차)
+    // 1. 헤더 (학원 로고 / 스튜디오 / 날짜·회차)
     gap(0, 0);
-    var headerH = 26 * sc * 1.4;
+    var headLogo = state.logoImg;
+    var logoH = 0, logoW = 0;
+    if (headLogo && headLogo.naturalWidth && headLogo.naturalHeight) {
+      logoH = 44 * sc;
+      logoW = logoH * (headLogo.naturalWidth / headLogo.naturalHeight);
+      var logoMaxW = Math.min(innerW * 0.32, 210 * sc);
+      if (logoW > logoMaxW) {
+        logoW = logoMaxW;
+        logoH = logoW * (headLogo.naturalHeight / headLogo.naturalWidth);
+      }
+    }
+    var headerTextH = 26 * sc * 1.4;
+    var headerH = Math.max(headerTextH, logoH);
     block(headerH, function (y) {
+      var textY = y + (headerH - headerTextH) / 2;
+      var textX = M;
+      if (logoW > 0) {
+        var lx = M, ly = y + (headerH - logoH) / 2;
+        ctx.save();
+        roundRect(ctx, lx, ly, logoW, logoH, 7 * sc);
+        ctx.clip();
+        ctx.drawImage(headLogo, lx, ly, logoW, logoH);
+        ctx.restore();
+        textX = M + logoW + 18 * sc;
+      }
       ctx.save();
       ctx.textBaseline = 'top';
       ctx.textAlign = 'left';
@@ -965,7 +1114,7 @@
       var meta = metaLine(d);
       var metaW = meta ? ctx.measureText(meta).width : 0;
       var studio = (d.studio || '피아노 스튜디오').toUpperCase();
-      var availW = innerW - metaW - 26 * sc;
+      var availW = Math.max(innerW - (textX - M) - metaW - 26 * sc, 40 * sc);
       var studioSize = fitText(ctx, studio, availW, 24 * sc, 15 * sc, '600', SANS);
       ctx.font = '600 ' + Math.round(studioSize) + 'px ' + SANS;
       ctx.fillStyle = t.accent;
@@ -974,13 +1123,13 @@
       var shown = studio;
       while (trackedWidth(ctx, shown, maxTrack) > availW && shown.length > 2) shown = shown.slice(0, -1);
       if (shown !== studio) shown = shown.replace(/\s+$/, '') + '…';
-      drawTracked(ctx, shown, M, y, maxTrack, 'left');
+      drawTracked(ctx, shown, textX, textY, maxTrack, 'left');
 
       if (meta) {
         ctx.font = '500 ' + Math.round(23 * sc) + 'px ' + SANS;
         ctx.fillStyle = t.muted;
         ctx.textAlign = 'right';
-        ctx.fillText(meta, CARD_W - M, y + 1.5 * sc);
+        ctx.fillText(meta, CARD_W - M, textY + 1.5 * sc);
       }
       ctx.restore();
     });
@@ -1238,6 +1387,9 @@
   var LS_DRAFT = 'lessoncard.draft.v1';
   var LS_USAGE = 'lessoncard.usage.v1';
   var LS_THEME = 'lessoncard.theme.v1';
+  var LS_STUDENTS = 'lessoncard.students.v1';
+  var LS_LOGO = 'lessoncard.logo.v1';
+  var LOGO_MAX = 420;      // 로고는 긴 변 기준 420px까지만 보관 (1080px 카드에 충분)
 
   var EXAMPLE = {
     studio: '김선민 피아노 스튜디오',
@@ -1250,12 +1402,37 @@
     note: '다음 주에는 처음부터 끝까지 천천히 이어서 들어볼게요. 이번 주 연습 정말 잘 해줬어요!'
   };
 
+  // 처음 방문한 강사가 바로 눌러 볼 수 있는 샘플 학생 2명
+  var SEED_STUDENTS = [
+    {
+      name: '위신원', studio: '김선민 피아노 스튜디오', teacher: '김선민', session: '12회차',
+      piece: '쇼팽 왈츠 Op.64 No.2 — 오른손 프레이즈 다듬기',
+      tags: ['박자감이 좋아요', '페달링이 안정됐어요'],
+      mission: '매일 15분, 오른손 8마디씩 메트로놈 60에 맞춰 연습하기.',
+      note: '다음 주에는 처음부터 끝까지 천천히 이어서 들어볼게요.',
+      date: '', savedAt: 0
+    },
+    {
+      name: '김서연', studio: '김선민 피아노 스튜디오', teacher: '김선민', session: '4회차',
+      piece: '부르크뮐러 목가 Op.100 No.1',
+      tags: ['집중력이 좋아요', '악보 읽기가 빨라졌어요'],
+      mission: '왼손 반주만 따로 3번 천천히, 오른손은 노래하듯이.',
+      note: '다음 주에는 악보 없이 한 번 처 볼까요?',
+      date: '', savedAt: 0
+    }
+  ];
+
   var state = {
     theme: 'cream',
     tags: [],
     usage: 0,
     lastLayout: null,
-    fontReady: false
+    fontReady: false,
+    students: [],
+    activeStudent: '',
+    logo: null,
+    logoImg: null,
+    lastDeleted: null
   };
 
   var $ = function (sel) { return document.querySelector(sel); };
@@ -1426,6 +1603,293 @@
   }
 
   /* ══════════════════════════════════════════════════════════
+     3-2. 내 학생 (학생별 누적 기록) · 학원 로고
+     ══════════════════════════════════════════════════════════ */
+  function studentKey(name) { return String(name == null ? '' : name).replace(/\s+/g, ' ').trim(); }
+  function sameStudent(a, b) { return studentKey(a).toLowerCase() === studentKey(b).toLowerCase() && studentKey(a) !== ''; }
+
+  function normalizeStudent(o) {
+    var src = (o && typeof o === 'object') ? o : {};
+    return {
+      name: studentKey(src.name),
+      studio: String(src.studio || ''),
+      teacher: String(src.teacher || ''),
+      session: String(src.session || ''),
+      piece: String(src.piece || ''),
+      tags: Array.isArray(src.tags) ? src.tags.filter(function (t) { return typeof t === 'string' && t; }).slice(0, MAX_TAGS) : [],
+      mission: String(src.mission || ''),
+      note: String(src.note || ''),
+      date: String(src.date || ''),
+      savedAt: Number(src.savedAt) || 0
+    };
+  }
+
+  function saveStudents() { safeSet(LS_STUDENTS, JSON.stringify(state.students)); }
+
+  function loadStudents() {
+    state.students = [];
+    var raw = safeGet(LS_STUDENTS);
+    if (raw === null) {
+      // 처음 방문한 사용자: 샘플 학생 2명으로 시작 (한 번 저장해 두면 삭제가 그대로 유지된다)
+      SEED_STUDENTS.forEach(function (s) { state.students.push(normalizeStudent(s)); });
+      saveStudents();
+      return;
+    }
+    try {
+      var arr = JSON.parse(raw);
+      if (Array.isArray(arr)) {
+        arr.forEach(function (o) {
+          var n = normalizeStudent(o);
+          if (n.name) state.students.push(n);
+        });
+      }
+    } catch (e) { /* 손상된 값은 빈 목록으로 */ }
+  }
+
+  function studentIndex(name) {
+    for (var i = 0; i < state.students.length; i++) {
+      if (sameStudent(state.students[i].name, name)) return i;
+    }
+    return -1;
+  }
+
+  // '12회차' → '13회차', '3회' → '4회', '5' → '6'
+  function bumpSession(session) {
+    var str = String(session == null ? '' : session);
+    var m = str.match(/(\d+)/);
+    if (!m) return str;
+    var next = parseInt(m[1], 10) + 1;
+    return str.slice(0, m.index) + String(next) + str.slice(m.index + m[1].length);
+  }
+
+  // 현재 폼 내용을 학생 이름 기준으로 저장 (같은 학생은 최신 기록으로 교체)
+  function persistStudent(silent) {
+    var d = readData();
+    if (!d.student) return false;
+    var rec = normalizeStudent({
+      name: d.student, studio: d.studio, teacher: d.teacher, session: d.session,
+      piece: d.piece, tags: d.tags, mission: d.mission, note: d.note,
+      date: d.date, savedAt: Date.now()
+    });
+    var i = studentIndex(rec.name);
+    if (i > -1) state.students[i] = rec;
+    else state.students.unshift(rec);
+    saveStudents();
+    state.activeStudent = rec.name;
+    renderStudentChips();
+    if (!silent) toast(rec.name + ' 학생의 ' + (rec.session || '오늘') + ' 기록을 저장했어요');
+    return true;
+  }
+
+  // 학생 칩 클릭 → 직전 기록 + 회차 1 + 오늘 날짜
+  function loadStudent(name) {
+    var i = studentIndex(name);
+    if (i < 0) return;
+    var rec = state.students[i];
+    var prevSession = rec.session || '';
+    var nextSession = bumpSession(prevSession);
+    applyData({
+      studio: rec.studio || els.studio.value,
+      teacher: rec.teacher || els.teacher.value,
+      student: rec.name,
+      date: todayISO(),
+      session: nextSession,
+      piece: rec.piece,
+      tags: rec.tags.slice(),
+      mission: rec.mission,
+      note: rec.note
+    });
+    state.activeStudent = rec.name;
+    renderStudentChips();
+    var msg = rec.name + ' 기록을 불러왔어요';
+    if (prevSession && nextSession && nextSession !== prevSession) msg += ' · ' + prevSession + ' → ' + nextSession;
+    toast(msg);
+  }
+
+  function removeStudent(name) {
+    var i = studentIndex(name);
+    if (i < 0) return;
+    var rec = state.students[i];
+    state.students.splice(i, 1);
+    saveStudents();
+    if (sameStudent(state.activeStudent, name)) state.activeStudent = '';
+    state.lastDeleted = rec;
+    renderStudentChips();
+    toast(rec.name + ' 학생을 목록에서 지웠어요', {
+      label: '되돌리기',
+      run: function () {
+        if (!state.lastDeleted) return;
+        if (studentIndex(state.lastDeleted.name) === -1) state.students.push(state.lastDeleted);
+        state.lastDeleted = null;
+        saveStudents();
+        renderStudentChips();
+        toast('다시 넣었어요');
+      }
+    });
+  }
+
+  function startNewStudent() {
+    state.activeStudent = '';
+    applyData({
+      studio: els.studio.value, teacher: els.teacher.value,
+      date: todayISO(), student: '', session: '', piece: '', tags: [], mission: '', note: ''
+    });
+    renderStudentChips();
+    if (els.student.focus) els.student.focus();
+    toast('새 학생 이름과 오늘 레슨을 적어 주세요');
+  }
+
+  function renderStudentChips() {
+    var wrap = els.studentChips;
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    var list = state.students.slice().sort(function (a, b) { return (b.savedAt || 0) - (a.savedAt || 0); });
+    if (!list.length) {
+      var empty = document.createElement('span');
+      empty.className = 'student-chip-empty';
+      empty.textContent = '아직 저장된 학생이 없어요';
+      wrap.appendChild(empty);
+    }
+    list.forEach(function (rec) {
+      var chip = document.createElement('div');
+      chip.className = 'student-chip' + (sameStudent(rec.name, state.activeStudent) ? ' is-active' : '');
+
+      var main = document.createElement('button');
+      main.type = 'button';
+      main.className = 'student-chip-btn';
+      main.setAttribute('aria-label', rec.name + (rec.session ? ' ' + rec.session : '') + ' 기록 불러오기');
+      var nm = document.createElement('span');
+      nm.className = 'sc-name';
+      nm.textContent = rec.name;
+      main.appendChild(nm);
+      if (rec.session) {
+        var se = document.createElement('span');
+        se.className = 'sc-session';
+        se.textContent = rec.session;
+        main.appendChild(se);
+      }
+      main.addEventListener('click', function () { loadStudent(rec.name); });
+
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'student-chip-del';
+      del.setAttribute('aria-label', rec.name + ' 삭제');
+      del.setAttribute('title', rec.name + ' 삭제');
+      del.textContent = '×';
+      del.addEventListener('click', function (ev) {
+        if (ev && ev.stopPropagation) ev.stopPropagation();
+        removeStudent(rec.name);
+      });
+
+      chip.appendChild(main);
+      chip.appendChild(del);
+      wrap.appendChild(chip);
+    });
+
+    var add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'student-new';
+    add.innerHTML = '<span aria-hidden="true">+</span> 새 학생';
+    add.addEventListener('click', startNewStudent);
+    wrap.appendChild(add);
+  }
+
+  /* ── 학원 로고 ───────────────────────────────────────────── */
+  function loadLogo() {
+    state.logo = null;
+    state.logoImg = null;
+    var raw = safeGet(LS_LOGO);
+    if (!raw) return;
+    try {
+      var o = JSON.parse(raw);
+      if (o && o.dataUrl) applyLogo({ dataUrl: o.dataUrl, name: o.name || '' }, false);
+    } catch (e) { state.logo = null; state.logoImg = null; }
+  }
+
+  function applyLogo(obj, announce) {
+    var img = new Image();
+    img.onload = function () {
+      state.logo = { dataUrl: obj.dataUrl, name: obj.name || '', w: img.naturalWidth, h: img.naturalHeight };
+      state.logoImg = img;
+      updateLogoUI();
+      render();
+      if (announce) toast('로고를 카드 좌측 상단에 넣었어요');
+    };
+    img.onerror = function () {
+      state.logo = null;
+      state.logoImg = null;
+      updateLogoUI();
+      render();
+    };
+    img.src = obj.dataUrl;
+  }
+
+  function handleLogoFile(file) {
+    if (!file) return;
+    var typeOk = /^image\/(png|jpe?g)$/i.test(file.type || '') || /\.(png|jpe?g)$/i.test(file.name || '');
+    if (!typeOk) { toast('PNG 또는 JPG 이미지만 올릴 수 있어요'); return; }
+    if (file.size > 8 * 1024 * 1024) { toast('8MB 이하 이미지를 올려 주세요'); return; }
+    var reader = new FileReader();
+    reader.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var nw = img.naturalWidth || 1, nh = img.naturalHeight || 1;
+        var ratio = Math.min(1, LOGO_MAX / Math.max(nw, nh));
+        var w = Math.max(1, Math.round(nw * ratio));
+        var h = Math.max(1, Math.round(nh * ratio));
+        var cv = document.createElement('canvas');
+        cv.width = w;
+        cv.height = h;
+        var cx = cv.getContext('2d');
+        cx.imageSmoothingEnabled = true;
+        cx.imageSmoothingQuality = 'high';
+        cx.drawImage(img, 0, 0, w, h);
+        var dataUrl;
+        try { dataUrl = cv.toDataURL('image/png'); }
+        catch (e) { toast('이미지를 저장하지 못했어요. 다른 파일로 시도해 주세요'); return; }
+        var obj = { dataUrl: dataUrl, name: file.name || '', w: w, h: h };
+        safeSet(LS_LOGO, JSON.stringify(obj));
+        applyLogo(obj, true);
+      };
+      img.onerror = function () { toast('이미지 파일을 읽지 못했어요'); };
+      img.src = reader.result;
+    };
+    reader.onerror = function () { toast('파일을 읽지 못했어요'); };
+    reader.readAsDataURL(file);
+  }
+
+  function removeLogo() {
+    if (!state.logo) return;
+    try { localStorage.removeItem(LS_LOGO); } catch (e) {}
+    state.logo = null;
+    state.logoImg = null;
+    updateLogoUI();
+    render();
+    toast('로고를 지웠어요');
+  }
+
+  function updateLogoUI() {
+    if (!els.logoThumb) return;
+    if (state.logo && state.logo.dataUrl) {
+      els.logoThumb.classList.add('has-logo');
+      els.logoThumb.innerHTML = '';
+      var im = document.createElement('img');
+      im.src = state.logo.dataUrl;
+      im.alt = '학원 로고 미리보기';
+      els.logoThumb.appendChild(im);
+      els.logoInfoText.textContent = (state.logo.name ? state.logo.name + ' · ' : '') + state.logo.w + '×' + state.logo.h + 'px · 카드 좌측 상단에 표시돼요';
+      els.logoRemove.hidden = false;
+      els.logoPick.textContent = '로고 바꾸기';
+    } else {
+      els.logoThumb.classList.remove('has-logo');
+      els.logoThumb.innerHTML = '<span>로고</span>';
+      els.logoInfoText.textContent = 'PNG · JPG 파일을 올리면 카드 좌측 상단 스튜디오 이름 옆에 함께 들어가요';
+      els.logoRemove.hidden = true;
+      els.logoPick.textContent = '로고 올리기';
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════
      4. 테마 · 플랜 · 다운로드 · 복사
      ══════════════════════════════════════════════════════════ */
   function setTheme(id) {
@@ -1460,6 +1924,8 @@
 
   function downloadCard() {
     render();
+    var studentName = els.student.value.trim();
+    if (studentName) persistStudent(true);
     var out = document.createElement('canvas');
     out.width = CARD_W;
     out.height = CARD_H;
@@ -1481,7 +1947,7 @@
       bumpUsage();
       window.__lastDownload = { name: a.download, size: blob.size };
       var left = Math.max(0, FREE_LIMIT - state.usage);
-      if (left > 0) toast('카드 PNG를 저장했어요 · 1080×1350');
+      if (left > 0) toast('카드 PNG를 저장했어요 · 1080×1350' + (studentName ? ' · ' + studentName + ' 기록도 저장됨' : ''));
       else toast('무료 3장을 모두 사용했어요 · 프로토타입에서는 계속 저장됩니다');
     };
 
@@ -1503,6 +1969,8 @@
   // 모바일에서는 OS 공유 시트로 바로 카톡에 보낼 수 있게 한다
   function shareCard() {
     render();
+    var studentName = els.student.value.trim();
+    if (studentName) persistStudent(true);
     if (!navigator.canShare) { downloadCard(); return; }
     var out = exportCanvas();
     out.toBlob(function (blob) {
@@ -1575,7 +2043,11 @@
 
   function copyShare() {
     var text = buildShareText();
-    var ok = function () { toast('카톡에 붙여넣을 텍스트를 복사했어요'); };
+    var studentName = els.student.value.trim();
+    var ok = function () {
+      if (studentName) persistStudent(true);
+      toast('카톡에 붙여넣을 텍스트를 복사했어요' + (studentName ? ' · ' + studentName + ' 기록도 저장됨' : ''));
+    };
     var fail = function () { toast('복사가 막혔어요. 잠시 후 다시 시도해 주세요'); };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(ok).catch(function () {
@@ -1590,11 +2062,28 @@
      5. 모달 · 토스트
      ══════════════════════════════════════════════════════════ */
   var toastTimer = null;
-  function toast(msg) {
+  function hideToast() {
+    els.toast.classList.remove('is-on');
+    if (els.toastAction) els.toastAction.hidden = true;
+  }
+  function toast(msg, action) {
     els.toastText.textContent = msg;
+    if (els.toastAction) {
+      if (action && typeof action.run === 'function') {
+        els.toastAction.textContent = action.label || '되돌리기';
+        els.toastAction.hidden = false;
+        els.toastAction.onclick = function () {
+          hideToast();
+          action.run();
+        };
+      } else {
+        els.toastAction.hidden = true;
+        els.toastAction.onclick = null;
+      }
+    }
     els.toast.classList.add('is-on');
     if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { els.toast.classList.remove('is-on'); }, 2600);
+    toastTimer = setTimeout(hideToast, action ? 5200 : 2600);
   }
 
   var guideLastFocused = null;
@@ -1650,7 +2139,9 @@
   function bind() {
     ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note',
      'customTag', 'addTagBtn', 'exampleBtn', 'resetBtn', 'chipWrap',
-     'tagCount', 'missionCount', 'noteCount', 'autosaveText'].forEach(function (k) {
+     'tagCount', 'missionCount', 'noteCount', 'autosaveText',
+     'studentChips', 'saveRecordBtn', 'logoPick', 'logoRemove', 'logoInput',
+     'logoThumb', 'logoInfoText', 'toastAction'].forEach(function (k) {
       els[k] = document.getElementById(k);
     });
 
@@ -1662,6 +2153,29 @@
         els[k]._saveT = setTimeout(saveDraft, 500);
       });
     });
+
+    // 학생 이름을 직접 고치면 칩 강조를 따라가게
+    els.student.addEventListener('input', function () {
+      state.activeStudent = els.student.value.trim();
+      renderStudentChips();
+    });
+
+    els.saveRecordBtn.addEventListener('click', function () {
+      if (!els.student.value.trim()) {
+        toast('학생 이름을 먼저 적어 주세요');
+        els.student.focus();
+        return;
+      }
+      persistStudent(false);
+    });
+
+    els.logoPick.addEventListener('click', function () { els.logoInput.click(); });
+    els.logoInput.addEventListener('change', function () {
+      var f = els.logoInput.files && els.logoInput.files[0];
+      if (f) handleLogoFile(f);
+      els.logoInput.value = '';
+    });
+    els.logoRemove.addEventListener('click', removeLogo);
 
     els.customTag.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); addCustomTag(); }
@@ -1741,7 +2255,15 @@
       toast: document.getElementById('toast'), toastText: document.getElementById('toastText'),
       canvasWrap: document.querySelector('.canvas-wrap'),
       zoom: document.getElementById('zoom'), zoomCanvas: document.getElementById('zoomCanvas'),
-      dateHint: document.getElementById('dateHint')
+      dateHint: document.getElementById('dateHint'),
+      studentChips: document.getElementById('studentChips'),
+      saveRecordBtn: document.getElementById('saveRecordBtn'),
+      logoPick: document.getElementById('logoPick'),
+      logoRemove: document.getElementById('logoRemove'),
+      logoInput: document.getElementById('logoInput'),
+      logoThumb: document.getElementById('logoThumb'),
+      logoInfoText: document.getElementById('logoInfoText'),
+      toastAction: document.getElementById('toastAction')
     };
 
     bind();
@@ -1765,6 +2287,12 @@
     }
     if (!els.date.value) els.date.value = todayISO();
 
+    loadStudents();
+    state.activeStudent = els.student.value.trim();
+    renderStudentChips();
+    updateLogoUI();
+    loadLogo();
+
     setTheme(state.theme);
     syncCounters();
     updateDateHint();
@@ -1786,7 +2314,13 @@
       download: downloadCard,
       copyText: buildShareText,
       state: state,
-      themes: THEMES
+      themes: THEMES,
+      students: state.students,
+      loadStudent: loadStudent,
+      saveStudentRecord: function () { return persistStudent(true); },
+      bumpSession: bumpSession,
+      removeLogo: removeLogo,
+      keys: { students: LS_STUDENTS, logo: LS_LOGO }
     };
   }
 
