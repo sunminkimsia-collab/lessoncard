@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231D1A16'/%3E%3Cpath d='M12 22V11l9-1.8v10' stroke='%23E7D3AE' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='10.6' cy='22' r='2.2' stroke='%23E7D3AE' stroke-width='1.6' fill='none'/%3E%3Ccircle cx='19.6' cy='20.3' r='2.2' stroke='%23E7D3AE' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600&family=Gowun+Dodum&family=Jua&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   /* ── 디자인 토큰 ─────────────────────────────────────────── */
   :root{
@@ -655,7 +655,7 @@
           <div class="logo-row">
             <div class="logo-thumb" id="logoThumb" aria-hidden="true"><span>로고</span></div>
             <div class="logo-info">
-              <p id="logoInfoText">PNG · JPG 파일을 올리면 카드 좌측 상단 스튜디오 이름 옆에 함께 들어가요</p>
+              <p id="logoInfoText">PNG · JPG 파일을 올리면 테마에 맞춰 카드 상단에 함께 들어가요</p>
               <div class="logo-actions">
                 <button class="btn btn-sm btn-outline" id="logoPick" type="button">로고 올리기</button>
                 <button class="btn btn-sm btn-ghost" id="logoRemove" type="button" hidden>삭제</button>
@@ -890,143 +890,93 @@
 
   /* ══════════════════════════════════════════════════════════
      1. 카드 렌더러 (HTML5 Canvas, 1080×1350 · 2배 슈퍼샘플링)
+        세트별로 템플릿 구조 자체를 다르게 그린다.
+          깔끔(clean)  = 구조화된 그리드 · 1px 헤어라인 · 산세리프
+          귀여운(cute) = 둥근 파스텔 프레임 · 점선 · 스티커 · 주아체
+          세련된(chic) = 이중 금빛 프레임 · 중앙 정렬 리사이틀 프로그램
      ══════════════════════════════════════════════════════════ */
   var CARD_W = 1080, CARD_H = 1350, SS = 2;
-  var M = 84;              // 좌우 여백
-  var TOP = 96;            // 본문 시작
-  var CONTENT_BOTTOM = CARD_H - 132;
+  var CONTENT_BOTTOM = CARD_H - 134;
 
-  var SERIF = '"Noto Serif KR","Noto Serif CJK KR",serif';
   var SANS  = '"Noto Sans KR","Noto Sans CJK KR",system-ui,sans-serif';
+  var SERIF = '"Noto Serif KR","Noto Serif CJK KR",serif';
   var LATIN = '"Cormorant Garamond","Noto Serif KR",serif';
+  var JUA   = '"Jua","Noto Sans KR",sans-serif';
+  var DODUM = '"Gowun Dodum","Noto Sans KR",sans-serif';
 
+  /* ── 테마 토큰 ───────────────────────────────────────────── */
   var THEMES = {
-    cream: {
-      bgTop: '#FEFAF2', bgBottom: '#EFE1C8',
-      ink: '#2A241C', muted: '#8B7A62', accent: '#A9835A',
-      rule: 'rgba(120,95,60,0.20)', frame: 'rgba(120,95,60,0.32)', corner: 'rgba(169,131,90,0.75)',
-      frameStyle: 'ornate',
-      panelFill: 'rgba(169,131,90,0.075)', panelStroke: 'rgba(169,131,90,0.26)',
-      chipFill: 'rgba(169,131,90,0.10)', chipStroke: 'rgba(169,131,90,0.32)',
-      glow: 'rgba(255,252,242,0.55)', glowFade: 'rgba(255,252,242,0)',
-      vignette: 'rgba(150,112,62,0.13)', vignetteFade: 'rgba(150,112,62,0)',
-      quote: 'rgba(169,131,90,0.30)',
-      swatches: ['#FCF7EE', '#A9835A', '#2A241C']
-    },
-    navy: {
-      bgTop: '#0D1928', bgBottom: '#1C3149',
-      ink: '#F5F0E5', muted: '#A9B9CB', accent: '#CDA96C',
-      rule: 'rgba(205,169,108,0.24)', frame: 'rgba(205,169,108,0.34)', corner: 'rgba(205,169,108,0.8)',
-      frameStyle: 'ornate',
-      panelFill: 'rgba(205,169,108,0.10)', panelStroke: 'rgba(205,169,108,0.30)',
-      chipFill: 'rgba(205,169,108,0.12)', chipStroke: 'rgba(205,169,108,0.32)',
-      glow: 'rgba(150,190,235,0.16)', glowFade: 'rgba(150,190,235,0)',
-      vignette: 'rgba(0,0,0,0.34)', vignetteFade: 'rgba(0,0,0,0)',
-      quote: 'rgba(205,169,108,0.34)',
-      swatches: ['#101C2C', '#CDA96C', '#F5F0E6']
-    },
-    rose: {
-      bgTop: '#3D2427', bgBottom: '#4F2F31',
-      ink: '#F8EEE6', muted: '#CBA99C', accent: '#E3B8A5',
-      rule: 'rgba(227,184,165,0.22)', frame: 'rgba(227,184,165,0.32)', corner: 'rgba(227,184,165,0.78)',
-      frameStyle: 'ornate',
-      panelFill: 'rgba(227,184,165,0.10)', panelStroke: 'rgba(227,184,165,0.26)',
-      chipFill: 'rgba(227,184,165,0.12)', chipStroke: 'rgba(227,184,165,0.30)',
-      glow: 'rgba(255,205,180,0.15)', glowFade: 'rgba(255,205,180,0)',
-      vignette: 'rgba(0,0,0,0.30)', vignetteFade: 'rgba(0,0,0,0)',
-      quote: 'rgba(227,184,165,0.32)',
-      swatches: ['#3A2325', '#E2B7A4', '#F8EDE5']
-    },
-
     /* ── 깔끔 세트 ─────────────────────────────────────────── */
     pure: {
-      bgTop: '#FFFFFF', bgBottom: '#FFFFFF',
-      ink: '#18181B', muted: '#71717A', accent: '#71717A', headerInk: '#18181B',
-      rule: '#E5E7EB', frame: '#E5E7EB', frameStyle: 'hairline', frameInset: 40,
-      panelFill: '#F8F8F8', panelStroke: '#EFEFF1', panelInk: '#18181B', panelLabel: '#71717A', panelRadius: 12,
-      chipFill: '#F8F8F8', chipStroke: '#E5E7EB', chipInk: '#18181B', chipRadius: 12,
-      glow: 'rgba(255,255,255,0)', glowFade: 'rgba(255,255,255,0)',
-      vignette: 'rgba(0,0,0,0)', vignetteFade: 'rgba(0,0,0,0)',
-      quote: 'rgba(24,24,27,0.20)', signInk: '#71717A',
-      swatches: ['#FFFFFF', '#E5E7EB', '#18181B']
+      set: 'clean', mode: 'grid',
+      bg: '#FFFFFF', ink: '#101014', soft: '#71717A', line: '#E7E7EA',
+      accent: '#101014', accentSoft: '#F1F1F3',
+      chipBg: '#FFFFFF', chipLine: '#DADADE',
+      panelBg: '#F7F7F8', panelLine: '#EDEDEF',
+      swatches: ['#FFFFFF', '#E7E7EA', '#101014']
     },
     linen: {
-      bgTop: '#FDFCF9', bgBottom: '#FDFCF9',
-      ink: '#2B2420', muted: '#8B7C68', accent: '#A6895B', headerInk: '#A6895B',
-      rule: '#E4DACB', frame: '#E4DACB', frameStyle: 'hairline', frameInset: 40,
-      panelFill: '#F7F4EE', panelStroke: '#EDE3D4', panelInk: '#2B2420', panelLabel: '#A6895B', panelRadius: 12,
-      chipFill: '#F7F4EE', chipStroke: '#E9DCC7', chipInk: '#2B2420', chipRadius: 12,
-      glow: 'rgba(255,255,255,0)', glowFade: 'rgba(255,255,255,0)',
-      vignette: 'rgba(0,0,0,0)', vignetteFade: 'rgba(0,0,0,0)',
-      quote: 'rgba(166,137,91,0.30)', signInk: '#8B7C68',
-      swatches: ['#FDFCF9', '#A6895B', '#2B2420']
+      set: 'clean', mode: 'airy',
+      bg: '#FCFAF4', ink: '#2B2420', soft: '#8C7B64', line: '#E4D8C4',
+      accent: '#A6895B', accentSoft: '#F4ECDC',
+      chipBg: '#FFFDF8', chipLine: '#E6D7BE',
+      panelBg: '#F7F2E7', panelLine: '#E9DDC8',
+      swatches: ['#FCFAF4', '#A6895B', '#2B2420']
     },
     slate: {
-      bgTop: '#F8FAFC', bgBottom: '#F8FAFC',
-      ink: '#0F172A', muted: '#64748B', accent: '#64748B', headerInk: '#0F172A',
-      rule: '#E2E8F0', frame: '#E2E8F0', frameStyle: 'hairline', frameInset: 40,
-      panelFill: '#F1F5F9', panelStroke: '#E2E8F0', panelInk: '#0F172A', panelLabel: '#64748B', panelRadius: 12,
-      chipFill: '#EFF6FF', chipStroke: '#DBEAFE', chipInk: '#0F172A', chipRadius: 12,
-      glow: 'rgba(255,255,255,0)', glowFade: 'rgba(255,255,255,0)',
-      vignette: 'rgba(0,0,0,0)', vignetteFade: 'rgba(0,0,0,0)',
-      quote: 'rgba(15,23,42,0.18)', signInk: '#64748B',
-      swatches: ['#F8FAFC', '#EFF6FF', '#0F172A']
+      set: 'clean', mode: 'poster',
+      bg: '#F3F7FC', ink: '#0F172A', soft: '#5C7089', line: '#D8E3F1',
+      accent: '#25507F', accentSoft: '#E4EEFA',
+      chipBg: '#FFFFFF', chipLine: '#CCDCEF',
+      panelBg: '#E8F0FA', panelLine: '#D4E2F3',
+      swatches: ['#F3F7FC', '#25507F', '#0F172A']
     },
 
     /* ── 귀여운 세트 ───────────────────────────────────────── */
     blush: {
-      bgTop: '#FDF4F5', bgBottom: '#FCEFF1',
-      ink: '#3B2A2E', muted: '#A2838A', accent: '#8C3B4A', headerInk: '#8C3B4A',
-      rule: '#EED6DA', frame: '#E9C7CD', frameStyle: 'hairline', frameInset: 40,
-      panelFill: '#F9E8EB', panelStroke: '#EBCBD2', panelInk: '#4A3034', panelLabel: '#8C3B4A', panelRadius: 18,
-      chipFill: '#FFFFFF', chipStroke: '#E9C7CD', chipInk: '#8C3B4A',
-      glow: 'rgba(255,255,255,0)', glowFade: 'rgba(255,255,255,0)',
-      vignette: 'rgba(0,0,0,0)', vignetteFade: 'rgba(0,0,0,0)',
-      quote: 'rgba(140,59,74,0.28)', signInk: '#A2838A',
-      swatches: ['#FDF4F5', '#E9C7CD', '#8C3B4A']
+      set: 'cute', mode: 'ribbon',
+      bg: '#FFF4F6', card: '#FFFFFF', frame: '#F4BAC7', frame2: '#EE9BAE',
+      accent: '#DE6D89', accent2: '#F8CFD9', accentSoft: '#FCE7ED', pastel: '#FDEDF1',
+      ink: '#4A2B33', soft: '#A9808B', chipInk: '#7E3446', tape: 'rgba(244,186,199,0.55)',
+      swatches: ['#FFF4F6', '#F4BAC7', '#DE6D89']
     },
     sky: {
-      bgTop: '#F2F7FD', bgBottom: '#ECF3FC',
-      ink: '#162A45', muted: '#6B7F99', accent: '#2B5EA7', headerInk: '#2B5EA7',
-      rule: '#D8E5F5', frame: null, frameStyle: 'none',
-      headMode: 'plain', top: 112, topMark: '#2B5EA7',
-      nameBar: { w: 8, fill: '#2B5EA7', pad: 40 },
-      panelFill: '#E3EEFB', panelInk: '#162A45', panelLabel: '#2B5EA7', panelRadius: 4, panelBar: '#2B5EA7',
-      chipFill: '#E3EEFB', chipInk: '#1B3B66', chipRadius: 9,
-      glow: 'rgba(255,255,255,0)', glowFade: 'rgba(255,255,255,0)',
-      vignette: 'rgba(0,0,0,0)', vignetteFade: 'rgba(0,0,0,0)',
-      quote: 'rgba(43,94,167,0.34)', signInk: '#6B7F99',
-      swatches: ['#F2F7FD', '#2B5EA7', '#E3EEFB']
+      set: 'cute', mode: 'cloud',
+      bg: '#F0F8FF', card: '#FFFFFF', frame: '#ACD6F7', frame2: '#7DB8EA',
+      accent: '#3C86CF', accent2: '#CDE6FB', accentSoft: '#E4F1FD', pastel: '#EDF7FF',
+      ink: '#1E3A57', soft: '#6F8CA8', chipInk: '#22517D', tape: 'rgba(172,214,247,0.5)',
+      swatches: ['#F0F8FF', '#ACD6F7', '#3C86CF']
     },
     butter: {
-      bgTop: '#FDF8E8', bgBottom: '#FBF3DC',
-      ink: '#3B3122', muted: '#93815F', accent: '#B85D3B', headerInk: '#B85D3B',
-      rule: '#EFE0C2', frame: null, frameStyle: 'none',
-      headMode: 'band', bandH: 212, bandFill: '#F7ECD4', bandAlign: 'center',
-      bandOverline: '#B85D3B', bandInk: '#33291B', bandMuted: '#8A7A5C',
-      bandBottomRule: '#E7D5B2', bandRuleInset: true,
-      panelFill: '#FFFDF7', panelStroke: '#EFDFC0', panelInk: '#3F3425', panelLabel: '#B85D3B', panelRadius: 18,
-      chipFill: '#F7ECD4', chipStroke: '#EFDFC0', chipInk: '#6B4A2C',
-      glow: 'rgba(255,255,255,0)', glowFade: 'rgba(255,255,255,0)',
-      vignette: 'rgba(0,0,0,0)', vignetteFade: 'rgba(0,0,0,0)',
-      quote: 'rgba(184,93,59,0.34)', signInk: '#B85D3B', nameGap: 42,
-      swatches: ['#FDF8E8', '#F7ECD4', '#B85D3B']
+      set: 'cute', mode: 'memo',
+      bg: '#FFF9E9', card: '#FFFDF7', frame: '#F5D98F', frame2: '#E9BC55',
+      accent: '#CE8820', accent2: '#FBE7B4', accentSoft: '#FDF2CE', pastel: '#FEF6DF',
+      ink: '#4A3A1C', soft: '#8E7A48', chipInk: '#7A5415', tape: 'rgba(245,217,143,0.62)',
+      swatches: ['#FFF9E9', '#F5D98F', '#CE8820']
     },
 
     /* ── 세련된 세트 ───────────────────────────────────────── */
     sage: {
-      bgTop: '#FAFBF8', bgBottom: '#F5F8F2',
-      ink: '#1E2E27', muted: '#6E7F75', accent: '#2C4A3E', headerInk: '#2C4A3E',
-      rule: '#E4EBE5', frame: null, frameStyle: 'none',
-      headMode: 'band', bandH: 214, bandFill: '#2C4A3E',
-      bandOverline: 'rgba(231,239,234,0.62)', bandInk: '#FFFFFF', bandMuted: '#C6D8CC',
-      bandBottomRule: '#E7EFEA', bandPlate: '#FFFFFF',
-      panelFill: '#E7EFEA', panelInk: '#2C4A3E', panelLabel: '#2C4A3E', panelRadius: 14,
-      chipFill: '#E7EFEA', chipInk: '#2C4A3E',
-      glow: 'rgba(255,255,255,0)', glowFade: 'rgba(255,255,255,0)',
-      vignette: 'rgba(0,0,0,0)', vignetteFade: 'rgba(0,0,0,0)',
-      quote: 'rgba(44,74,62,0.30)', signInk: '#577167', nameGap: 40,
-      swatches: ['#FAFBF8', '#2C4A3E', '#E7EFEA']
+      set: 'chic', mode: 'ivory',
+      bg: '#F9F6EA', bg2: '#EEEDDC', ink: '#1B3427', soft: '#586F64',
+      gold: '#A2854A', gold2: '#DCC287', line: 'rgba(162,133,74,0.40)',
+      edge: '#1B3427', edgeSoft: 'rgba(27,52,39,0.55)',
+      panel: 'rgba(27,52,39,0.05)', panelLine: 'rgba(27,52,39,0.16)',
+      swatches: ['#F9F6EA', '#1B3427', '#A2854A']
+    },
+    navy: {
+      set: 'chic', mode: 'noir',
+      bg: '#0A1422', bg2: '#132238', ink: '#F4EBD8', soft: '#9AABC2',
+      gold: '#CBA255', gold2: '#F0DDB0', line: 'rgba(203,162,85,0.45)',
+      panel: 'rgba(203,162,85,0.07)', panelLine: 'rgba(203,162,85,0.24)',
+      swatches: ['#0A1422', '#CBA255', '#F4EBD8']
+    },
+    rose: {
+      set: 'chic', mode: 'wine',
+      bg: '#361A21', bg2: '#4B2029', ink: '#F8EBE1', soft: '#C79C98',
+      gold: '#D9A68F', gold2: '#F6D7C6', line: 'rgba(217,166,143,0.45)',
+      panel: 'rgba(217,166,143,0.09)', panelLine: 'rgba(217,166,143,0.26)',
+      swatches: ['#361A21', '#D9A68F', '#F8EBE1']
     }
   };
 
@@ -1043,8 +993,10 @@
   };
   var DEFAULT_THEME = 'linen';
 
+  /* ── 공용 그리기 도구 ───────────────────────────────────── */
   function roundRect(ctx, x, y, w, h, r) {
     var rr = Math.min(r, w / 2, h / 2);
+    if (rr < 0) r = 0;
     ctx.beginPath();
     ctx.moveTo(x + rr, y);
     ctx.lineTo(x + w - rr, y);
@@ -1094,7 +1046,6 @@
       var cur = '';
       for (var wi = 0; wi < words.length; wi++) {
         var word = words[wi];
-        // 공백 없는 긴 문자열은 폭에 맞게 강제로 자름
         var guard = 0;
         while (ctx.measureText(word).width > maxW && word.length > 1 && guard++ < 60) {
           var cut = word.length - 1;
@@ -1139,385 +1090,514 @@
     return parts.join('  ·  ');
   }
 
-  function drawBackdrop(ctx, t) {
-    var g = ctx.createLinearGradient(CARD_W * 0.05, 0, CARD_W * 0.94, CARD_H);
-    g.addColorStop(0, t.bgTop);
-    g.addColorStop(1, t.bgBottom);
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, CARD_W, CARD_H);
-
-    var rg = ctx.createRadialGradient(CARD_W * 0.2, CARD_H * 0.05, 20, CARD_W * 0.2, CARD_H * 0.05, CARD_W * 0.82);
-    rg.addColorStop(0, t.glow);
-    rg.addColorStop(0.55, t.glowFade);
-    rg.addColorStop(1, t.glowFade);
-    ctx.fillStyle = rg;
-    ctx.fillRect(0, 0, CARD_W, CARD_H);
-
-    var vg = ctx.createRadialGradient(CARD_W * 0.5, CARD_H * 0.42, CARD_W * 0.22, CARD_W * 0.5, CARD_H * 0.52, CARD_W * 0.98);
-    vg.addColorStop(0, t.vignetteFade);
-    vg.addColorStop(0.62, t.vignetteFade);
-    vg.addColorStop(1, t.vignette);
-    ctx.fillStyle = vg;
-    ctx.fillRect(0, 0, CARD_W, CARD_H);
-  }
-
-  function drawFrame(ctx, t) {
-    if (t.frameStyle === 'none' || !t.frame) return;
-    ctx.save();
-
-    if (t.frameStyle === 'hairline') {
-      // 깔끔/귀여운 세트: 모서리 장식 없이 1px 헤어라인만
-      var inset = t.frameInset || 40;
-      ctx.strokeStyle = t.frame;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(inset + 0.5, inset + 0.5, CARD_W - inset * 2 - 1, CARD_H - inset * 2 - 1);
-      ctx.restore();
-      return;
-    }
-
-    ctx.strokeStyle = t.frame;
-    ctx.lineWidth = 1.1;
-    ctx.strokeRect(37.5, 37.5, CARD_W - 75, CARD_H - 75);
-
-    // 모서리 장식
-    ctx.strokeStyle = t.corner;
-    ctx.lineWidth = 1.6;
-    var L = 46, o = 52;
-    var pts = [
-      [o, o, 1, 1], [CARD_W - o, o, -1, 1],
-      [o, CARD_H - o, 1, -1], [CARD_W - o, CARD_H - o, -1, -1]
-    ];
-    pts.forEach(function (p) {
-      ctx.beginPath();
-      ctx.moveTo(p[0], p[1] + p[3] * L);
-      ctx.lineTo(p[0], p[1]);
-      ctx.lineTo(p[0] + p[2] * L, p[1]);
-      ctx.stroke();
-    });
-    ctx.restore();
-  }
-
   /* 헤더용 로고 박스 (비율 유지·최대 폭 제한) */
   function headerLogo(innerW, h) {
     var im = state.logoImg;
     if (!im || !im.naturalWidth || !im.naturalHeight) return null;
     var lh = h, lw = lh * (im.naturalWidth / im.naturalHeight);
-    var maxW = Math.min(innerW * 0.34, 230);
+    var maxW = Math.min(innerW * 0.32, 210);
     if (lw > maxW) { lw = maxW; lh = lw * (im.naturalHeight / im.naturalWidth); }
     return { img: im, w: lw, h: lh };
   }
 
-  /* ── 상단 컬러 밴드형 헤더 (포레스트 세이지 · 소프트 버터) ── */
-  function drawBandHeader(ctx, t, d) {
+  /* ── 장식 벡터 (PNG에도 선명하게 남도록 캔버스로 직접 그린다) ── */
+  function drawStar(ctx, cx, cy, r, color, rot, points) {
+    var n = points || 5, inner = r * (n === 5 ? 0.45 : 0.36);
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rot || 0);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    for (var i = 0; i < n * 2; i++) {
+      var rr = (i % 2) ? inner : r;
+      var a = -Math.PI / 2 + i * Math.PI / n;
+      if (i === 0) ctx.moveTo(Math.cos(a) * rr, Math.sin(a) * rr);
+      else ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawSparkle(ctx, cx, cy, r, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - r);
+    ctx.quadraticCurveTo(cx + r * 0.2, cy - r * 0.2, cx + r, cy);
+    ctx.quadraticCurveTo(cx + r * 0.2, cy + r * 0.2, cx, cy + r);
+    ctx.quadraticCurveTo(cx - r * 0.2, cy + r * 0.2, cx - r, cy);
+    ctx.quadraticCurveTo(cx - r * 0.2, cy - r * 0.2, cx, cy - r);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawHeart(ctx, cx, cy, s, color, rot) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rot || 0);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(0, s * 0.78);
+    ctx.bezierCurveTo(-s * 1.42, s * -0.16, -s * 0.66, -s * 1.12, 0, -s * 0.46);
+    ctx.bezierCurveTo(s * 0.66, -s * 1.12, s * 1.42, s * -0.16, 0, s * 0.78);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  /* 8분음표 두 개 (♪♫ 대신 벡터) — x,y는 첫 머리 중심 */
+  function drawMusicNotes(ctx, x, y, s, color, rot) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot || 0);
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.lineCap = 'round';
+    ctx.lineWidth = Math.max(1.4, s * 0.12);
+
+    ctx.save();
+    ctx.translate(0, 0);
+    ctx.rotate(-0.34);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, s * 0.36, s * 0.27, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.moveTo(s * 0.31, -s * 0.06);
+    ctx.lineTo(s * 0.31, -s * 1.32);
+    ctx.stroke();
+
+    ctx.save();
+    ctx.translate(s * 1.12, s * 0.30);
+    ctx.rotate(-0.34);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, s * 0.36, s * 0.27, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.moveTo(s * 1.43, s * 0.24);
+    ctx.lineTo(s * 1.43, -s * 1.02);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(s * 0.31, -s * 1.32);
+    ctx.lineTo(s * 1.43, -s * 1.02);
+    ctx.lineTo(s * 1.43, -s * 0.70);
+    ctx.lineTo(s * 0.31, -s * 1.00);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawCloud(ctx, cx, cy, w, color) {
+    var h = w * 0.56;
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx - w * 0.28, cy + h * 0.10, h * 0.34, 0, Math.PI * 2);
+    ctx.arc(cx - w * 0.02, cy - h * 0.14, h * 0.46, 0, Math.PI * 2);
+    ctx.arc(cx + w * 0.28, cy + h * 0.08, h * 0.36, 0, Math.PI * 2);
+    ctx.rect(cx - w * 0.30, cy + h * 0.06, w * 0.60, h * 0.30);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawDiamond(ctx, cx, cy, r, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - r);
+    ctx.lineTo(cx + r * 0.72, cy);
+    ctx.lineTo(cx, cy + r);
+    ctx.lineTo(cx - r * 0.72, cy);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawTape(ctx, cx, cy, w, h, rot, color) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rot || 0);
+    ctx.fillStyle = color;
+    ctx.fillRect(-w / 2, -h / 2, w, h);
+    ctx.restore();
+  }
+
+  function drawSquiggle(ctx, x, y, w, color, amp) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3.4;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    var step = w / 8;
+    ctx.moveTo(x, y);
+    for (var i = 0; i < 8; i++) {
+      var dir = (i % 2) ? 1 : -1;
+      ctx.quadraticCurveTo(x + step * (i + 0.5), y + dir * amp, x + step * (i + 1), y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  /* ── 레이아웃 모델 (측정 → 스케일 축소 → 배치) ───────────── */
+  function newModel(top, sc, bottom) {
+    var floorY = (typeof bottom === 'number') ? bottom : CONTENT_BOTTOM;
+    var m = {
+      items: [], total: 0, top: top, avail: floorY - top,
+      scale: sc, overflow: false
+    };
+    m.gap = function (h, flex) {
+      m.items.push({ type: 'gap', h: h * sc, flex: flex || 0 });
+      m.total += h * sc;
+    };
+    m.block = function (h, draw) {
+      m.items.push({ type: 'block', h: h, draw: draw });
+      m.total += h;
+    };
+    m.done = function () { m.overflow = m.total > m.avail + 0.5; return m; };
+    return m;
+  }
+
+  function flowItems(ctx, m) {
+    var flexCount = m.items.filter(function (i) { return i.flex > 0; }).length || 1;
+    var extra = Math.max(0, m.avail - m.total);
+    var per = Math.min(extra / flexCount, 30 * m.scale);
+    var y = m.top;
+    m.items.forEach(function (item) {
+      if (item.type === 'gap') {
+        y += item.h + (item.flex > 0 ? per : 0);
+      } else {
+        item.draw(y);
+        y += item.h;
+      }
+    });
+    return y;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     깔끔 세트 — 구조화된 그리드 · 헤어라인 · 산세리프
+     ══════════════════════════════════════════════════════════ */
+  var CLEAN_CFG = {
+    // 키는 테마 id가 아니라 렌더 모드(grid·airy·poster)
+    // rail: 왼쪽 라벨 레일 / caption: 라벨을 내용 위 작은 캡션으로
+    grid:   { mx: 96,  top: 198, rail: 182, label: 'rail',    rule: true,
+             name: { size: 90, weight: 700, track: -2.2 }, chip: 'outline', chipR: 8,
+             panel: 'hair', gapName: 8, gapSec: 34, chipH: 50, chipPad: 20, chipFont: 23 },
+    airy:   { mx: 186, top: 224, rail: 0,   label: 'caption', rule: false,
+             name: { size: 74, weight: 600, track: -0.4 }, chip: 'soft', chipR: 999,
+             panel: 'soft', gapName: 10, gapSec: 40, chipH: 46, chipPad: 24, chipFont: 22 },
+    poster: { mx: 96,  top: 204, rail: 190, label: 'rail',    rule: true,
+             name: { size: 94, weight: 800, track: -3.0 }, chip: 'filled', chipR: 7,
+             panel: 'fill', gapName: 6, gapSec: 30, chipH: 52, chipPad: 18, chipFont: 24 }
+  };
+
+  function cleanCfg(t) { return CLEAN_CFG[t.mode] || CLEAN_CFG.grid; }
+
+  function paintCleanBg(ctx, t, cfg) {
+    ctx.fillStyle = t.bg;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    if (t.mode === 'poster') {
+      // 옅은 그리드 — 모던 스튜디오의 도면 같은 질감
+      ctx.save();
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 1;
+      for (var gx = 36; gx < CARD_W; gx += 54) {
+        ctx.beginPath(); ctx.moveTo(gx + 0.5, 0); ctx.lineTo(gx + 0.5, CARD_H); ctx.stroke();
+      }
+      for (var gy = 36; gy < CARD_H; gy += 54) {
+        ctx.beginPath(); ctx.moveTo(0, gy + 0.5); ctx.lineTo(CARD_W, gy + 0.5); ctx.stroke();
+      }
+      ctx.restore();
+      var g = ctx.createLinearGradient(0, 0, CARD_W, CARD_H);
+      g.addColorStop(0, 'rgba(255,255,255,0.72)');
+      g.addColorStop(0.55, 'rgba(240,246,252,0.62)');
+      g.addColorStop(1, 'rgba(228,238,250,0.72)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, CARD_W, CARD_H);
+      // 좌상단 옅은 액센트
+      var rg = ctx.createRadialGradient(120, 60, 10, 120, 60, 620);
+      rg.addColorStop(0, 'rgba(37,80,127,0.10)');
+      rg.addColorStop(1, 'rgba(37,80,127,0)');
+      ctx.fillStyle = rg;
+      ctx.fillRect(0, 0, CARD_W, 700);
+      return;
+    }
+
+    if (t.mode === 'airy') {
+      // 갤러리 매트처럼 이중 헤어라인 프레임
+      ctx.strokeStyle = t.line;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(54.5, 54.5, CARD_W - 109, CARD_H - 109);
+      ctx.strokeStyle = 'rgba(166,137,91,0.22)';
+      ctx.strokeRect(63.5, 63.5, CARD_W - 127, CARD_H - 127);
+      return;
+    }
+
+    // pure: 아주 옅은 상단 그라데이션
+    var g2 = ctx.createLinearGradient(0, 0, 0, 420);
+    g2.addColorStop(0, 'rgba(16,16,20,0.035)');
+    g2.addColorStop(1, 'rgba(16,16,20,0)');
+    ctx.fillStyle = g2;
+    ctx.fillRect(0, 0, CARD_W, 420);
+  }
+
+  function paintCleanHeader(ctx, t, d, cfg) {
     var meta = metaLine(d);
     var studio = (d.studio || '피아노 스튜디오').toUpperCase();
-    var innerW = CARD_W - M * 2;
-    var lg = headerLogo(innerW, 40);
+    var lg = headerLogo(CARD_W - cfg.mx * 2 - 260, 42);
     ctx.save();
-    ctx.textBaseline = 'top';
+    ctx.textBaseline = 'middle';
 
-    if (t.bandAlign === 'center') {
-      // 가운데 정렬 레터헤드 (소프트 버터)
-      var gy = (t.bandH - 100) / 2;
+    if (t.mode === 'airy') {
+      // 가운데 정렬 레터헤드
       ctx.textAlign = 'center';
-      ctx.font = '600 13px ' + SANS;
-      ctx.fillStyle = t.bandOverline;
-      drawTracked(ctx, 'LESSON NOTE', CARD_W / 2, gy, 5.2, 'center');
-
-      ctx.font = '600 27px ' + SANS;
-      var availC = innerW - (lg ? lg.w + 16 : 0);
-      var trC = 3.4;
-      while (trackedWidth(ctx, studio, trC) > availC && trC > 0) trC -= 0.2;
-      var shownC = studio;
-      while (trackedWidth(ctx, shownC, trC) > availC && shownC.length > 2) shownC = shownC.slice(0, -1);
-      if (shownC !== studio) shownC = shownC.replace(/\s+$/, '') + '…';
-
-      var wC = trackedWidth(ctx, shownC, trC);
-      var gx = (CARD_W - ((lg ? lg.w + 16 : 0) + wC)) / 2;
-      ctx.fillStyle = t.bandInk;
-      if (lg) {
-        var ly = gy + 24 + 13 - lg.h / 2;   // 스튜디오 줄(27px) 가운데에 로고 정렬
-        ctx.drawImage(lg.img, gx, ly, lg.w, lg.h);
-        gx += lg.w + 16;
-      }
-      drawTracked(ctx, shownC, gx, gy + 24, trC, 'left');
-
+      ctx.font = '500 20px ' + SANS;
+      ctx.fillStyle = t.accent;
+      var tr = 6.4;
+      while (trackedWidth(ctx, studio, tr) > CARD_W - 360 && tr > 1) tr -= 0.2;
+      drawTracked(ctx, studio, CARD_W / 2, 112, tr, 'center');
+      ctx.fillStyle = t.accent;
+      ctx.globalAlpha = 0.5;
+      ctx.fillRect(CARD_W / 2 - 92, 142, 64, 1);
+      ctx.fillRect(CARD_W / 2 + 28, 142, 64, 1);
+      ctx.globalAlpha = 1;
+      drawDiamond(ctx, CARD_W / 2, 142.5, 4, t.accent);
       if (meta) {
-        ctx.textAlign = 'center';
-        ctx.font = '500 21px ' + SANS;
-        ctx.fillStyle = t.bandMuted;
-        ctx.fillText(meta, CARD_W / 2, gy + 72);
+        ctx.font = '500 19px ' + SANS;
+        ctx.fillStyle = t.soft;
+        drawTracked(ctx, meta, CARD_W / 2, 166, 0.6, 'center');
       }
+      if (lg) { ctx.globalAlpha = 0.95; ctx.drawImage(lg.img, 74, 96 - lg.h / 2, lg.w, lg.h); }
+      ctx.fillStyle = t.line;
+      ctx.fillRect(cfg.mx, 196, CARD_W - cfg.mx * 2, 1);
       ctx.restore();
       return;
     }
 
-    // 좌측 정렬 반전형 헤더 (포레스트 세이지) — 어두운 밴드 위에서는 로고를 흰 판 위에 올린다
-    var gyL = (t.bandH - 58) / 2;
-    ctx.textAlign = 'left';
-    ctx.font = '600 14px ' + SANS;
-    ctx.fillStyle = t.bandOverline;
-    var rowMidL = gyL + 24 + 13;
-    var plateHL = lg ? lg.h + 14 : 0;
-    // 로고 판이 있으면 오버라인을 판 위로 올려 겹치지 않게
-    var overlineY = lg ? Math.min(gyL, rowMidL - plateHL / 2 - 22) : gyL;
-    drawTracked(ctx, 'LESSON NOTE', M, overlineY, 4.6, 'left');
-
-    ctx.font = '500 22px ' + SANS;
-    var metaW = meta ? ctx.measureText(meta).width : 0;
-    var textX = M;
-    var rowMid = rowMidL;
+    var cy = 116;
+    var x = cfg.mx;
     if (lg) {
-      var plateW = lg.w + 14, plateH = plateHL;
-      roundRect(ctx, M, rowMid - plateH / 2, plateW, plateH, 8);
-      ctx.fillStyle = t.bandPlate || '#FFFFFF';
-      ctx.fill();
-      ctx.drawImage(lg.img, M + 7, rowMid - lg.h / 2, lg.w, lg.h);
-      textX = M + plateW + 18;
+      ctx.drawImage(lg.img, x, cy - lg.h / 2, lg.w, lg.h);
+      x += lg.w + 20;
+    } else if (t.mode === 'poster') {
+      ctx.fillStyle = t.ink;
+      ctx.fillRect(x, cy - 5, 10, 10);
+      x += 24;
     }
 
-    ctx.font = '600 25px ' + SANS;
-    ctx.fillStyle = t.bandInk;
-    var avail = CARD_W - M - textX - metaW - 36;
-    var tr = 3.0;
-    while (trackedWidth(ctx, studio, tr) > avail && tr > 0) tr -= 0.2;
+    var metaW = 0;
+    if (meta) { ctx.font = '500 19px ' + SANS; metaW = ctx.measureText(meta).width; }
+    var avail = CARD_W - cfg.mx - x - metaW - 40;
+
+    ctx.textAlign = 'left';
+    var fSize = t.mode === 'poster' ? 23 : 21;
+    ctx.font = '600 ' + fSize + 'px ' + SANS;
+    var trk = t.mode === 'poster' ? 1.2 : 4.6;
     var shown = studio;
-    while (trackedWidth(ctx, shown, tr) > avail && shown.length > 2) shown = shown.slice(0, -1);
+    while (trackedWidth(ctx, shown, trk) > avail && shown.length > 2) shown = shown.slice(0, -1);
     if (shown !== studio) shown = shown.replace(/\s+$/, '') + '…';
-    drawTracked(ctx, shown, textX, gyL + 24, tr, 'left');
+    ctx.fillStyle = t.mode === 'grid' ? t.ink : t.accent;
+    drawTracked(ctx, shown, x, cy, trk, 'left');
 
     if (meta) {
-      ctx.font = '500 22px ' + SANS;
-      ctx.fillStyle = t.bandMuted;
+      ctx.font = '500 19px ' + SANS;
+      ctx.fillStyle = t.soft;
       ctx.textAlign = 'right';
-      ctx.fillText(meta, CARD_W - M, gyL + 28);
+      drawTracked(ctx, meta, CARD_W - cfg.mx, cy + 1, 0.6, 'right');
     }
+    ctx.fillStyle = t.mode === 'poster' ? t.ink : t.line;
+    ctx.fillRect(cfg.mx, 152, CARD_W - cfg.mx * 2, t.mode === 'poster' ? 2 : 1);
     ctx.restore();
   }
 
-  function drawFooter(ctx, t, d, sc) {
-    var y = CARD_H - 74;
+  function cleanSectionLabel(ctx, t, cfg, text, x0, y, sc, seqNo) {
     ctx.save();
-    ctx.fillStyle = t.rule;
-    ctx.fillRect(M, y - 34, CARD_W - M * 2, 1);
-
     ctx.textBaseline = 'top';
-    ctx.font = '600 ' + Math.round(17 * sc) + 'px ' + SANS;
-    ctx.fillStyle = t.muted;
-    drawTracked(ctx, 'LESSONCARD', M, y - 14, 3.4 * sc, 'left');
-
-    ctx.textAlign = 'right';
-    ctx.font = 'italic 500 ' + Math.round(23 * sc) + 'px ' + LATIN;
-    ctx.fillStyle = t.muted;
-    ctx.globalAlpha = 0.9;
-    ctx.fillText('a note for the family', CARD_W - M, y - 16);
+    ctx.textAlign = 'left';
+    if (cfg.label === 'rail') {
+      if (seqNo) {
+        ctx.font = '600 ' + Math.round(17 * sc) + 'px ' + SANS;
+        ctx.fillStyle = t.soft;
+        drawTracked(ctx, seqNo, x0, y, 2.4 * sc, 'left');
+      }
+      ctx.font = '700 ' + Math.round(19 * sc) + 'px ' + SANS;
+      ctx.fillStyle = t.mode === 'slate' ? t.accent : t.ink;
+      var ly = y + (seqNo ? 26 * sc : 0);
+      drawTracked(ctx, text, x0, ly, 1.1 * sc, 'left');
+      if (t.mode === 'slate') {
+        ctx.fillStyle = t.accent;
+        ctx.fillRect(x0, ly + 27 * sc, 28 * sc, 2 * sc);
+      }
+    } else {
+      ctx.fillStyle = t.accent;
+      ctx.fillRect(x0, y + 8 * sc, 16 * sc, 1.2 * sc);
+      ctx.font = '600 ' + Math.round(17 * sc) + 'px ' + SANS;
+      drawTracked(ctx, text, x0 + 26 * sc, y, 3.6 * sc, 'left');
+    }
     ctx.restore();
   }
 
-  // ── 카드 본문 레이아웃 ────────────────────────────────────
-  function buildModel(ctx, t, d, sc, top) {
-    var items = [];
-    var total = 0;
-    var innerW = CARD_W - M * 2;
-    var startTop = (typeof top === 'number') ? top : TOP;
+  function cleanMeasure(ctx, t, d, sc) {
+    var cfg = cleanCfg(t);
+    var m = newModel(cfg.top, sc);
+    var rail = cfg.rail * sc;
+    var cx = cfg.mx + rail;
+    var cw = CARD_W - cfg.mx * 2 - rail;
+    var railMode = cfg.label === 'rail';
+    var labelH = railMode ? (58 * sc) : (26 * sc);
+    var seq = 1;
 
-    function gap(h, flex) {
-      items.push({ type: 'gap', h: h * sc, flex: flex || 0 });
-      total += h * sc;
-    }
-    function block(h, draw) {
-      items.push({ type: 'block', h: h, draw: draw });
-      total += h;
-    }
-
-    function labelHeight() { return 21 * sc * 1.3; }
-    function drawLabel(text, y) {
-      ctx.save();
-      ctx.textBaseline = 'top';
-      ctx.textAlign = 'left';
-      ctx.fillStyle = t.labelInk || t.accent;
-      ctx.fillRect(M, y + 21 * sc * 0.62, 16 * sc, 1.1 * sc);
-      ctx.font = '600 ' + Math.round(20 * sc) + 'px ' + SANS;
-      ctx.globalAlpha = 0.95;
-      drawTracked(ctx, text, M + 27 * sc, y, 2.4 * sc, 'left');
-      ctx.restore();
+    function sectionRule(y) {
+      if (!cfg.rule) return;
+      ctx.fillStyle = t.mode === 'slate' ? t.accent : t.line;
+      ctx.globalAlpha = t.mode === 'slate' ? 0.28 : 1;
+      ctx.fillRect(cfg.mx, y + 0.5, CARD_W - cfg.mx * 2, 1);
+      ctx.globalAlpha = 1;
     }
 
-    // 1. 헤더 (학원 로고 / 스튜디오 / 날짜·회차) — 밴드형 테마는 밴드 안에서 이미 그렸다
-    if (t.headMode !== 'band') {
-      var hLogo = headerLogo(innerW, 44 * sc);
-      var logoH = hLogo ? hLogo.h : 0;
-      var logoW = hLogo ? hLogo.w : 0;
-      var headerTextH = 26 * sc * 1.4;
-      var headerH = Math.max(headerTextH, logoH);
-      block(headerH, function (y) {
-        var textY = y + (headerH - headerTextH) / 2;
-        var textX = M;
-        if (logoW > 0) {
-          var lx = M, ly = y + (headerH - logoH) / 2;
-          ctx.save();
-          roundRect(ctx, lx, ly, logoW, logoH, 7 * sc);
-          ctx.clip();
-          ctx.drawImage(hLogo.img, lx, ly, logoW, logoH);
-          ctx.restore();
-          textX = M + logoW + 18 * sc;
-        }
-        ctx.save();
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'left';
-        ctx.font = '500 ' + Math.round(24 * sc) + 'px ' + SANS;
-        var meta = metaLine(d);
-        var metaW = meta ? ctx.measureText(meta).width : 0;
-        var studio = (d.studio || '피아노 스튜디오').toUpperCase();
-        var availW = Math.max(innerW - (textX - M) - metaW - 26 * sc, 40 * sc);
-        var studioSize = fitText(ctx, studio, availW, 24 * sc, 15 * sc, '600', SANS);
-        ctx.font = '600 ' + Math.round(studioSize) + 'px ' + SANS;
-        ctx.fillStyle = t.headerInk || t.accent;
-        var maxTrack = 3.2 * sc;
-        while (trackedWidth(ctx, studio, maxTrack) > availW && maxTrack > 0) maxTrack -= 0.2 * sc;
-        var shown = studio;
-        while (trackedWidth(ctx, shown, maxTrack) > availW && shown.length > 2) shown = shown.slice(0, -1);
-        if (shown !== studio) shown = shown.replace(/\s+$/, '') + '…';
-        drawTracked(ctx, shown, textX, textY, maxTrack, 'left');
-
-        if (meta) {
-          ctx.font = '500 ' + Math.round(23 * sc) + 'px ' + SANS;
-          ctx.fillStyle = t.muted;
-          ctx.textAlign = 'right';
-          ctx.fillText(meta, CARD_W - M, textY + 1.5 * sc);
-        }
-        ctx.restore();
-      });
-
-      // 2. 구분선
-      gap(24, 1);
-      block(1, function (y) {
-        ctx.fillStyle = t.rule;
-        ctx.fillRect(M, y, innerW, 1);
-      });
-    }
-
-    // 3. 학생 이름
-    gap(t.nameGap || 46, 2);
-    block(labelHeight(), function (y) { drawLabel('레슨 노트', y); });
-    gap(14, 0);
+    // ── 학생 이름 ──
     var nameText = d.student || '학생 이름';
-    var nameBar = t.nameBar;
-    var namePad = nameBar ? nameBar.pad : 0;
-    var nameSize = fitText(ctx, nameText, innerW - 118 * sc - namePad, 80 * sc, 40 * sc, '700', SERIF);
-    var nameMet = ctx.measureText(nameText);
-    var nameAsc = Math.min(nameMet.fontBoundingBoxAscent || nameSize * 0.78, nameSize * 1.05);
-    var nameDesc = Math.min(nameMet.fontBoundingBoxDescent || nameSize * 0.22, nameSize * 0.3);
-    var nameH = (nameAsc + nameDesc) * 1.04;
-    var isPlaceholder = !d.student;
-    block(nameH, function (y) {
+    var placeholder = !d.student;
+    var nameSize = fitText(ctx, nameText, cw - 110 * sc, cfg.name.size * sc, 44 * sc, String(cfg.name.weight), SANS);
+    var nm = ctx.measureText(nameText);
+    var asc = Math.min(nm.fontBoundingBoxAscent || nameSize * 0.78, nameSize * 1.02);
+    var desc = Math.min(nm.fontBoundingBoxDescent || nameSize * 0.2, nameSize * 0.3);
+    var nameH = asc + desc;
+
+    m.gap(cfg.gapName, 2);
+    m.block(labelH + nameH * 1.04, function (y) {
+      cleanSectionLabel(ctx, t, cfg, '학생', cfg.mx, y, sc, railMode ? '01' : null);
+      var ny = y + labelH;
       ctx.save();
       ctx.textBaseline = 'alphabetic';
       ctx.textAlign = 'left';
-      if (nameBar) {
-        ctx.fillStyle = nameBar.fill;
-        roundRect(ctx, M, y + nameH * 0.06, nameBar.w * sc, nameH * 0.86, nameBar.w * sc / 2);
-        ctx.fill();
-      }
-      ctx.fillStyle = isPlaceholder ? t.muted : t.ink;
-      ctx.font = '700 ' + Math.round(nameSize) + 'px ' + SERIF;
-      var w = ctx.measureText(nameText).width;
-      ctx.fillText(nameText, M + namePad, y + nameAsc);
-      if (!isPlaceholder) {
-        ctx.font = '500 ' + Math.round(29 * sc) + 'px ' + SANS;
-        ctx.fillStyle = t.muted;
-        ctx.fillText('학생', M + namePad + w + 12 * sc, y + nameAsc);
+      ctx.fillStyle = placeholder ? t.soft : t.ink;
+      ctx.font = String(cfg.name.weight) + ' ' + Math.round(nameSize) + 'px ' + SANS;
+      drawTracked(ctx, nameText, cx, ny + asc, cfg.name.track * sc, 'left');
+      var nw = trackedWidth(ctx, nameText, cfg.name.track * sc);
+      if (!placeholder && t.mode !== 'airy') {
+        if (t.mode === 'slate') {
+          var tagW = 66 * sc, tagH = 32 * sc;
+          roundRect(ctx, cx + nw + 16 * sc, ny + asc - tagH * 0.94, tagW, tagH, 5 * sc);
+          ctx.fillStyle = t.accent;
+          ctx.fill();
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '700 ' + Math.round(17 * sc) + 'px ' + SANS;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('학생', cx + nw + 16 * sc + tagW / 2, ny + asc - tagH * 0.94 + tagH / 2 + 1);
+        } else {
+          ctx.fillStyle = t.soft;
+          ctx.font = '500 ' + Math.round(22 * sc) + 'px ' + SANS;
+          ctx.fillText('학생', cx + nw + 16 * sc, ny + asc - 2 * sc);
+        }
       }
       ctx.restore();
     });
 
-    // 3-2. 아무 내용도 없을 때 안내
     var hasBody = !!(d.piece || (d.tags && d.tags.length) || d.mission || d.note);
+
     if (!hasBody) {
-      gap(46, 2);
-      ctx.font = '400 ' + Math.round(30 * sc) + 'px ' + SERIF;
-      var hint = wrapText(ctx, '오늘의 곡과 잘한 점을 적으면\n카드가 완성됩니다.', innerW - 60 * sc, 2);
-      var hintLH = 30 * sc * 1.75;
-      block(hint.lines.length * hintLH, function (y) {
+      m.gap(46, 2);
+      var hintSize = Math.round(27 * sc);
+      ctx.font = '400 ' + hintSize + 'px ' + SANS;
+      var hint = wrapText(ctx, '오늘의 곡과 잘한 점을 적으면\n카드가 완성됩니다.', cw, 2);
+      var hintLH = hintSize * 1.7;
+      m.block(hint.lines.length * hintLH, function (y) {
         ctx.save();
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
-        ctx.fillStyle = t.muted;
-        ctx.globalAlpha = 0.85;
-        ctx.font = '400 ' + Math.round(30 * sc) + 'px ' + SERIF;
-        ctx.fillRect(M, y - 18 * sc, 1.6 * sc, hint.lines.length * hintLH + 12 * sc);
-        hint.lines.forEach(function (line, i) {
-          ctx.fillText(line, M + 26 * sc, y + i * hintLH);
-        });
+        ctx.fillStyle = t.soft;
+        ctx.font = '400 ' + hintSize + 'px ' + SANS;
+        hint.lines.forEach(function (line, i) { ctx.fillText(line, cx, y + i * hintLH); });
         ctx.restore();
       });
+      return m.done();
     }
 
-    // 4. 오늘의 곡
+    // ── 오늘의 곡 ──
     if (d.piece) {
-      gap(44, 1);
-      ctx.font = '600 ' + Math.round(39 * sc) + 'px ' + SERIF;
-      var pieceWrapped = wrapText(ctx, d.piece, innerW, 2);
-      var pieceLH = 39 * sc * 1.48;
-      block(labelHeight() + 13 * sc + pieceWrapped.lines.length * pieceLH, function (y) {
-        drawLabel('오늘의 곡', y);
+      m.gap(cfg.gapSec, 1);
+      m.block(1, sectionRule);
+      m.gap(22, 0);
+      var pSize = Math.round((t.mode === 'slate' ? 38 : t.mode === 'airy' ? 33 : 36) * sc);
+      ctx.font = '600 ' + pSize + 'px ' + SANS;
+      var pw = wrapText(ctx, d.piece, cw, 2);
+      var plh = pSize * 1.36;
+      m.block(labelH + 10 * sc + pw.lines.length * plh, function (y) {
+        cleanSectionLabel(ctx, t, cfg, '오늘의 곡', cfg.mx, y, sc, railMode ? '02' : null);
         ctx.save();
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = t.ink;
-        ctx.font = '600 ' + Math.round(39 * sc) + 'px ' + SERIF;
-        pieceWrapped.lines.forEach(function (line, i) {
-          ctx.fillText(line, M, y + labelHeight() + 13 * sc + i * pieceLH);
+        ctx.font = '600 ' + pSize + 'px ' + SANS;
+        pw.lines.forEach(function (line, i) {
+          ctx.fillText(line, cx, y + labelH + 10 * sc + i * plh);
         });
         ctx.restore();
       });
     }
 
-    // 5. 잘한 점 (태그)
+    // ── 잘한 점 ──
     var tags = (d.tags || []).slice(0, 4);
     if (tags.length) {
-      gap(36, 1);
-      var chipFont = '500 ' + Math.round(25 * sc) + 'px ' + SANS;
+      m.gap(cfg.gapSec, 1);
+      m.block(1, sectionRule);
+      m.gap(22, 0);
+      var chipFont = (t.mode === 'slate' ? '600 ' : '500 ') + Math.round(cfg.chipFont * sc) + 'px ' + SANS;
       ctx.font = chipFont;
-      var padX = 20 * sc, pillH = 50 * sc, gapX = 11 * sc, gapY = 10 * sc;
+      var padX = cfg.chipPad * sc, pillH = cfg.chipH * sc, gapX = 10 * sc, gapY = 10 * sc;
       var rows = [[]];
-      var cx = 0;
       tags.forEach(function (tag) {
-        var tw = Math.min(ctx.measureText(tag).width, innerW - padX * 2);
-        var w = tw + padX * 2;
+        var w = Math.min(ctx.measureText(tag).width, cw - padX * 2) + padX * 2 + (cfg.chip === 'soft' ? 8 * sc : 0);
         var row = rows[rows.length - 1];
         var used = row.reduce(function (a, b) { return a + b.w + gapX; }, 0);
-        if (row.length && used + w > innerW) { rows.push([{ tag: tag, w: w, tw: tw }]); }
-        else row.push({ tag: tag, w: w, tw: tw });
+        if (row.length && used + w > cw) rows.push([{ tag: tag, w: w }]);
+        else row.push({ tag: tag, w: w });
       });
-      var visibleRows = rows.slice(0, 2);
-      var pillBlockH = visibleRows.length * pillH + (visibleRows.length - 1) * gapY;
-      block(labelHeight() + 13 * sc + pillBlockH, function (y) {
-        drawLabel('잘한 점', y);
-        var py = y + labelHeight() + 13 * sc;
+      if (cfg.chip === 'soft') {
+        rows.forEach(function (row) {
+          row.forEach(function (it) { it.w = Math.min(it.w, cw); });
+        });
+      }
+      var visible = rows.slice(0, 2);
+      var blockH = visible.length * pillH + (visible.length - 1) * gapY;
+      m.block(labelH + 12 * sc + blockH, function (y) {
+        cleanSectionLabel(ctx, t, cfg, '잘한 점', cfg.mx, y, sc, railMode ? '03' : null);
+        var py = y + labelH + 12 * sc;
         ctx.save();
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'left';
-        visibleRows.forEach(function (row, ri) {
-          var px = M;
+        visible.forEach(function (row, ri) {
+          var px = cx;
           row.forEach(function (item) {
-            roundRect(ctx, px, py + ri * (pillH + gapY), item.w, pillH,
-              t.chipRadius ? Math.min(item.w / 2, t.chipRadius * sc) : pillH / 2);
-            ctx.fillStyle = t.chipFill;
-            ctx.fill();
-            if (t.chipStroke && t.chipStroke !== 'rgba(0,0,0,0)') {
-              ctx.strokeStyle = t.chipStroke;
+            var ry = py + ri * (pillH + gapY);
+            roundRect(ctx, px, ry, item.w, pillH, Math.min(cfg.chipR * sc, pillH / 2));
+            if (cfg.chip === 'outline') {
+              ctx.fillStyle = t.chipBg;
+              ctx.fill();
+              ctx.strokeStyle = t.chipLine;
               ctx.lineWidth = 1;
               ctx.stroke();
+            } else if (cfg.chip === 'soft') {
+              ctx.fillStyle = t.chipBg;
+              ctx.fill();
+            } else {
+              ctx.fillStyle = t.accentSoft;
+              ctx.fill();
             }
-            ctx.fillStyle = t.chipInk || t.ink;
+            ctx.fillStyle = t.mode === 'slate' ? t.accent : t.ink;
             ctx.font = chipFont;
             var label = item.tag;
-            while (ctx.measureText(label).width > item.w - padX * 2 && label.length > 2) {
-              label = label.slice(0, -1);
-            }
+            while (ctx.measureText(label).width > item.w - padX * 2 && label.length > 2) label = label.slice(0, -1);
             if (label !== item.tag) label = label.slice(0, -1) + '…';
-            ctx.fillText(label, px + padX, py + ri * (pillH + gapY) + pillH / 2 + 1);
+            ctx.fillText(label, px + padX, ry + pillH / 2 + 1);
             px += item.w + gapX;
           });
         });
@@ -1525,152 +1605,996 @@
       });
     }
 
-    // 6. 이번 주 연습 미션 (박스)
+    // ── 이번 주 연습 미션 ──
     if (d.mission) {
-      gap(34, 1);
-      var mPadX = 34 * sc, mPadY = 26 * sc;
-      var mSize = 30 * sc;
-      ctx.font = '400 ' + Math.round(mSize) + 'px ' + SANS;
-      var mWrap = wrapText(ctx, d.mission, innerW - mPadX * 2, 4);
+      m.gap(cfg.gapSec, 1);
+      m.block(1, sectionRule);
+      m.gap(22, 0);
+      var mSize = Math.round((t.mode === 'slate' ? 28 : 27) * sc);
+      ctx.font = '400 ' + mSize + 'px ' + SANS;
+      var mWrap = wrapText(ctx, d.mission, cw - 64 * sc, 4);
       var mLH = mSize * 1.62;
-      var mLabelH = 19 * sc * 1.3;
-      var boxH = mPadY * 2 + mLabelH + 9 * sc + mWrap.lines.length * mLH;
-      block(boxH, function (y) {
-        roundRect(ctx, M, y, innerW, boxH, (t.panelRadius || 18) * sc);
-        ctx.fillStyle = t.panelFill;
-        ctx.fill();
-        if (t.panelStroke && t.panelStroke !== 'rgba(0,0,0,0)') {
-          ctx.strokeStyle = t.panelStroke;
-          ctx.lineWidth = 1;
-          ctx.stroke();
+      var padY = 26 * sc;
+      var textH = mWrap.lines.length * mLH;
+      var boxH = padY * 2 + textH;
+      m.block(labelH + 12 * sc + boxH, function (y) {
+        cleanSectionLabel(ctx, t, cfg, '연습 미션', cfg.mx, y, sc, railMode ? '04' : null);
+        var by = y + labelH + 12 * sc;
+        if (cfg.panel !== 'none') {
+          roundRect(ctx, cx, by, cw, boxH, cfg.panel === 'soft' ? 3 : cfg.panel === 'fill' ? 8 : 2);
+          ctx.fillStyle = cfg.panel === 'fill' ? t.panelBg : (cfg.panel === 'soft' ? '#FFFFFF' : 'rgba(0,0,0,0)');
+          if (cfg.panel === 'soft' || cfg.panel === 'fill') ctx.fill();
+          if (cfg.panel === 'hair' || cfg.panel === 'soft') {
+            ctx.strokeStyle = t.panelLine;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+          if (cfg.panel === 'fill') {
+            ctx.save();
+            roundRect(ctx, cx, by, cw, boxH, 8);
+            ctx.clip();
+            ctx.fillStyle = t.accent;
+            ctx.fillRect(cx, by, 4 * sc, boxH);
+            ctx.restore();
+          }
         }
-        if (t.panelBar) {
-          ctx.save();
-          roundRect(ctx, M, y, innerW, boxH, (t.panelRadius || 4) * sc);
-          ctx.clip();
-          ctx.fillStyle = t.panelBar;
-          ctx.fillRect(M, y, 5 * sc, boxH);
-          ctx.restore();
-        }
-
         ctx.save();
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'left';
-        ctx.fillStyle = t.panelLabel || t.accent;
-        ctx.font = '600 ' + Math.round(18 * sc) + 'px ' + SANS;
-        drawTracked(ctx, '이번 주 연습 미션', M + mPadX, y + mPadY, 2.2 * sc, 'left');
-
-        ctx.fillStyle = t.panelInk || t.ink;
-        ctx.font = '400 ' + Math.round(mSize) + 'px ' + SANS;
-        mWrap.lines.forEach(function (line, i) {
-          ctx.fillText(line, M + mPadX, y + mPadY + mLabelH + 9 * sc + i * mLH);
-        });
-        ctx.restore();
-      });
-    }
-
-    // 7. 한마디
-    if (d.note) {
-      gap(44, 2);
-      var nSize = 30 * sc;
-      ctx.font = '400 ' + Math.round(nSize) + 'px ' + SERIF;
-      var indent = 30 * sc;
-      var nWrap = wrapText(ctx, d.note, innerW - indent, 3);
-      var nLH = nSize * 1.62;
-      var noteH = labelHeight() + 13 * sc + nWrap.lines.length * nLH + 14 * sc + 26 * sc * 1.3;
-      block(noteH, function (y) {
-        drawLabel('한마디', y);
-        var qy = y + labelHeight() + 13 * sc;
-        ctx.save();
-        // 왼쪽 세로 액센트 라인
-        ctx.fillStyle = t.quote;
-        ctx.fillRect(M, qy + 4 * sc, 1.6 * sc, nWrap.lines.length * nLH - 10 * sc);
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = t.ink;
-        ctx.font = '400 ' + Math.round(nSize) + 'px ' + SERIF;
-        nWrap.lines.forEach(function (line, i) {
-          ctx.fillText(line, M + indent, qy + i * nLH);
+        ctx.font = '400 ' + mSize + 'px ' + SANS;
+        mWrap.lines.forEach(function (line, i) {
+          ctx.fillText(line, cx + 30 * sc, by + padY + i * mLH);
         });
-        // 서명
-        var signName = d.teacher || d.studio || '';
+        ctx.restore();
+      });
+    }
+
+    // ── 한마디 ──
+    if (d.note) {
+      m.gap(cfg.gapSec, 1);
+      m.block(1, sectionRule);
+      m.gap(22, 0);
+      var nSize = Math.round((t.mode === 'slate' ? 29 : 28) * sc);
+      ctx.font = '400 ' + nSize + 'px ' + SANS;
+      var nWrap = wrapText(ctx, d.note, cw - 26 * sc, 3);
+      var nLH = nSize * 1.62;
+      var signName = d.teacher || d.studio || '';
+      var signH = signName ? 34 * sc : 0;
+      m.block(labelH + 12 * sc + nWrap.lines.length * nLH + signH, function (y) {
+        cleanSectionLabel(ctx, t, cfg, '한마디', cfg.mx, y, sc, railMode ? '05' : null);
+        var qy = y + labelH + 12 * sc;
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.mode === 'poster' ? t.accent : t.line;
+        ctx.fillRect(cx, qy + 3 * sc, 2 * sc, nWrap.lines.length * nLH - 10 * sc);
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + nSize + 'px ' + SANS;
+        nWrap.lines.forEach(function (line, i) {
+          ctx.fillText(line, cx + 26 * sc, qy + i * nLH);
+        });
         if (signName) {
           ctx.textAlign = 'right';
-          ctx.font = '500 ' + Math.round(25 * sc) + 'px ' + SERIF;
-          ctx.fillStyle = t.signInk || t.muted;
-          ctx.fillText('— ' + signName, CARD_W - M, qy + nWrap.lines.length * nLH + 14 * sc);
+          ctx.font = '600 ' + Math.round(20 * sc) + 'px ' + SANS;
+          ctx.fillStyle = t.soft;
+          ctx.fillText('— ' + signName, CARD_W - cfg.mx, qy + nWrap.lines.length * nLH + 10 * sc);
         }
         ctx.restore();
       });
     }
 
-    var avail = CONTENT_BOTTOM - startTop;
-    return { items: items, total: total, avail: avail, scale: sc, top: startTop };
+    return m.done();
   }
 
+  function paintCleanFooter(ctx, t, cfg, d, sc) {
+    var y = CARD_H - 96;
+    ctx.save();
+    ctx.fillStyle = t.line;
+    ctx.fillRect(cfg.mx, y, CARD_W - cfg.mx * 2, 1);
+    ctx.textBaseline = 'top';
+    ctx.font = '600 ' + Math.round(15 * sc) + 'px ' + SANS;
+    ctx.fillStyle = t.soft;
+    ctx.textAlign = 'left';
+    drawTracked(ctx, 'LESSONCARD', cfg.mx, y + 20, 3.2 * sc, 'left');
+    ctx.textAlign = 'right';
+    ctx.font = (t.mode === 'slate' ? '600 ' : 'italic 500 ') + Math.round((t.mode === 'slate' ? 16 : 21) * sc) + 'px ' + (t.mode === 'slate' ? SANS : LATIN);
+    var right = t.mode === 'slate' ? 'LESSON NOTE' : 'a note for the family';
+    if (t.mode === 'slate') drawTracked(ctx, right, CARD_W - cfg.mx, y + 20, 3.0 * sc, 'right');
+    else ctx.fillText(right, CARD_W - cfg.mx, y + 17);
+    ctx.restore();
+  }
+
+  function drawCleanCard(ctx, t, d, themeId) {
+    var cfg = cleanCfg(t);
+    var sc = 1, m = null, tries = 0;
+    for (;;) {
+      ctx.clearRect(0, 0, CARD_W, CARD_H);
+      paintCleanBg(ctx, t, cfg);
+      paintCleanHeader(ctx, t, d, cfg);
+      m = cleanMeasure(ctx, t, d, sc);
+      if (!m.overflow || tries >= 12 || sc <= 0.55) break;
+      sc -= 0.045; tries++;
+    }
+    var y = flowItems(ctx, m);
+    paintCleanFooter(ctx, t, cfg, d, sc);
+    return {
+      scale: sc, contentHeight: m.total, available: m.avail,
+      overflow: m.total > m.avail + 0.5, bottom: y, top: m.top,
+      theme: themeId, set: 'clean', mode: t.mode
+    };
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     귀여운 세트 — 둥근 파스텔 프레임 · 점선 · 스티커 · 주아체
+     ══════════════════════════════════════════════════════════ */
+  var CUTE_M = 118;
+  var CUTE_TOP = 266;
+
+  function cutePillW(ctx, text, size, padX) {
+    ctx.font = '400 ' + Math.round(size) + 'px ' + JUA;
+    return ctx.measureText(text).width + padX * 2;
+  }
+
+  function cutePill(ctx, x, y, text, size, padX, h, bg, fg, rot, star) {
+    ctx.save();
+    ctx.font = '400 ' + Math.round(size) + 'px ' + JUA;
+    var tw = ctx.measureText(text).width;
+    var w = tw + padX * 2 + (star ? h * 0.42 : 0);
+    ctx.translate(x + w / 2, y + h / 2);
+    if (rot) ctx.rotate(rot);
+    roundRect(ctx, -w / 2, -h / 2, w, h, h / 2);
+    ctx.fillStyle = bg;
+    ctx.fill();
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = fg;
+    var tx = -w / 2 + padX;
+    if (star) {
+      drawStar(ctx, tx + h * 0.16, 0.5, h * 0.16, fg);
+      tx += h * 0.42;
+    }
+    ctx.textAlign = 'left';
+    ctx.fillText(text, tx, 1);
+    ctx.restore();
+    return w;
+  }
+
+  function cuteDashes(ctx, y, color, sc) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2 * sc;
+    ctx.setLineDash([9 * sc, 9 * sc]);
+    ctx.beginPath();
+    ctx.moveTo(CUTE_M, y);
+    ctx.lineTo(CARD_W - CUTE_M, y);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function paintCuteBase(ctx, t, d, lg) {
+    // 바탕
+    ctx.fillStyle = t.bg;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    // 카드(안쪽 종이)
+    roundRect(ctx, 46, 46, CARD_W - 92, CARD_H - 92, 54);
+    ctx.fillStyle = t.card;
+    ctx.fill();
+    ctx.save();
+    roundRect(ctx, 46, 46, CARD_W - 92, CARD_H - 92, 54);
+    ctx.clip();
+
+    // 파스텔 블롭
+    var rg = ctx.createRadialGradient(CARD_W - 130, 190, 10, CARD_W - 130, 190, 340);
+    rg.addColorStop(0, t.pastel);
+    rg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = rg;
+    ctx.fillRect(0, 0, CARD_W, 620);
+
+    var rg2 = ctx.createRadialGradient(150, CARD_H - 170, 10, 150, CARD_H - 170, 300);
+    rg2.addColorStop(0, t.pastel);
+    rg2.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = rg2;
+    ctx.fillRect(0, CARD_H - 560, 640, 560);
+
+    // 장식
+    var mode = t.mode;
+    drawStar(ctx, 138, 100, 9, t.frame2, -0.15);
+    drawStar(ctx, 172, 88, 6, t.frame, 0.35);
+    drawSparkle(ctx, 208, 104, 8, t.frame2);
+
+    if (!lg) {
+      drawMusicNotes(ctx, CARD_W - 214, 118, 17, t.frame2, 0.18);
+      drawStar(ctx, CARD_W - 124, 92, 7, t.frame, 0.2);
+    }
+
+    // 아래 모서리 장식
+    if (mode === 'ribbon') {
+      drawHeart(ctx, 128, CARD_H - 68, 9, t.frame, -0.12);
+      drawHeart(ctx, CARD_W - 128, CARD_H - 70, 8, t.frame2, 0.22);
+      drawStar(ctx, 164, CARD_H - 70, 6, t.frame2, 0.2);
+      drawMusicNotes(ctx, CARD_W - 206, CARD_H - 66, 11, t.frame2, 0.12);
+    } else if (mode === 'cloud') {
+      drawSparkle(ctx, 122, CARD_H - 68, 9, t.frame2);
+      drawCloud(ctx, CARD_W - 140, CARD_H - 66, 64, t.accentSoft);
+      drawSparkle(ctx, CARD_W - 206, CARD_H - 70, 7, t.frame2);
+    } else {
+      drawStar(ctx, 126, CARD_H - 68, 9, t.frame);
+      drawStar(ctx, 158, CARD_H - 76, 6, t.frame2, 0.3);
+      drawTape(ctx, CARD_W - 140, CARD_H - 68, 66, 22, -0.2, t.tape);
+      drawSparkle(ctx, CARD_W - 204, CARD_H - 72, 7, t.frame2);
+    }
+    ctx.restore();
+
+    // 점선 안쪽 테두리
+    ctx.save();
+    ctx.setLineDash([17, 14]);
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = t.frame2;
+    ctx.globalAlpha = 0.55;
+    roundRect(ctx, 74, 74, CARD_W - 148, CARD_H - 148, 40);
+    ctx.stroke();
+    ctx.restore();
+
+    // 두꺼운 겉 테두리
+    ctx.save();
+    ctx.lineWidth = 14;
+    ctx.strokeStyle = t.frame;
+    roundRect(ctx, 40, 40, CARD_W - 80, CARD_H - 80, 50);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function paintCuteHeader(ctx, t, d, lg) {
+    var studio = d.studio || '피아노 스튜디오';
+    var meta = metaLine(d);
+
+    // 라벨 스티커
+    cutePill(ctx, CUTE_M - 6, 120, '레슨 노트', 20, 18, 38, t.accent, '#FFFFFF', -0.045, true);
+
+    // 스튜디오 이름
+    ctx.save();
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
+    var sz = fitText(ctx, studio, CARD_W - CUTE_M * 2 - (lg ? lg.w + 30 : 0), 36, 22, '400', JUA);
+    ctx.fillStyle = t.ink;
+    ctx.fillText(studio, CUTE_M, 178);
+
+    ctx.font = '400 18px ' + DODUM;
+    ctx.fillStyle = t.soft;
+    if (meta) ctx.fillText(meta, CUTE_M, 224);
+    ctx.restore();
+
+    // 로고: 점선 스티커 판 위에
+    if (lg) {
+      var pw = lg.w + 28, ph = lg.h + 24;
+      var px = CARD_W - CUTE_M - pw, py = 156;
+      ctx.save();
+      roundRect(ctx, px, py, pw, ph, 16);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.setLineDash([7, 7]);
+      ctx.lineWidth = 2.4;
+      ctx.strokeStyle = t.frame2;
+      ctx.stroke();
+      ctx.restore();
+      ctx.drawImage(lg.img, px + 14, py + 12, lg.w, lg.h);
+    }
+  }
+
+  function cuteMeasure(ctx, t, d, sc) {
+    var m = newModel(CUTE_TOP, sc);
+    var cw = CARD_W - CUTE_M * 2;
+    var labelH = 40 * sc;
+
+    function label(text, y, star) {
+      cutePill(ctx, CUTE_M, y, text, 21 * sc, 20 * sc, 38 * sc, t.accentSoft, t.accent, 0, star !== false);
+    }
+
+    // ── 학생 이름 ──
+    var nameText = d.student || '학생 이름';
+    var placeholder = !d.student;
+    var nameSize = fitText(ctx, nameText, cw - 150 * sc, 104 * sc, 46 * sc, '400', JUA);
+    var nm = ctx.measureText(nameText);
+    var asc = Math.min(nm.fontBoundingBoxAscent || nameSize * 0.82, nameSize * 1.05);
+    var desc = Math.min(nm.fontBoundingBoxDescent || nameSize * 0.18, nameSize * 0.28);
+    var nameH = asc + desc;
+    var nameW = ctx.measureText(nameText).width;
+
+    m.gap(0, 2);
+    m.block(nameH + 30 * sc, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = placeholder ? t.soft : t.ink;
+      ctx.font = '400 ' + Math.round(nameSize) + 'px ' + JUA;
+      ctx.fillText(nameText, CUTE_M, y + asc);
+      if (!placeholder && nameW + 128 * sc < cw) {
+        var px = CUTE_M + nameW + 18 * sc;
+        cutePill(ctx, px, y + asc - 46 * sc, '학생', 23 * sc, 18 * sc, 36 * sc, t.pastel, t.accent, 0, true);
+      }
+      var sqW = Math.min(nameW + 30 * sc, cw);
+      drawSquiggle(ctx, CUTE_M + 2, y + nameH + 8 * sc, sqW, t.accent2, 6 * sc);
+      drawHeart(ctx, CUTE_M + sqW + 16 * sc, y + nameH + 6 * sc, 8 * sc, t.frame2, 0.1);
+      ctx.restore();
+    });
+
+    var hasBody = !!(d.piece || (d.tags && d.tags.length) || d.mission || d.note);
+
+    if (!hasBody) {
+      m.gap(30, 2);
+      var hSize = Math.round(28 * sc);
+      ctx.font = '400 ' + hSize + 'px ' + DODUM;
+      var hint = wrapText(ctx, '오늘의 곡과 잘한 점을 적으면\n카드가 완성됩니다.', cw - 40 * sc, 2);
+      var hLH = hSize * 1.7;
+      m.block(hint.lines.length * hLH, function (y) {
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.soft;
+        ctx.font = '400 ' + hSize + 'px ' + DODUM;
+        hint.lines.forEach(function (line, i) { ctx.fillText(line, CUTE_M + 20 * sc, y + i * hLH); });
+        ctx.restore();
+      });
+      return m.done();
+    }
+
+    // ── 오늘의 곡 ──
+    if (d.piece) {
+      m.gap(28, 1);
+      m.block(1, function (y) { cuteDashes(ctx, y, t.frame, sc); });
+      m.gap(24, 0);
+      var pSize = Math.round(34 * sc);
+      ctx.font = '400 ' + pSize + 'px ' + JUA;
+      var pw = wrapText(ctx, d.piece, cw, 2);
+      var plh = pSize * 1.5;
+      m.block(labelH + 14 * sc + pw.lines.length * plh, function (y) {
+        label('오늘의 곡', y);
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + pSize + 'px ' + JUA;
+        pw.lines.forEach(function (line, i) {
+          ctx.fillText(line, CUTE_M, y + labelH + 14 * sc + i * plh);
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 잘한 점 (스티커 태그) ──
+    var tags = (d.tags || []).slice(0, 4);
+    if (tags.length) {
+      m.gap(30, 1);
+      m.block(1, function (y) { cuteDashes(ctx, y, t.frame, sc); });
+      m.gap(24, 0);
+      var chipFont = '400 ' + Math.round(23 * sc) + 'px ' + JUA;
+      ctx.font = chipFont;
+      var padX = 20 * sc, pillH = 52 * sc, gapX = 10 * sc, gapY = 14 * sc;
+      var rows = [[]];
+      tags.forEach(function (tag) {
+        var w = Math.min(ctx.measureText(tag).width, cw - padX * 2 - 26 * sc) + padX * 2 + 26 * sc;
+        var row = rows[rows.length - 1];
+        var used = row.reduce(function (a, b) { return a + b.w + gapX; }, 0);
+        if (row.length && used + w > cw) rows.push([{ tag: tag, w: w }]);
+        else row.push({ tag: tag, w: w });
+      });
+      var visible = rows.slice(0, 2);
+      var blockH = visible.length * pillH + (visible.length - 1) * gapY;
+      m.block(labelH + 14 * sc + blockH, function (y) {
+        label('잘한 점', y);
+        var py = y + labelH + 14 * sc;
+        ctx.save();
+        visible.forEach(function (row, ri) {
+          var px = CUTE_M;
+          row.forEach(function (item, ci) {
+            var ry = py + ri * (pillH + gapY);
+            var rot = ((ri + ci) % 2 ? 1 : -1) * 0.022;
+            ctx.save();
+            ctx.translate(px + item.w / 2, ry + pillH / 2);
+            ctx.rotate(rot);
+            roundRect(ctx, -item.w / 2, -pillH / 2, item.w, pillH, pillH / 2);
+            ctx.fillStyle = t.pastel;
+            ctx.fill();
+            ctx.lineWidth = 3 * sc;
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.stroke();
+            drawStar(ctx, -item.w / 2 + 24 * sc, 0, 9 * sc, t.frame2, 0.1);
+            ctx.fillStyle = t.chipInk;
+            ctx.font = chipFont;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'left';
+            var labelText = item.tag;
+            ctx.fillText(labelText, -item.w / 2 + 40 * sc, 1);
+            ctx.restore();
+            px += item.w + gapX;
+          });
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 이번 주 미션 ──
+    if (d.mission) {
+      m.gap(30, 1);
+      m.block(1, function (y) { cuteDashes(ctx, y, t.frame, sc); });
+      m.gap(24, 0);
+      var mSize = Math.round(27 * sc);
+      var padX = 34 * sc, padY = 32 * sc;
+      ctx.font = '400 ' + mSize + 'px ' + DODUM;
+      var mWrap = wrapText(ctx, d.mission, cw - padX * 2, 4);
+      var mLH = mSize * 1.68;
+      var tabH = 34 * sc;
+      var boxH = padY * 2 + mWrap.lines.length * mLH;
+      var extra = t.mode === 'ribbon' ? tabH * 0.9 : tabH * 0.65;
+      m.block(8 * sc + boxH + extra + (t.mode === 'cloud' ? 30 * sc : 0), function (y) {
+        var by = y + 8 * sc + extra;
+        ctx.save();
+        if (t.mode === 'cloud') {
+          // 말풍선 (꼬리까지 한 패스로 그려 이음매가 없다)
+          var br = 34 * sc, tx = CUTE_M + 66 * sc;
+          ctx.beginPath();
+          ctx.moveTo(CUTE_M + br, by);
+          ctx.lineTo(CUTE_M + cw - br, by);
+          ctx.quadraticCurveTo(CUTE_M + cw, by, CUTE_M + cw, by + br);
+          ctx.lineTo(CUTE_M + cw, by + boxH - br);
+          ctx.quadraticCurveTo(CUTE_M + cw, by + boxH, CUTE_M + cw - br, by + boxH);
+          ctx.lineTo(tx + 44 * sc, by + boxH);
+          ctx.lineTo(tx + 14 * sc, by + boxH + 30 * sc);
+          ctx.lineTo(tx, by + boxH);
+          ctx.lineTo(CUTE_M + br, by + boxH);
+          ctx.quadraticCurveTo(CUTE_M, by + boxH, CUTE_M, by + boxH - br);
+          ctx.lineTo(CUTE_M, by + br);
+          ctx.quadraticCurveTo(CUTE_M, by, CUTE_M + br, by);
+          ctx.closePath();
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fill();
+          ctx.lineWidth = 3.4 * sc;
+          ctx.strokeStyle = t.frame;
+          ctx.stroke();
+        } else if (t.mode === 'memo') {
+          // 메모지 + 마스킹 테이프
+          ctx.save();
+          ctx.shadowColor = 'rgba(74,58,28,0.10)';
+          ctx.shadowBlur = 14 * sc;
+          ctx.shadowOffsetY = 5 * sc;
+          roundRect(ctx, CUTE_M, by, cw, boxH, 12 * sc);
+          ctx.fillStyle = t.pastel;
+          ctx.fill();
+          ctx.restore();
+          ctx.strokeStyle = t.frame;
+          ctx.lineWidth = 2.4 * sc;
+          roundRect(ctx, CUTE_M, by, cw, boxH, 12 * sc);
+          ctx.stroke();
+          drawTape(ctx, CUTE_M + cw / 2, by, 230 * sc, 34 * sc, -0.03, t.tape);
+        } else {
+          // 리본 탭이 달린 카드
+          roundRect(ctx, CUTE_M, by, cw, boxH, 30 * sc);
+          ctx.fillStyle = t.pastel;
+          ctx.fill();
+          ctx.setLineDash([12, 10]);
+          ctx.lineWidth = 2.6 * sc;
+          ctx.strokeStyle = t.frame2;
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        // 미션 라벨
+        var tabText = '이번 주 미션';
+        ctx.font = '400 ' + Math.round(20 * sc) + 'px ' + JUA;
+        var tabW = ctx.measureText(tabText).width + 46 * sc;
+        if (t.mode === 'cloud') {
+          cutePill(ctx, CUTE_M + 26 * sc, by - 20 * sc, tabText, 20 * sc, 18 * sc, 38 * sc, t.accent, '#FFFFFF', 0, true);
+        } else if (t.mode === 'memo') {
+          cutePill(ctx, CUTE_M + 24 * sc, by - 18 * sc, tabText, 20 * sc, 18 * sc, 38 * sc, t.accent, '#FFFFFF', -0.04, true);
+        } else {
+          ctx.save();
+          ctx.translate(CUTE_M + 34 * sc, by - 4 * sc);
+          ctx.rotate(-0.05);
+          roundRect(ctx, 0, -28 * sc, tabW, 40 * sc, 12 * sc);
+          ctx.fillStyle = t.accent;
+          ctx.fill();
+          ctx.fillStyle = '#FFFFFF';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(tabText, 18 * sc, -7 * sc);
+          drawStar(ctx, tabW - 22 * sc, -7 * sc, 8 * sc, '#FFFFFF');
+          ctx.restore();
+        }
+
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + mSize + 'px ' + DODUM;
+        mWrap.lines.forEach(function (line, i) {
+          ctx.fillText(line, CUTE_M + padX, by + padY + i * mLH);
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 한마디 ──
+    if (d.note) {
+      m.gap(30, 1);
+      m.block(1, function (y) { cuteDashes(ctx, y, t.frame, sc); });
+      m.gap(24, 0);
+      var nSize = Math.round(27 * sc);
+      var nPadX = 32 * sc, nPadY = 28 * sc;
+      ctx.font = '400 ' + nSize + 'px ' + DODUM;
+      var nWrap = wrapText(ctx, d.note, cw - nPadX * 2 - 30 * sc, 3);
+      var nLH = nSize * 1.66;
+      var signName = d.teacher || d.studio || '';
+      var nBoxH = nPadY * 2 + nWrap.lines.length * nLH + (signName ? 34 * sc : 0);
+      m.block(labelH + 14 * sc + nBoxH, function (y) {
+        label('선생님 한마디', y);
+        var by = y + labelH + 14 * sc;
+        ctx.save();
+        roundRect(ctx, CUTE_M, by, cw, nBoxH, 26 * sc);
+        ctx.fillStyle = t.pastel;
+        ctx.fill();
+        ctx.setLineDash([10, 9]);
+        ctx.lineWidth = 2.4 * sc;
+        ctx.strokeStyle = t.frame;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        drawHeart(ctx, CUTE_M + 24 * sc, by + nPadY + 8 * sc, 9 * sc, t.frame2);
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + nSize + 'px ' + DODUM;
+        nWrap.lines.forEach(function (line, i) {
+          ctx.fillText(line, CUTE_M + nPadX + 18 * sc, by + nPadY + i * nLH);
+        });
+        if (signName) {
+          ctx.textAlign = 'right';
+          ctx.font = '400 ' + Math.round(23 * sc) + 'px ' + JUA;
+          ctx.fillStyle = t.accent;
+          ctx.fillText(signName, CARD_W - CUTE_M - nPadX, by + nPadY + nWrap.lines.length * nLH + 4 * sc);
+        }
+        ctx.restore();
+      });
+    }
+
+    return m.done();
+  }
+
+  function paintCuteFooter(ctx, t, sc) {
+    var y = CARD_H - 104;
+    ctx.save();
+    ctx.strokeStyle = t.frame;
+    ctx.lineWidth = 2.4 * sc;
+    ctx.setLineDash([8, 8]);
+    ctx.beginPath();
+    ctx.moveTo(CUTE_M + 40 * sc, y);
+    ctx.lineTo(CARD_W - CUTE_M - 40 * sc, y);
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.font = '400 ' + Math.round(18 * sc) + 'px ' + JUA;
+    ctx.fillStyle = t.accent;
+    drawTracked(ctx, 'LESSONCARD', CARD_W / 2, y + 30 * sc, 4 * sc, 'center');
+    drawStar(ctx, CARD_W / 2 - 96 * sc, y + 30 * sc, 7 * sc, t.frame2);
+    drawStar(ctx, CARD_W / 2 + 96 * sc, y + 30 * sc, 7 * sc, t.frame2);
+    ctx.restore();
+  }
+
+  function drawCuteCard(ctx, t, d, themeId) {
+    var sc = 1, m = null, tries = 0;
+    var lg = headerLogo(CARD_W - CUTE_M * 2 - 220, 46);
+    for (;;) {
+      ctx.clearRect(0, 0, CARD_W, CARD_H);
+      paintCuteBase(ctx, t, d, lg);
+      paintCuteHeader(ctx, t, d, lg);
+      m = cuteMeasure(ctx, t, d, sc);
+      if (!m.overflow || tries >= 12 || sc <= 0.55) break;
+      sc -= 0.045; tries++;
+    }
+    var y = flowItems(ctx, m);
+    paintCuteFooter(ctx, t, sc);
+    return {
+      scale: sc, contentHeight: m.total, available: m.avail,
+      overflow: m.total > m.avail + 0.5, bottom: y, top: m.top,
+      theme: themeId, set: 'cute', mode: t.mode
+    };
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     세련된 세트 — 이중 금빛 프레임 · 중앙 정렬 리사이틀 프로그램
+     ══════════════════════════════════════════════════════════ */
+  var LUX_M = 138;
+
+  function luxGold(ctx, t, x0, y0, x1, y1) {
+    var g = ctx.createLinearGradient(x0, y0, x1, y1);
+    g.addColorStop(0, t.gold2);
+    g.addColorStop(0.32, t.gold);
+    g.addColorStop(0.52, t.gold2);
+    g.addColorStop(0.78, t.gold);
+    g.addColorStop(1, t.gold2);
+    return g;
+  }
+
+  function luxOrnament(ctx, cx, y, halfW, t, sc, dia) {
+    ctx.save();
+    ctx.strokeStyle = t.line;
+    ctx.lineWidth = 1 * sc;
+    ctx.beginPath();
+    ctx.moveTo(cx - halfW, y + 0.5);
+    ctx.lineTo(cx - dia * 2.6, y + 0.5);
+    ctx.moveTo(cx + dia * 2.6, y + 0.5);
+    ctx.lineTo(cx + halfW, y + 0.5);
+    ctx.stroke();
+    drawDiamond(ctx, cx, y + 0.5, dia, t.gold);
+    drawDiamond(ctx, cx - halfW - 5 * sc, y + 0.5, dia * 0.55, t.gold);
+    drawDiamond(ctx, cx + halfW + 5 * sc, y + 0.5, dia * 0.55, t.gold);
+    ctx.restore();
+  }
+
+  function luxCorner(ctx, x, y, sx, sy, t, sc) {
+    ctx.save();
+    ctx.strokeStyle = t.edgeSoft ? t.edgeSoft : t.gold;
+    ctx.lineWidth = 1.8 * sc;
+    ctx.beginPath();
+    ctx.moveTo(x + sx * 16 * sc, y + sy * 62 * sc);
+    ctx.quadraticCurveTo(x + sx * 16 * sc, y + sy * 16 * sc, x + sx * 62 * sc, y + sy * 16 * sc);
+    ctx.stroke();
+    drawDiamond(ctx, x + sx * 26 * sc, y + sy * 26 * sc, 5.5 * sc, t.gold);
+    ctx.strokeStyle = t.line;
+    ctx.lineWidth = 1 * sc;
+    ctx.beginPath();
+    ctx.moveTo(x + sx * 6 * sc, y + sy * 40 * sc);
+    ctx.lineTo(x + sx * 6 * sc, y + sy * 6 * sc);
+    ctx.lineTo(x + sx * 40 * sc, y + sy * 6 * sc);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function paintLuxBg(ctx, t) {
+    var g = ctx.createLinearGradient(0, 0, CARD_W, CARD_H);
+    g.addColorStop(0, t.bg);
+    g.addColorStop(0.55, t.bg2);
+    g.addColorStop(1, t.bg);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    var rg = ctx.createRadialGradient(CARD_W * 0.5, CARD_H * 0.34, 40, CARD_W * 0.5, CARD_H * 0.42, CARD_W * 0.92);
+    rg.addColorStop(0, 'rgba(255,255,255,0.06)');
+    rg.addColorStop(1, 'rgba(0,0,0,0.10)');
+    ctx.fillStyle = rg;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    // 이중 금빛 프레임
+    ctx.save();
+    ctx.strokeStyle = t.edge ? t.edge : luxGold(ctx, t, 40, 40, CARD_W - 40, CARD_H - 40);
+    ctx.lineWidth = 2.6;
+    ctx.strokeRect(46, 46, CARD_W - 92, CARD_H - 92);
+    ctx.globalAlpha = 0.85;
+    ctx.lineWidth = 0.9;
+    ctx.strokeRect(62, 62, CARD_W - 124, CARD_H - 124);
+    ctx.restore();
+
+    luxCorner(ctx, 46, 46, 1, 1, t, 1);
+    luxCorner(ctx, CARD_W - 46, 46, -1, 1, t, 1);
+    luxCorner(ctx, 46, CARD_H - 46, 1, -1, t, 1);
+    luxCorner(ctx, CARD_W - 46, CARD_H - 46, -1, -1, t, 1);
+
+    // 위·아래 중앙 작은 다이아
+    drawDiamond(ctx, CARD_W / 2, 46, 5, t.gold);
+    drawDiamond(ctx, CARD_W / 2, CARD_H - 46, 5, t.gold);
+  }
+
+  function luxHeaderMetrics(d) {
+    var lg = headerLogo(520, 44);
+    var y = 104;
+    if (lg) y += lg.h + 30;
+    return { lg: lg, ornamentY: y, studioY: y + 22, metaY: y + 60, ruleY: y + 96, top: y + 132 };
+  }
+
+  function paintLuxHeader(ctx, t, d) {
+    var h = luxHeaderMetrics(d);
+    var studio = (d.studio || '피아노 스튜디오').toUpperCase();
+    var meta = metaLine(d);
+    ctx.save();
+    ctx.textBaseline = 'top';
+
+    if (h.lg) {
+      var lx = (CARD_W - h.lg.w) / 2;
+      ctx.drawImage(h.lg.img, lx, 96, h.lg.w, h.lg.h);
+      ctx.strokeStyle = t.line;
+      ctx.lineWidth = 0.9;
+      ctx.beginPath();
+      ctx.moveTo(lx, 96 + h.lg.h + 8);
+      ctx.lineTo(lx + h.lg.w, 96 + h.lg.h + 8);
+      ctx.stroke();
+    }
+
+    // 장식
+    luxOrnament(ctx, CARD_W / 2, h.ornamentY, 120, t, 1, 6);
+
+    // 스튜디오 이름 (Cormorant, 넓은 자간)
+    ctx.font = '500 22px ' + LATIN;
+    var tr = 7.4;
+    while (trackedWidth(ctx, studio, tr) > CARD_W - LUX_M * 2 - 40 && tr > 1.5) tr -= 0.2;
+    ctx.fillStyle = t.edge ? t.edge : t.gold;
+    drawTracked(ctx, studio, CARD_W / 2, h.studioY, tr, 'center');
+
+    if (meta) {
+      ctx.font = '400 19px ' + SERIF;
+      ctx.fillStyle = t.soft;
+      drawTracked(ctx, meta, CARD_W / 2, h.metaY, 1.6, 'center');
+    }
+
+    luxOrnament(ctx, CARD_W / 2, h.ruleY, 150, t, 0.9, 5);
+    ctx.restore();
+  }
+
+  function luxLabel(ctx, t, text, y, sc, gap) {
+    ctx.save();
+    ctx.textBaseline = 'top';
+    ctx.font = '600 ' + Math.round(19 * sc) + 'px ' + SERIF;
+    var tr = 4.2 * sc;
+    var tw = trackedWidth(ctx, text, tr);
+    ctx.fillStyle = t.gold;
+    drawTracked(ctx, text, CARD_W / 2, y, tr, 'center');
+    var g = (gap || 20) * sc;
+    var len = 78 * sc;
+    ctx.strokeStyle = t.line;
+    ctx.lineWidth = 1 * sc;
+    ctx.beginPath();
+    ctx.moveTo(CARD_W / 2 - tw / 2 - g, y + 10 * sc);
+    ctx.lineTo(CARD_W / 2 - tw / 2 - g - len, y + 10 * sc);
+    ctx.moveTo(CARD_W / 2 + tw / 2 + g, y + 10 * sc);
+    ctx.lineTo(CARD_W / 2 + tw / 2 + g + len, y + 10 * sc);
+    ctx.stroke();
+    drawDiamond(ctx, CARD_W / 2 - tw / 2 - g - len - 7 * sc, y + 10 * sc, 3.2 * sc, t.gold);
+    drawDiamond(ctx, CARD_W / 2 + tw / 2 + g + len + 7 * sc, y + 10 * sc, 3.2 * sc, t.gold);
+    ctx.restore();
+  }
+
+  function luxMeasure(ctx, t, d, sc) {
+    var h = luxHeaderMetrics(d);
+    var m = newModel(h.top, sc, CARD_H - 172);
+    var cw = CARD_W - LUX_M * 2;
+    var labelH = 30 * sc;
+
+    // ── 학생 이름 (중앙) ──
+    var nameText = d.student || '학생 이름';
+    var placeholder = !d.student;
+    var nameSize = fitText(ctx, nameText, cw - 60 * sc, 86 * sc, 42 * sc, '600', SERIF);
+    var nm = ctx.measureText(nameText);
+    var asc = Math.min(nm.fontBoundingBoxAscent || nameSize * 0.8, nameSize * 1.02);
+    var desc = Math.min(nm.fontBoundingBoxDescent || nameSize * 0.2, nameSize * 0.3);
+    var nameH = asc + desc;
+
+    m.gap(6, 2);
+    m.block(nameH * 1.02 + 44 * sc, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = placeholder ? t.soft : t.ink;
+      ctx.font = '600 ' + Math.round(nameSize) + 'px ' + SERIF;
+      drawTracked(ctx, nameText, CARD_W / 2, y + asc, 5 * sc, 'center');
+      if (!placeholder) {
+        ctx.font = '400 ' + Math.round(19 * sc) + 'px ' + SERIF;
+        ctx.fillStyle = t.gold;
+        ctx.textBaseline = 'top';
+        drawTracked(ctx, '학생', CARD_W / 2, y + nameH + 12 * sc, 6 * sc, 'center');
+      }
+      ctx.restore();
+    });
+
+    var hasBody = !!(d.piece || (d.tags && d.tags.length) || d.mission || d.note);
+
+    if (!hasBody) {
+      m.gap(40, 2);
+      var hSize = Math.round(26 * sc);
+      ctx.font = '400 ' + hSize + 'px ' + SERIF;
+      var hint = wrapText(ctx, '오늘의 곡과 잘한 점을 적으면\n카드가 완성됩니다.', cw - 60 * sc, 2);
+      var hLH = hSize * 1.9;
+      m.block(hint.lines.length * hLH, function (y) {
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = t.soft;
+        ctx.font = '400 ' + hSize + 'px ' + SERIF;
+        hint.lines.forEach(function (line, i) { ctx.fillText(line, CARD_W / 2, y + i * hLH); });
+        ctx.restore();
+      });
+      return m.done();
+    }
+
+    // ── 오늘의 곡 ──
+    if (d.piece) {
+      m.gap(42, 1);
+      var pSize = Math.round(36 * sc);
+      ctx.font = '600 ' + pSize + 'px ' + SERIF;
+      var pw = wrapText(ctx, d.piece, cw - 40 * sc, 2);
+      var plh = pSize * 1.5;
+      m.block(labelH + 12 * sc + pw.lines.length * plh, function (y) {
+        luxLabel(ctx, t, '오늘의 곡', y, sc);
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = t.ink;
+        ctx.font = '600 ' + pSize + 'px ' + SERIF;
+        pw.lines.forEach(function (line, i) {
+          ctx.fillText(line, CARD_W / 2, y + labelH + 12 * sc + i * plh);
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 잘한 점 (중앙 정렬 헤어라인 칩) ──
+    var tags = (d.tags || []).slice(0, 4);
+    if (tags.length) {
+      m.gap(40, 1);
+      var chipFont = '500 ' + Math.round(22 * sc) + 'px ' + SERIF;
+      ctx.font = chipFont;
+      var padX = 22 * sc, pillH = 46 * sc, gapX = 12 * sc, gapY = 12 * sc;
+      var rows = [[]];
+      tags.forEach(function (tag) {
+        var w = Math.min(trackedWidth(ctx, tag, 0.8 * sc), cw - padX * 2) + padX * 2;
+        var row = rows[rows.length - 1];
+        var used = row.reduce(function (a, b) { return a + b.w + gapX; }, 0);
+        if (row.length && used + w > cw) rows.push([{ tag: tag, w: w }]);
+        else row.push({ tag: tag, w: w });
+      });
+      var visible = rows.slice(0, 2);
+      var blockH = visible.length * pillH + (visible.length - 1) * gapY;
+      m.block(labelH + 12 * sc + blockH, function (y) {
+        luxLabel(ctx, t, '잘한 점', y, sc);
+        var py = y + labelH + 12 * sc;
+        ctx.save();
+        ctx.textBaseline = 'middle';
+        visible.forEach(function (row, ri) {
+          var totalW = row.reduce(function (a, b) { return a + b.w; }, 0) + gapX * (row.length - 1);
+          var px = (CARD_W - totalW) / 2;
+          row.forEach(function (item) {
+            var ry = py + ri * (pillH + gapY);
+            ctx.strokeStyle = t.line;
+            ctx.lineWidth = 1 * sc;
+            ctx.fillStyle = t.panel;
+            roundRect(ctx, px, ry, item.w, pillH, 2 * sc);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = t.ink;
+            ctx.font = chipFont;
+            var labelText = item.tag;
+            while (trackedWidth(ctx, labelText, 0.8 * sc) > item.w - padX * 2 && labelText.length > 2) labelText = labelText.slice(0, -1);
+            drawTracked(ctx, labelText, px + item.w / 2, ry + pillH / 2 + 1, 0.8 * sc, 'center');
+            px += item.w + gapX;
+          });
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 이번 주 연습 미션 ──
+    if (d.mission) {
+      m.gap(40, 1);
+      var mSize = Math.round(27 * sc);
+      var padX = 44 * sc, padY = 34 * sc;
+      ctx.font = '400 ' + mSize + 'px ' + SERIF;
+      var mWrap = wrapText(ctx, d.mission, cw - padX * 2, 4);
+      var mLH = mSize * 1.72;
+      var boxH = padY * 2 + mWrap.lines.length * mLH;
+      m.block(labelH + 12 * sc + boxH, function (y) {
+        luxLabel(ctx, t, '이번 주 연습 미션', y, sc);
+        var by = y + labelH + 12 * sc;
+        ctx.save();
+        ctx.strokeStyle = t.line;
+        ctx.lineWidth = 1 * sc;
+        roundRect(ctx, LUX_M, by, cw, boxH, 1);
+        ctx.stroke();
+        ctx.globalAlpha = 0.55;
+        roundRect(ctx, LUX_M + 7 * sc, by + 7 * sc, cw - 14 * sc, boxH - 14 * sc, 1);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = t.panel;
+        roundRect(ctx, LUX_M + 7 * sc, by + 7 * sc, cw - 14 * sc, boxH - 14 * sc, 1);
+        ctx.fill();
+        drawDiamond(ctx, CARD_W / 2, by, 4.5 * sc, t.gold);
+        drawDiamond(ctx, CARD_W / 2, by + boxH, 4.5 * sc, t.gold);
+
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + mSize + 'px ' + SERIF;
+        mWrap.lines.forEach(function (line, i) {
+          ctx.fillText(line, CARD_W / 2, by + padY + i * mLH);
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 한마디 ──
+    if (d.note) {
+      m.gap(42, 1);
+      var nSize = Math.round(28 * sc);
+      ctx.font = '400 ' + nSize + 'px ' + SERIF;
+      var nWrap = wrapText(ctx, d.note, cw - 80 * sc, 3);
+      var nLH = nSize * 1.72;
+      var signName = d.teacher || d.studio || '';
+      var quoteH = 58 * sc;
+      m.block(labelH + quoteH + nWrap.lines.length * nLH + (signName ? 46 * sc : 0), function (y) {
+        luxLabel(ctx, t, '한마디', y, sc);
+        var qy = y + labelH + 10 * sc;
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.font = '600 ' + Math.round(86 * sc) + 'px ' + LATIN;
+        ctx.fillStyle = t.gold;
+        ctx.globalAlpha = 0.35;
+        ctx.fillText('“', CARD_W / 2, qy - 18 * sc);
+        ctx.globalAlpha = 1;
+
+        var ty = qy + quoteH * 0.55;
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + nSize + 'px ' + SERIF;
+        nWrap.lines.forEach(function (line, i) {
+          ctx.fillText(line, CARD_W / 2, ty + i * nLH);
+        });
+        if (signName) {
+          var sy = ty + nWrap.lines.length * nLH + 12 * sc;
+          luxOrnament(ctx, CARD_W / 2, sy + 8 * sc, 60, t, sc, 4);
+          ctx.font = 'italic 500 ' + Math.round(26 * sc) + 'px ' + LATIN;
+          ctx.fillStyle = t.gold;
+          ctx.textBaseline = 'top';
+          ctx.fillText(signName, CARD_W / 2, sy + 24 * sc);
+        }
+        ctx.restore();
+      });
+    }
+
+    return m.done();
+  }
+
+  function paintLuxFooter(ctx, t, sc) {
+    var y = CARD_H - 148;
+    ctx.save();
+    luxOrnament(ctx, CARD_W / 2, y, 96, t, sc, 4);
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'center';
+    ctx.font = '500 ' + Math.round(16 * sc) + 'px ' + LATIN;
+    ctx.fillStyle = t.gold;
+    drawTracked(ctx, 'LESSONCARD', CARD_W / 2, y + 20 * sc, 6.4 * sc, 'center');
+    ctx.font = 'italic 400 ' + Math.round(21 * sc) + 'px ' + LATIN;
+    ctx.fillStyle = t.soft;
+    ctx.fillText('a note for the family', CARD_W / 2, y + 46 * sc);
+    ctx.restore();
+  }
+
+  function drawLuxCard(ctx, t, d, themeId) {
+    var sc = 1, m = null, tries = 0;
+    for (;;) {
+      ctx.clearRect(0, 0, CARD_W, CARD_H);
+      paintLuxBg(ctx, t);
+      paintLuxHeader(ctx, t, d);
+      m = luxMeasure(ctx, t, d, sc);
+      if (!m.overflow || tries >= 12 || sc <= 0.55) break;
+      sc -= 0.045; tries++;
+    }
+    var y = flowItems(ctx, m);
+    paintLuxFooter(ctx, t, sc);
+    return {
+      scale: sc, contentHeight: m.total, available: m.avail,
+      overflow: m.total > m.avail + 0.5, bottom: y, top: m.top,
+      theme: themeId, set: 'chic', mode: t.mode
+    };
+  }
+
+  var RENDERERS = { clean: drawCleanCard, cute: drawCuteCard, chic: drawLuxCard };
+
   function drawCard(canvas, themeId, data) {
-    var t = THEMES[themeId] || THEMES.cream;
+    var t = THEMES[themeId] || THEMES.linen;
     canvas.width = CARD_W * SS;
     canvas.height = CARD_H * SS;
     var ctx = canvas.getContext('2d');
     ctx.setTransform(SS, 0, 0, SS, 0, 0);
     ctx.clearRect(0, 0, CARD_W, CARD_H);
-
-    drawBackdrop(ctx, t);
-
-    // 상단 풀블리드 밴드 (포레스트 세이지 · 소프트 버터)
-    var top = t.top || TOP;
-    if (t.headMode === 'band') {
-      ctx.fillStyle = t.bandFill;
-      ctx.fillRect(0, 0, CARD_W, t.bandH);
-      if (t.bandBottomRule) {
-        ctx.fillStyle = t.bandBottomRule;
-        if (t.bandRuleInset) ctx.fillRect(M, t.bandH - 1, CARD_W - M * 2, 1);
-        else ctx.fillRect(0, t.bandH - 4, CARD_W, 4);
-      }
-      drawBandHeader(ctx, t, data);
-      if (!t.top) top = t.bandH + 52;
-    }
-    // 좌상단 짧은 악센트 바 (클라우드 스카이)
-    if (t.topMark) {
-      ctx.fillStyle = t.topMark;
-      ctx.fillRect(M, top - 50, 46, 5);
-    }
-
-    drawFrame(ctx, t);
-
-    var sc = 1, model = null, tries = 0;
-    do {
-      model = buildModel(ctx, t, data, sc, top);
-      if (model.total <= model.avail) break;
-      sc -= 0.035;
-      tries++;
-    } while (tries < 11);
-
-    var flexCount = model.items.filter(function (i) { return i.flex > 0; }).length || 1;
-    var extra = Math.max(0, model.avail - model.total);
-    var perFlex = Math.min(extra / flexCount, 34 * model.scale);
-
-    var y = top;
-    model.items.forEach(function (item) {
-      if (item.type === 'gap') {
-        y += item.h + (item.flex > 0 ? perFlex : 0);
-      } else {
-        item.draw(y);
-        y += item.h;
-      }
-    });
-
-    drawFooter(ctx, t, data, model.scale);
-    return {
-      scale: model.scale,
-      contentHeight: model.total,
-      available: model.avail,
-      overflow: model.total > model.avail,
-      bottom: y,
-      top: top,
-      theme: themeId
-    };
+    var fn = RENDERERS[t.set] || RENDERERS.clean;
+    return fn(ctx, t, data, themeId);
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -2302,7 +3226,7 @@
     } else {
       els.logoThumb.classList.remove('has-logo');
       els.logoThumb.innerHTML = '<span>로고</span>';
-      els.logoInfoText.textContent = 'PNG · JPG 파일을 올리면 카드 좌측 상단 스튜디오 이름 옆에 함께 들어가요';
+      els.logoInfoText.textContent = 'PNG · JPG 파일을 올리면 테마에 맞춰 카드 상단에 함께 들어가요';
       els.logoRemove.hidden = true;
       els.logoPick.textContent = '로고 올리기';
     }
@@ -2643,8 +3567,13 @@
   var FONT_SPECS = [
     '600 24px "Noto Sans KR"', '500 23px "Noto Sans KR"', '400 30px "Noto Sans KR"',
     '500 25px "Noto Sans KR"', '600 20px "Noto Sans KR"', '600 17px "Noto Sans KR"',
-    '700 76px "Noto Serif KR"', '600 39px "Noto Serif KR"', '400 30px "Noto Serif KR"',
-    '500 25px "Noto Serif KR"', '500 23px "Cormorant Garamond"', 'italic 500 23px "Cormorant Garamond"'
+    '700 86px "Noto Sans KR"', '800 92px "Noto Sans KR"', '400 28px "Noto Sans KR"',
+    '700 76px "Noto Serif KR"', '600 84px "Noto Serif KR"', '600 39px "Noto Serif KR"',
+    '400 30px "Noto Serif KR"', '500 25px "Noto Serif KR"',
+    '500 22px "Cormorant Garamond"', 'italic 500 23px "Cormorant Garamond"',
+    '600 23px "Cormorant Garamond"',
+    '400 96px "Jua"', '400 36px "Jua"', '400 23px "Jua"', '400 20px "Jua"',
+    '400 27px "Gowun Dodum"', '400 18px "Gowun Dodum"'
   ];
   function ensureFonts() {
     if (!document.fonts) { state.fontReady = true; return Promise.resolve(); }
