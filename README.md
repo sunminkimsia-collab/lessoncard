@@ -343,6 +343,22 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 소스 | `brand-source/og-image.html` · `brand-source/icon.html` · `brand-source/render.py` — 브라우저 렌더링 방식(Chromium 스크린샷)이라 문구·컬러 수정 후 재렌더 가능 |
 | 카톡 캐시 | 카카오톡은 링크 미리보기를 캐시함 — 이전에 공유한 적 있는 URL은 미리보기가 바로 안 바뀔 수 있음. 카카오 디버거 https://developers.kakao.com/tool/debugger/sharing 에서 해당 URL을 `캐시 초기화` 한 뒤 다시 공유하면 새 썸네일 적용 |
 
+### 7.2 v10 — 예시 데이터 가상화 (2026-11-22)
+
+외부에 공개되는 예시 데이터에서 제작자의 실명·가족 이름·실제 학생 이름·연락처·동네를 전부 걷어내고 가상 인물로 바꿨습니다. 앱 동작·레이아웃·테스트 기준은 그대로입니다.
+
+| 항목 | 결과 |
+| --- | --- |
+| 가상 인물 | 스튜디오 **하모니 피아노 스튜디오** · 선생님 **이서연** · 학생 **박하은 · 정민준 · 최수아 · 한지우** · 공연장 **서초 클래식 아트홀** (선생님 이름과 겹치지 않도록 두 번째 샘플 학생도 `한지우`로 정리) |
+| 교체 범위 | `index.html` 입력 placeholder 6곳 · `EXAMPLE`/`EXAMPLE_BILLING`/`EXAMPLE_RECITAL` 3모드 예시 · `SEED_STUDENTS` 2명 · 예금주 기본값 · 발표회 프로그램 4줄 · 폰트 프리로드 문구 |
+| OG 썸네일 | `brand-source/og-image.html` 문구 교체 후 재렌더 — `og-image.png` 1200×630(234,710B) · 레슨 노트 카드(박하은)·발표회 카드(이서연·LS 엠블럼·서초 클래식 아트홀) 모두 가상 이름 |
+| 모노그램 | 선생님 이름에서 영문 이니셜을 뽑는 규칙 그대로 (`이서연` → `LS`, 아치형은 `L`) |
+| 테스트 스크립트 | `tests/test-v2·v3·v4·v5·v6·v8.py`, `verify-live-v2.py`, `theme-mockups*.py`, `mockups-recital/`까지 같은 가상 이름으로 맞춤 |
+| v10 검증 (로컬·라이브) | 신규 `tests/test-v10-privacy.py` — 소스·placeholder·시드·`예시 채우기` 3모드(폼 값 + 카톡 텍스트 + 화면 텍스트)에서 실명·연락처 **0건**, 3모드 캔버스 2160×2700 렌더·PNG 1080×1350 저장, 콘솔 에러 **0건**. 결과 `tests/shots/v10-privacy-report.json` |
+| 회귀 | `tests/test-v8.py` 실패 0(팜플렛 4종·3모드 18장·콘솔 에러 0) · `tests/test-v6.py` 실패 0(레슨 노트·레슨비 정산) · 화면 미리보기 `tests/shots/v10-{local,live}-{lesson,billing,recital}.png` |
+| 알려진 이슈 | `tests/test-v2.py`의 로고 픽셀 검사 2건(`header_pixel_diff > 0.02`, `png_header_changed > 800`)은 현재 카드 디자인에서 임계값에 못 미침(0.0087 / 521px). 익명화 전 빌드(`b8f8788`)에서도 **똑같은 값**이 나와 이번 변경과 무관한 기존 임계값 문제 — 로고 자체는 카드·PNG에 정상 반영됨 |
+| 배포 | 커밋 `ce2a99d` push · `https://lessoncard.kr/` HTTP **200**, 배포본 `index.html` MD5(`ee0da9eb…`) 저장소와 일치 · 배포본 `README.md`·`og-image.png`(234,710B, 로컬과 바이트 동일)·`favicon.ico`·`icon.png`·`apple-touch-icon.png` 전부 200 · 배포 HTML·README에서 실명·연락처 **0건** |
+
 ---
 
 ## 8. 다음 단계 제안
