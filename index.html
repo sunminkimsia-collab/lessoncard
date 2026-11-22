@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231D1A16'/%3E%3Cpath d='M12 22V11l9-1.8v10' stroke='%23E7D3AE' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='10.6' cy='22' r='2.2' stroke='%23E7D3AE' stroke-width='1.6' fill='none'/%3E%3Ccircle cx='19.6' cy='20.3' r='2.2' stroke='%23E7D3AE' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600&family=Gowun+Dodum&family=Jua&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Gowun+Dodum&family=Jost:wght@200;300;400;500&family=Jua&family=Noto+Sans+KR:wght@200;300;400;500;600;700;800&family=Noto+Serif+KR:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ── 디자인 토큰 ─────────────────────────────────────────── */
   :root{
@@ -37,6 +37,7 @@
   }
 
   *,*::before,*::after{box-sizing:border-box}
+  [hidden]{display:none !important}
   html{-webkit-text-size-adjust:100%}
   body{
     margin:0;
@@ -397,17 +398,24 @@
   .preview-meta{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.02em}
 
   .theme-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-  .theme-btn{
+  .theme-btn,.recital-btn{
     display:flex;flex-direction:column;align-items:flex-start;gap:6px;
     font-family:inherit;font-size:11.4px;font-weight:600;color:var(--ink-2);
     background:#fff;border:1px solid var(--line);border-radius:11px;
     padding:9px 9px 8px;cursor:pointer;transition:.16s ease;text-align:left;line-height:1.3;
   }
-  .theme-btn:hover{border-color:var(--gold-line);background:#FFFDF9}
-  .theme-btn.is-on{border-color:var(--gold);background:#FFFCF6;box-shadow:0 0 0 2.5px rgba(169,131,90,.12)}
+  .theme-btn:hover,.recital-btn:hover{border-color:var(--gold-line);background:#FFFDF9}
+  .theme-btn.is-on,.recital-btn.is-on{border-color:var(--gold);background:#FFFCF6;box-shadow:0 0 0 2.5px rgba(169,131,90,.12)}
   .swatches{display:flex;gap:3px}
   .swatches i{display:block;width:11px;height:11px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(29,26,22,.12)}
-  .theme-btn .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .theme-btn .name,.recital-btn .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+
+  /* 발표회 팜플렛 전용 스타일 4종 */
+  .recital-row{grid-template-columns:repeat(2,1fr);gap:7px}
+  .recital-btn{padding:9px 10px 9px}
+  .recital-btn .name{font-size:11.8px;letter-spacing:-.01em}
+  .recital-btn .swatches i{width:12px;height:12px}
+  .recital-btn.is-on{background:#FFFCF6}
 
   /* 세트 탭 (Minimal · Cute · Classic) */
   .theme-picker{display:flex;flex-direction:column;gap:9px}
@@ -615,7 +623,9 @@
     .guide-tips{padding:11px 12px}
     .guide-tips li{font-size:11.4px}
     .theme-row{grid-template-columns:repeat(3,1fr);gap:6px}
+    .recital-row{grid-template-columns:repeat(2,1fr);gap:6px}
     .theme-btn{padding:8px 7px;font-size:10.6px}
+    .recital-btn{padding:8px 8px;font-size:10.6px}
     .theme-set{height:27px;font-size:11.8px}
     .theme-picker{gap:7px}
     .swatches i{width:9px;height:9px}
@@ -946,6 +956,7 @@
           <button class="theme-set" type="button" role="tab" data-set="chic" aria-selected="false" aria-controls="themeRow">Classic</button>
         </div>
         <div class="theme-row" id="themeRow" role="group" aria-label="카드 테마 선택"></div>
+        <div class="theme-row recital-row" id="recitalStyles" role="group" aria-label="연주회 팜플렛 스타일 선택" hidden></div>
       </div>
 
       <div class="canvas-wrap">
@@ -1048,7 +1059,7 @@
         <span class="num" aria-hidden="true">2</span>
         <div class="step-body">
           <h4>테마 선택 &amp; 미리보기</h4>
-          <p><b>Minimal · Cute · Classic</b> 세트에서 분위기를 고르고, 마음에 드는 테마를 누르면 카드에 바로 적용돼요. 카드를 누르면 크게 볼 수 있어요.</p>
+          <p><b>Minimal · Cute · Classic</b> 세트에서 분위기를 고르고, 마음에 드는 테마를 누르면 카드에 바로 적용돼요. <b>발표회 팜플렛</b>은 대신 <b>미드나잇 홀 · 샴페인 아치 · 럭셔리 티켓 · 로즈골드</b> 4종 스타일에서 고릅니다. 카드를 누르면 크게 볼 수 있어요.</p>
         </div>
       </li>
       <li class="guide-step">
@@ -1067,7 +1078,7 @@
       </li>
       <li>
         <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4.2 5.2h9.6M4.2 9h9.6M4.2 12.8h5.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        <span>위쪽 탭에서 <b>레슨 노트 · 레슨비 정산 · 발표회 팜플렛</b>을 골라 쓰세요. 세 카드 모두 같은 테마·로고·저장 방식이에요.</span>
+        <span>위쪽 탭에서 <b>레슨 노트 · 레슨비 정산 · 발표회 팜플렛</b>을 골라 쓰세요. 레슨 노트·레슨비는 9종 테마, 발표회 팜플렛은 연주회 전용 4종 스타일을 쓰고 로고·저장 방식은 같아요.</span>
       </li>
       <li>
         <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4.2 5.2h9.6M4.2 9h9.6M4.2 12.8h5.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -1112,6 +1123,7 @@
   var LATIN = '"Cormorant Garamond","Noto Serif KR",serif';
   var JUA   = '"Jua","Noto Sans KR",sans-serif';
   var DODUM = '"Gowun Dodum","Noto Sans KR",sans-serif';
+  var JOST  = '"Jost","Noto Sans KR",sans-serif';
 
   /* ── 테마 토큰 ───────────────────────────────────────────── */
   var THEMES = {
@@ -3552,505 +3564,1431 @@
     return out;
   }
 
-  /* ── 발표회 팜플렛 · Minimal 세트 ──────────────────────── */
-  function recitalCleanMeasure(ctx, t, d, sc, cfg) {
-    var m = newModel(cfg.top, sc);
-    var rail = cfg.rail * sc;
-    var cx = cfg.mx + rail;
-    var cw = CARD_W - cfg.mx * 2 - rail;
-    var railMode = cfg.label === 'rail';
-    var labelH = railMode ? 54 * sc : 24 * sc;
-    var seqNo = 0;
-    function seq() { seqNo++; return railMode ? ('0' + seqNo) : null; }
-    function rule(y) {
-      if (!cfg.rule) return;
-      ctx.fillStyle = t.mode === 'slate' ? t.accent : t.line;
-      ctx.globalAlpha = t.mode === 'slate' ? 0.26 : 1;
-      ctx.fillRect(cfg.mx, y + 0.5, CARD_W - cfg.mx * 2, 1);
-      ctx.globalAlpha = 1;
-    }
-    function section(gap) {
-      m.gap(gap == null ? cfg.gapSec : gap, 1);
-      m.block(1, rule);
-      m.gap(18, 0);
-    }
-    var x0 = cx, x1 = cx + cw;
+  /* ══════════════════════════════════════════════════════════
+     발표회 팜플렛 — 연주회 팜플렛 전용 스타일 4종
+       A 미드나잇 홀  다크 네이비 · 골드 헤어라인 · 그랜드피아노 실루엣 · 점선 프로그램
+       B 샴페인 아치  샴페인 리넨 · 이중 아치 · 로마숫자 프로그램
+       C 럭셔리 티켓  본 화이트 · 티켓 스텁 · 모던 에디토리얼 표
+       D 로즈골드     펄 아이보리 · 실크 리본 라인 · 2×2 프로그램 카드
+     ══════════════════════════════════════════════════════════ */
+  var RECITAL_STYLES = [
+    { id: 'midnight', tag: 'A', label: '미드나잇 홀', swatches: ['#0A1422', '#C7A868', '#F4EEE3'] },
+    { id: 'arch', tag: 'B', label: '샴페인 아치', swatches: ['#F6F0E4', '#AD8C58', '#2E2A23'] },
+    { id: 'ticket', tag: 'C', label: '럭셔리 티켓', swatches: ['#F7F4ED', '#17171B', '#9A7C4E'] },
+    { id: 'ribbon', tag: 'D', label: '로즈골드', swatches: ['#FBF5EF', '#B98F7C', '#463832'] }
+  ];
+  var RECITAL_STYLE_IDS = RECITAL_STYLES.map(function (s) { return s.id; });
+  var DEFAULT_RECITAL_STYLE = 'midnight';
+  var ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
 
-    // ── 제목 ──
-    var title = d.recitalTitle || '발표회 제목';
-    var tSize = Math.round((t.mode === 'slate' ? 56 : t.mode === 'airy' ? 52 : 60) * sc);
-    ctx.font = '700 ' + tSize + 'px ' + SANS;
-    var tw = wrapText(ctx, title, cw - 8 * sc, 3);
-    var tlh = tSize * 1.28;
-    var subText = d.recitalSub || d.studio || '';
-    ctx.font = '500 ' + Math.round(24 * sc) + 'px ' + SANS;
-    var sw = subText ? wrapText(ctx, subText, cw - 8 * sc, 2) : null;
-    var slh = 24 * sc * 1.55;
-    m.gap(cfg.gapName, 2);
-    m.block((t.mode === 'slate' ? 44 : 24) * sc + tw.lines.length * tlh + (sw ? 12 * sc + sw.lines.length * slh : 0), function (y) {
-      ctx.save();
-      ctx.textBaseline = 'top';
-      ctx.textAlign = 'left';
-      ctx.font = '600 ' + Math.round(15 * sc) + 'px ' + SANS;
-      ctx.fillStyle = t.accent;
-      ctx.globalAlpha = 0.9;
-      drawTracked(ctx, 'INVITATION', x0, y, 4.6 * sc, 'left');
-      ctx.globalAlpha = 1;
-      if (t.mode === 'slate') {
-        ctx.fillStyle = t.accent;
-        ctx.fillRect(x0, y + 32 * sc, 44 * sc, 3 * sc);
-      }
-      ctx.fillStyle = t.ink;
-      ctx.font = '700 ' + tSize + 'px ' + SANS;
-      tw.lines.forEach(function (line, i) {
-        drawTracked(ctx, line, x0, y + (t.mode === 'slate' ? 44 * sc : 24 * sc) + i * tlh, -1.2 * sc, 'left');
-      });
-      if (sw) {
-        ctx.fillStyle = t.soft;
-        ctx.font = '500 ' + Math.round(24 * sc) + 'px ' + SANS;
-        var sy = y + (t.mode === 'slate' ? 44 * sc : 24 * sc) + tw.lines.length * tlh + 12 * sc;
-        sw.lines.forEach(function (line, i) { ctx.fillText(line, x0, sy + i * slh); });
-      }
-      ctx.restore();
+  /* ── 포스터형 레이아웃: 남는 높이를 gap(flex)에 비례해 나눠 배치 ── */
+  function posterModel(top, bottom, sc) {
+    var m = newModel(top, sc, bottom);
+    m.flexMax = 1e9;
+    return m;
+  }
+  function posterFlow(ctx, m) {
+    var flexTotal = 0;
+    m.items.forEach(function (it) { flexTotal += it.flex || 0; });
+    if (!flexTotal) flexTotal = 1;
+    var extra = Math.max(0, m.avail - m.total);
+    var y = m.top;
+    m.items.forEach(function (it) {
+      if (it.type === 'gap') y += it.h + extra * ((it.flex || 0) / flexTotal);
+      else { it.draw(y); y += it.h; }
     });
-
-    // ── 일시 · 장소 ──
-    section();
-    var infoRows = [];
-    if (d.recitalWhen) infoRows.push({ k: '일시', v: d.recitalWhen });
-    if (d.recitalWhere) infoRows.push({ k: '장소', v: d.recitalWhere });
-    var iSize = Math.round(27 * sc);
-    var kl = 78 * sc;
-    var iWrap = infoRows.map(function (r) {
-      ctx.font = '600 ' + iSize + 'px ' + SANS;
-      return { k: r.k, v: wrapText(ctx, r.v, cw - kl - 8 * sc, 2) };
-    });
-    var iLH = iSize * 1.5;
-    var infoH = iWrap.reduce(function (a, r) { return a + r.v.lines.length * iLH + 10 * sc; }, 0);
-    m.block(labelH + 8 * sc + infoH, function (y) {
-      cleanSectionLabel(ctx, t, cfg, '일시 · 장소', cfg.mx, y, sc, seq());
-      ctx.save();
-      ctx.textBaseline = 'top';
-      ctx.textAlign = 'left';
-      var by = y + labelH + 8 * sc;
-      iWrap.forEach(function (r) {
-        ctx.fillStyle = t.soft;
-        ctx.font = '500 ' + Math.round(21 * sc) + 'px ' + SANS;
-        ctx.fillText(r.k, x0, by + 5 * sc);
-        ctx.fillStyle = t.ink;
-        ctx.font = '600 ' + iSize + 'px ' + SANS;
-        r.v.lines.forEach(function (line, i) { ctx.fillText(line, x0 + kl, by + i * iLH); });
-        by += r.v.lines.length * iLH + 10 * sc;
-      });
-      ctx.restore();
-    });
-
-    // ── 프로그램 ──
-    var prog = splitProgram(d.recitalProgram);
-    if (prog.length) {
-      section();
-      var wSize = Math.round(24 * sc);
-      var pSize = Math.round(26 * sc);
-      var pw = prog.map(function (it) {
-        ctx.font = '400 ' + pSize + 'px ' + SANS;
-        return { who: it.who, lines: wrapText(ctx, it.piece, cw - 62 * sc, 2).lines };
-      });
-      var pLH = pSize * 1.42;
-      var rowGap = 16 * sc;
-      var pH = pw.reduce(function (a, r) { return a + (r.who ? wSize * 1.4 : 0) + r.lines.length * pLH + rowGap; }, 0);
-      m.block(labelH + 8 * sc + pH, function (y) {
-        cleanSectionLabel(ctx, t, cfg, '프로그램', cfg.mx, y, sc, seq());
-        ctx.save();
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'left';
-        var by = y + labelH + 8 * sc;
-        pw.forEach(function (r, ri) {
-          ctx.font = '600 ' + Math.round(17 * sc) + 'px ' + SANS;
-          ctx.fillStyle = t.mode === 'slate' ? t.accent : t.soft;
-          ctx.fillText(('0' + (ri + 1)).slice(-2), cfg.mx, by + 4 * sc);
-          var tx = x0;
-          if (r.who) {
-            ctx.fillStyle = t.accent;
-            ctx.font = '600 ' + wSize + 'px ' + SANS;
-            ctx.fillText(r.who, tx, by);
-            by += wSize * 1.4;
-          }
-          ctx.fillStyle = t.ink;
-          ctx.font = '400 ' + pSize + 'px ' + SANS;
-          r.lines.forEach(function (line, i) { ctx.fillText(line, tx, by + i * pLH); });
-          by += r.lines.length * pLH + rowGap;
-        });
-        ctx.restore();
-      });
+    return y;
+  }
+  function posterCard(ctx, paint, measure, id) {
+    var sc = 1, m = null, tries = 0;
+    for (;;) {
+      ctx.clearRect(0, 0, CARD_W, CARD_H);
+      paint();
+      m = measure(sc);
+      if (!m.overflow || tries >= 14 || sc <= 0.58) break;
+      sc -= 0.04; tries++;
     }
-
-    // ── 드리는 말씀 ──
-    if (d.recitalNote) {
-      section();
-      var nSize = Math.round(25 * sc);
-      ctx.font = '400 ' + nSize + 'px ' + SANS;
-      var nWrap = wrapText(ctx, d.recitalNote, cw - 44 * sc, 4);
-      var nLH = nSize * 1.62;
-      var nBoxH = nWrap.lines.length * nLH + 32 * sc;
-      m.block(labelH + 8 * sc + nBoxH, function (y) {
-        cleanSectionLabel(ctx, t, cfg, '오시는 길 · 드리는 말씀', cfg.mx, y, sc, seq());
-        var by = y + labelH + 8 * sc;
-        ctx.save();
-        if (cfg.panel !== 'none') {
-          roundRect(ctx, x0, by, cw, nBoxH, cfg.panel === 'soft' ? 3 : cfg.panel === 'fill' ? 8 : 2);
-          if (cfg.panel === 'fill') { ctx.fillStyle = t.panelBg; ctx.fill(); }
-          else if (cfg.panel === 'soft') { ctx.fillStyle = '#FFFFFF'; ctx.fill(); }
-          if (cfg.panel === 'hair' || cfg.panel === 'soft') { ctx.strokeStyle = t.panelLine; ctx.lineWidth = 1; ctx.stroke(); }
-        }
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'left';
-        ctx.fillStyle = t.ink;
-        ctx.font = '400 ' + nSize + 'px ' + SANS;
-        nWrap.lines.forEach(function (line, i) { ctx.fillText(line, x0 + 20 * sc, by + 16 * sc + i * nLH); });
-        ctx.restore();
-      });
-    }
-
-    return m.done();
+    var bottom = posterFlow(ctx, m);
+    return {
+      scale: sc, theme: id, set: 'recital', mode: 'recital-' + id, card: 'recital',
+      top: m.top, bottom: bottom, overflow: m.total > m.avail + 0.5, clip: false, chips: [],
+      info: m.info || {}
+    };
   }
 
-  function drawRecitalClean(ctx, t, d, themeId) {
-    var cfg = cleanCfg(t);
-    var out = layoutCard(ctx, function () {
-      paintCleanBg(ctx, t, cfg);
-      paintCleanHeader(ctx, t, d, cfg);
-    }, function (sc) { return recitalCleanMeasure(ctx, t, d, sc, cfg); });
-    paintCleanFooter(ctx, t, cfg, d, out.scale);
-    out.theme = themeId; out.set = 'clean'; out.mode = 'recital-' + t.mode; out.card = 'recital';
+  /* ── 작은 도구들 ─────────────────────────────────────────── */
+  function trackedText(ctx, text, x, y, size, em, color, weight, family, align) {
+    ctx.font = (weight || '300') + ' ' + Math.round(size) + 'px ' + (family || SERIF);
+    ctx.fillStyle = color;
+    return drawTracked(ctx, String(text == null ? '' : text), x, y, size * em, align || 'center');
+  }
+  function trackedFitSize(ctx, text, maxW, size, min, em, weight, family) {
+    var s = size;
+    for (;;) {
+      ctx.font = (weight || '300') + ' ' + Math.round(s) + 'px ' + (family || SERIF);
+      if (trackedWidth(ctx, String(text == null ? '' : text), s * em) <= maxW || s <= min) return s;
+      s -= Math.max(0.5, s * 0.03);
+    }
+  }
+  function drawDiamond(ctx, x, y, r, color, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha == null ? 1 : alpha;
+    ctx.fillStyle = color;
+    ctx.translate(x, y);
+    ctx.rotate(Math.PI / 4);
+    ctx.fillRect(-r, -r, r * 2, r * 2);
+    ctx.restore();
+  }
+  function diamondRule(ctx, cx, y, len, color, alpha) {
+    var g = ctx.createLinearGradient(cx - len, y, cx, y);
+    g.addColorStop(0, 'rgba(255,255,255,0)');
+    g.addColorStop(1, color);
+    ctx.save();
+    ctx.globalAlpha = alpha == null ? 1 : alpha;
+    ctx.strokeStyle = g;
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx - len, y + 0.5); ctx.lineTo(cx, y + 0.5); ctx.stroke();
+    var g2 = ctx.createLinearGradient(cx + len, y, cx, y);
+    g2.addColorStop(0, 'rgba(255,255,255,0)');
+    g2.addColorStop(1, color);
+    ctx.strokeStyle = g2;
+    ctx.beginPath(); ctx.moveTo(cx + len, y + 0.5); ctx.lineTo(cx, y + 0.5); ctx.stroke();
+    ctx.restore();
+  }
+
+  /* 종이 질감 (CSS 그레인과 같은 역할) — 5단계 노이즈로 압축이 무너지지 않게 */
+  var _grainTile = null;
+  function grainLayer(ctx, alpha) {
+    if (!_grainTile) {
+      var c = document.createElement('canvas');
+      c.width = 128; c.height = 128;
+      var g = c.getContext('2d');
+      var img = g.createImageData(128, 128);
+      var steps = [48, 104, 152, 208];
+      for (var i = 0; i < img.data.length; i += 4) {
+        var v = steps[Math.floor(Math.random() * steps.length)];
+        img.data[i] = v; img.data[i + 1] = v; img.data[i + 2] = v; img.data[i + 3] = 255;
+      }
+      g.putImageData(img, 0, 0);
+      _grainTile = c;
+    }
+    var pat = ctx.createPattern(_grainTile, 'repeat');
+    if (!pat) return;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = pat;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+    ctx.restore();
+  }
+
+  /* 아주 옅은 점 질감 (샴페인 페이퍼) */
+  function dotTexture(ctx, color, alpha, step) {
+    var seed = 20261219;
+    function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.globalAlpha = alpha;
+    var n = Math.round((CARD_W * CARD_H) / (step * step * 9));
+    for (var i = 0; i < n; i++) {
+      var x = rnd() * CARD_W, y = rnd() * CARD_H, r = 0.5 + rnd() * 0.7;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  /* ── 모노그램 (선생님 이름 → 영문 이니셜) ─────────────── */
+  var HANGUL_HEADS = ['K', 'K', 'N', 'D', 'T', 'M', 'B', 'P', 'S', 'S', '', 'J', 'J', 'C', 'K', 'T', 'P', 'H'];
+  function headLetterOf(ch) {
+    var code = ch.charCodeAt(0);
+    if (code >= 0xAC00 && code <= 0xD7A3) {
+      return HANGUL_HEADS[Math.floor((code - 0xAC00) / 588)] || '';
+    }
+    if (/[A-Za-z]/.test(ch)) return ch.toUpperCase();
+    return '';
+  }
+  function monogram(name) {
+    var s = String(name == null ? '' : name).trim();
+    if (!s) return 'LC';
+    if (/[A-Za-z]/.test(s)) {
+      var words = s.match(/[A-Za-z]+/g) || [];
+      var out = '';
+      for (var w = 0; w < words.length && out.length < 2; w++) out += words[w].charAt(0).toUpperCase();
+      return out || 'LC';
+    }
+    var chars = Array.from(s.replace(/\s+/g, ''));
+    var ini = '';
+    for (var i = 0; i < chars.length && ini.length < 2; i++) {
+      var h = headLetterOf(chars[i]);
+      if (h) ini += h;
+    }
+    return ini || 'LC';
+  }
+
+  /* ── 일시 문자열에서 날짜·시간 뽑기 (실패하면 null) ──────── */
+  var WEEKDAYS = { '일': 'SUNDAY', '월': 'MONDAY', '화': 'TUESDAY', '수': 'WEDNESDAY', '목': 'THURSDAY', '금': 'FRIDAY', '토': 'SATURDAY' };
+  var MONTHS = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+  function parseWhen(text) {
+    var str = String(text == null ? '' : text);
+    var out = { year: null, month: null, day: null, weekday: '', time: '' };
+    if (!str.trim()) return out;
+    var m = str.match(/(\d{4})\D{1,5}(\d{1,2})\D{1,5}(\d{1,2})/);
+    if (m) {
+      out.year = +m[1]; out.month = +m[2]; out.day = +m[3];
+    } else {
+      var m2 = str.match(/(\d{1,2})\s*월\s*(\d{1,2})\s*일/);
+      if (m2) { out.month = +m2[1]; out.day = +m2[2]; }
+      else {
+        var m3 = str.match(/(\d{1,2})\s*[\/.]\s*(\d{1,2})/);
+        if (m3) { out.month = +m3[1]; out.day = +m3[2]; }
+      }
+      var y = str.match(/(19|20)\d{2}/);
+      if (y) out.year = +y[0];
+    }
+    if (out.month != null && (out.month < 1 || out.month > 12)) { out.month = null; out.day = null; }
+    var wd = str.match(/[\(\[]\s*([일월화수목금토])\s*[\)\]]/) || str.match(/([일월화수목금토])요일/);
+    if (wd) out.weekday = WEEKDAYS[wd[1]] || '';
+    var tm = str.match(/(오전|오후|AM|PM)?\s*(\d{1,2})\s*(?::|시)\s*(\d{2})?\s*분?/i);
+    if (tm) {
+      var ap = tm[1] || '';
+      var mm = tm[3] ? ':' + tm[3] : '';
+      out.time = (ap ? ap + ' ' : '') + tm[2] + '시' + (mm ? ' ' + tm[3] + '분' : '');
+    }
     return out;
   }
+  function yearOfRecital(d) {
+    var p = parseWhen(d.recitalWhen);
+    if (p.year) return String(p.year);
+    var m = String(d.recitalTitle || '').match(/(19|20)\d{2}/);
+    return m ? m[0] : '';
+  }
 
-  /* ── 발표회 팜플렛 · Cute 세트 ─────────────────────────── */
-  function recitalCuteMeasure(ctx, t, d, sc) {
-    var m = newModel(CUTE_TOP, sc);
-    var cw = CARD_W - CUTE_M * 2;
-    var labelH = 40 * sc;
-    function label(text, y) {
-      cutePill(ctx, CUTE_M, y, text, 21 * sc, 20 * sc, 38 * sc, t.accentSoft, t.accent, 0, true);
+  /* ── 부제 안의 라틴 문자는 이탤릭 세리프로 (샴페인 아치·미드나잇 홀) ── */
+  function subSegments(text) {
+    var s = String(text == null ? '' : text);
+    var re = /[A-Za-z][A-Za-z0-9 .'&:\-]*[A-Za-z0-9.]/g;
+    var out = [], last = 0, m;
+    while ((m = re.exec(s))) {
+      if (m.index > last) out.push({ t: s.slice(last, m.index), latin: false });
+      out.push({ t: m[0], latin: true });
+      last = m.index + m[0].length;
     }
-    function dashed(y) { cuteDashes(ctx, y, t.frame, sc); }
+    if (last < s.length) out.push({ t: s.slice(last), latin: false });
+    return out.filter(function (x) { return x.t.trim(); });
+  }
+  function measureSubMix(ctx, text, koSize, latinSize, em, weight) {
+    var total = 0;
+    subSegments(text).forEach(function (sg) {
+      if (sg.latin) {
+        ctx.font = 'italic 300 ' + Math.round(latinSize) + 'px ' + LATIN;
+        total += ctx.measureText(sg.t).width;
+      } else {
+        ctx.font = (weight || '200') + ' ' + Math.round(koSize) + 'px ' + SERIF;
+        total += trackedWidth(ctx, sg.t, koSize * em);
+      }
+    });
+    return total;
+  }
+  function fitSubMix(ctx, text, maxW, koSize, latinSize, em, weight) {
+    var k = 1;
+    for (var i = 0; i < 18; i++) {
+      if (measureSubMix(ctx, text, koSize * k, latinSize * k, em * k, weight) <= maxW) break;
+      k -= 0.05;
+      if (k < 0.55) { k = 0.55; break; }
+    }
+    return k;
+  }
+  function drawSubMix(ctx, text, cx, y, koSize, latinSize, em, koColor, latinColor, weight) {
+    var segs = subSegments(text);
+    if (!segs.length) return 0;
+    var x = cx - measureSubMix(ctx, text, koSize, latinSize, em, weight) / 2;
+    ctx.save();
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+    segs.forEach(function (sg) {
+      if (sg.latin) {
+        ctx.font = 'italic 300 ' + Math.round(latinSize) + 'px ' + LATIN;
+        ctx.fillStyle = latinColor;
+        ctx.fillText(sg.t, x, y);
+        x += ctx.measureText(sg.t).width;
+      } else {
+        ctx.font = (weight || '200') + ' ' + Math.round(koSize) + 'px ' + SERIF;
+        ctx.fillStyle = koColor;
+        drawTracked(ctx, sg.t, x, y, koSize * em, 'left');
+        x += trackedWidth(ctx, sg.t, koSize * em);
+      }
+    });
+    ctx.restore();
+    return x - (cx - measureSubMix(ctx, text, koSize, latinSize, em, weight) / 2);
+  }
 
-    // ── 제목 ──
-    var title = d.recitalTitle || '발표회 제목';
-    var tSize = Math.round(46 * sc);
-    ctx.font = '400 ' + tSize + 'px ' + JUA;
-    var tw = wrapText(ctx, title, cw - 10 * sc, 3);
-    var tlh = tSize * 1.34;
-    var subText = d.recitalSub || d.studio || '';
-    ctx.font = '400 ' + Math.round(23 * sc) + 'px ' + DODUM;
-    var sw = subText ? wrapText(ctx, subText, cw - 10 * sc, 2) : null;
-    var slh = 23 * sc * 1.6;
-    m.gap(-6, 2);
-    m.block(tw.lines.length * tlh + (sw ? 10 * sc + sw.lines.length * slh : 0) + 14 * sc, function (y) {
+  /* ── 엠블럼 자리에 로고 또는 모노그램 ───────────────────── */
+  function hasLogo() {
+    return !!(state.logoImg && state.logoImg.naturalWidth && state.logoImg.naturalHeight);
+  }
+  function drawLogoInCircle(ctx, cx, cy, r, ringColor, plateColor) {
+    if (!hasLogo()) return false;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.closePath();
+    if (plateColor) { ctx.fillStyle = plateColor; ctx.fill(); }
+    ctx.clip();
+    var box = r * 1.5;
+    var im = state.logoImg;
+    var s = Math.min(box / im.naturalWidth, box / im.naturalHeight);
+    var w = im.naturalWidth * s, h = im.naturalHeight * s;
+    ctx.drawImage(im, cx - w / 2, cy - h / 2, w, h);
+    ctx.restore();
+    if (ringColor) {
       ctx.save();
-      ctx.textBaseline = 'top';
+      ctx.strokeStyle = ringColor;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+    return true;
+  }
+  function drawLogoBand(ctx, cx, cy, h, color) {
+    if (!hasLogo()) return false;
+    var im = state.logoImg;
+    var maxW = 240;
+    var s = Math.min(maxW / im.naturalWidth, h / im.naturalHeight);
+    var w = im.naturalWidth * s, hh = im.naturalHeight * s;
+    ctx.save();
+    ctx.drawImage(im, cx - w / 2, cy - hh / 2, w, hh);
+    ctx.restore();
+    if (color) {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.globalAlpha = 0.35;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx - w / 2, cy + hh / 2 + 6);
+      ctx.lineTo(cx + w / 2, cy + hh / 2 + 6);
+      ctx.stroke();
+      ctx.restore();
+    }
+    return true;
+  }
+
+  /* ── 프로그램 줄 (1~8줄) 공통 준비 ────────────────────── */
+  function recitalProgram(d) {
+    var prog = splitProgram(d.recitalProgram);
+    if (!prog.length) return { empty: true, items: [{ who: '', piece: '연주자 — 곡명' }] };
+    return { empty: false, items: prog };
+  }
+  function fitWorkLines(ctx, text, maxW, maxSize, minSize, weight, family, maxLines) {
+    var size = maxSize, wrap = null;
+    for (;;) {
+      ctx.font = weight + ' ' + Math.round(size) + 'px ' + family;
+      wrap = wrapText(ctx, text, maxW, 1);
+      if (!wrap.truncated || size <= minSize) break;
+      size -= Math.max(0.5, size * 0.045);
+    }
+    if (wrap.truncated) {
+      for (;;) {
+        ctx.font = weight + ' ' + Math.round(size) + 'px ' + family;
+        wrap = wrapText(ctx, text, maxW, maxLines || 2);
+        if (!wrap.truncated || size <= minSize) break;
+        size -= Math.max(0.5, size * 0.045);
+      }
+    }
+    return { size: size, lines: wrap.lines };
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     A · 미드나잇 홀
+     ══════════════════════════════════════════════════════════ */
+  function paintMidnightBg(ctx) {
+    ctx.fillStyle = '#060B12';
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+    var g = ctx.createRadialGradient(CARD_W / 2, 470, 60, CARD_W / 2, 560, 980);
+    g.addColorStop(0, '#1C2E41');
+    g.addColorStop(0.46, '#0F1C2A');
+    g.addColorStop(1, '#060B12');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    var gt = ctx.createRadialGradient(CARD_W / 2, 0, 20, CARD_W / 2, 0, 700);
+    gt.addColorStop(0, 'rgba(58,84,110,0.55)');
+    gt.addColorStop(1, 'rgba(12,20,30,0)');
+    ctx.fillStyle = gt;
+    ctx.fillRect(0, 0, CARD_W, 760);
+
+    var gb = ctx.createRadialGradient(CARD_W / 2, CARD_H, 20, CARD_W / 2, CARD_H, 660);
+    gb.addColorStop(0, 'rgba(143,108,50,0.18)');
+    gb.addColorStop(1, 'rgba(8,12,18,0)');
+    ctx.fillStyle = gb;
+    ctx.fillRect(0, CARD_H - 820, CARD_W, 820);
+
+    var gv = ctx.createRadialGradient(CARD_W / 2, CARD_H * 0.48, 240, CARD_W / 2, CARD_H * 0.48, 920);
+    gv.addColorStop(0, 'rgba(0,0,0,0)');
+    gv.addColorStop(1, 'rgba(0,0,0,0.42)');
+    ctx.fillStyle = gv;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    grainLayer(ctx, 0.032);
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(199,168,104,0.46)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(50.5, 50.5, CARD_W - 101, CARD_H - 101);
+    ctx.strokeStyle = 'rgba(199,168,104,0.20)';
+    ctx.strokeRect(60.5, 60.5, CARD_W - 121, CARD_H - 121);
+    ctx.restore();
+
+    var corner = function (x, y, sx, sy) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(sx, sy);
+      ctx.strokeStyle = 'rgba(199,168,104,0.8)';
+      ctx.lineWidth = 0.9;
+      ctx.beginPath(); ctx.moveTo(1, 22); ctx.lineTo(1, 1); ctx.lineTo(22, 1); ctx.stroke();
+      ctx.strokeStyle = 'rgba(199,168,104,0.34)';
+      ctx.lineWidth = 0.55;
+      ctx.beginPath(); ctx.moveTo(7, 30); ctx.lineTo(7, 7); ctx.lineTo(30, 7); ctx.stroke();
+      ctx.restore();
+    };
+    corner(50, 50, 1, 1);
+    corner(CARD_W - 50, 50, -1, 1);
+    corner(50, CARD_H - 50, 1, -1);
+    corner(CARD_W - 50, CARD_H - 50, -1, -1);
+  }
+
+  function drawPianoSilhouette(ctx, x, y, w) {
+    var s = w / 216;
+    ctx.save();
+    ctx.translate(x - 36 * s, y - 30 * s);
+    ctx.scale(s, s);
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    var body = new Path2D('M46 140 L46 56 C46 44 54 38 66 38 C140 34 218 56 244 104 C250 116 248 130 240 140 Z');
+    ctx.fillStyle = 'rgba(199,168,104,0.11)';
+    ctx.fill(body);
+    ctx.strokeStyle = 'rgba(199,168,104,0.55)';
+    ctx.lineWidth = 0.8;
+    ctx.stroke(body);
+    ctx.strokeStyle = 'rgba(199,168,104,0.22)';
+    ctx.lineWidth = 0.55;
+    ctx.stroke(new Path2D('M56 131 L56 61 C56 52 61 47 70 47 C137 44 208 64 231 106 C233 112 231 117 227 121'));
+    ctx.strokeStyle = 'rgba(199,168,104,0.14)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke(new Path2D('M62 131 C112 123 178 123 228 131'));
+    ctx.fillStyle = 'rgba(199,168,104,0.06)';
+    ctx.fillRect(46, 140, 194, 12);
+    ctx.strokeStyle = 'rgba(199,168,104,0.7)';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.moveTo(46, 140); ctx.lineTo(240, 140); ctx.stroke();
+    ctx.strokeStyle = 'rgba(199,168,104,0.45)';
+    ctx.lineWidth = 0.7;
+    ctx.beginPath(); ctx.moveTo(46, 152); ctx.lineTo(240, 152); ctx.stroke();
+    ctx.strokeStyle = 'rgba(199,168,104,0.18)';
+    ctx.lineWidth = 0.45;
+    ctx.beginPath();
+    for (var kx = 46; kx <= 240; kx += 9) { ctx.moveTo(kx, 140); ctx.lineTo(kx, 152); }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function recitalMidnightMeasure(ctx, d, sc) {
+    var mx = 140, cw = CARD_W - mx * 2, cx = CARD_W / 2;
+    var m = posterModel(100, CARD_H - 76, sc);
+    var studio = String(d.studio || '').trim();
+    var initials = monogram(d.teacher);
+    var year = yearOfRecital(d);
+    var titleText = String(d.recitalTitle || '').trim() || '발표회 제목';
+    var sub = String(d.recitalSub || '').trim() || studio;
+    var when = String(d.recitalWhen || '').trim();
+    var where = String(d.recitalWhere || '').trim();
+    var note = String(d.recitalNote || '').trim();
+    var pg = recitalProgram(d);
+
+    /* 머리: 엠블럼 + 스튜디오 + 헤어라인 */
+    var studioSize = studio ? trackedFitSize(ctx, studio, cw - 60, 14 * sc, 9 * sc, 0.46, '300', SERIF) : 0;
+    var headH = 82 * sc + (studio ? 20 * sc + studioSize * 1.5 : 0) + 18 * sc + 10 * sc;
+    m.block(headH, function (y) {
+      var r = 41 * sc;
+      var drew = drawLogoInCircle(ctx, cx, y + r, r, null, 'rgba(244,238,227,0.94)');
+      ctx.save();
+      ctx.strokeStyle = 'rgba(199,168,104,0.55)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(cx, y + r, r, 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = 'rgba(199,168,104,0.30)';
+      ctx.lineWidth = 0.55;
+      ctx.beginPath(); ctx.arc(cx, y + r, r - 7, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+      drawDiamond(ctx, cx, y + r - r - 1.6, 2.4 * sc, '#C7A868', 0.7);
+      drawDiamond(ctx, cx, y + r + r + 1.6, 2.4 * sc, '#C7A868', 0.7);
+      if (!drew) {
+        ctx.save();
+        ctx.textBaseline = 'alphabetic';
+        trackedText(ctx, initials, cx, y + r + 8 * sc, 22 * sc, 0.07, '#D8C296', '400', LATIN, 'center');
+        ctx.restore();
+      }
+      var yy = y + 82 * sc;
+      if (studio) {
+        yy += 20 * sc;
+        ctx.save();
+        ctx.textBaseline = 'alphabetic';
+        trackedText(ctx, studio, cx, yy + studioSize * 0.82, studioSize, 0.46, '#C9B793', '300', SERIF, 'center');
+        ctx.restore();
+        yy += studioSize * 1.5;
+      }
+      drawDiamond(ctx, cx, yy + 5 * sc, 2.6 * sc, '#C7A868', 0.9);
+      ctx.save();
+      ctx.strokeStyle = 'rgba(199,168,104,0.6)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(cx - 42 * sc, yy + 5 * sc); ctx.lineTo(cx - 8 * sc, yy + 5 * sc); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx + 8 * sc, yy + 5 * sc); ctx.lineTo(cx + 42 * sc, yy + 5 * sc); ctx.stroke();
+      ctx.restore();
+    });
+    m.gap(6 * sc, 1);
+
+    /* 제목 */
+    var tSize = 64 * sc;
+    var tw = null;
+    for (;;) {
+      ctx.font = '300 ' + Math.round(tSize) + 'px ' + SERIF;
+      tw = wrapText(ctx, titleText, cw * 0.96, 3);
+      if (!tw.truncated || tSize <= 34 * sc) break;
+      tSize -= Math.max(1, tSize * 0.04);
+    }
+    var tLH = tSize * 1.32;
+    var yearSize = year ? 33 * sc : 0;
+    var subK = sub ? fitSubMix(ctx, sub, cw - 20 * sc, 19 * sc, 25 * sc, 0.22, '200') : 0;
+    var subKSize = 19 * sc * subK;
+    var subH = sub ? subKSize * 1.6 : 0;
+    var titleBlockH = (year ? yearSize * 1.05 + 18 * sc : 0) + tw.lines.length * tLH + (sub ? 16 * sc + subH : 0);
+    m.block(titleBlockH, function (y) {
+      var yy = y;
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
       ctx.textAlign = 'center';
-      ctx.fillStyle = t.ink;
-      ctx.font = '400 ' + tSize + 'px ' + JUA;
-      tw.lines.forEach(function (line, i) { ctx.fillText(line, CARD_W / 2, y + i * tlh); });
-      if (sw) {
-        ctx.fillStyle = t.soft;
-        ctx.font = '400 ' + Math.round(23 * sc) + 'px ' + DODUM;
-        var sy = y + tw.lines.length * tlh + 10 * sc;
-        sw.lines.forEach(function (line, i) { ctx.fillText(line, CARD_W / 2, sy + i * slh); });
+      if (year) {
+        trackedText(ctx, year, cx, yy + yearSize * 0.95, yearSize, 0.46, '#C2A265', '300', LATIN, 'center');
+        yy += yearSize * 1.05 + 18 * sc;
       }
-      drawStar(ctx, CUTE_M + 420 * sc, y + 8 * sc, 8 * sc, t.frame2, 0.2);
-      ctx.restore();
-    });
-
-    // ── 초대 티켓 (일시·장소) ──
-    m.gap(20, 1);
-    var tkRows = [];
-    if (d.recitalWhen) tkRows.push({ k: '일시', v: d.recitalWhen });
-    if (d.recitalWhere) tkRows.push({ k: '장소', v: d.recitalWhere });
-    if (tkRows.length) {
-      var vSize = Math.round(26 * sc);
-      var tkWrap = tkRows.map(function (r) {
-        ctx.font = '400 ' + vSize + 'px ' + JUA;
-        return { k: r.k, v: wrapText(ctx, r.v, cw - 110 * sc, 2) };
-      });
-      var vLH = vSize * 1.5;
-      var boxH = 24 * sc + tkWrap.reduce(function (a, r) { return a + r.v.lines.length * vLH + 8 * sc; }, 0);
-      m.block(boxH + 10 * sc, function (y) {
-        ctx.save();
-        roundRect(ctx, CUTE_M, y, cw, boxH, 24 * sc);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fill();
-        ctx.setLineDash([12, 9]);
-        ctx.lineWidth = 2.6 * sc;
-        ctx.strokeStyle = t.frame2;
-        ctx.stroke();
-        ctx.setLineDash([]);
-        // 티켓 반질선
-        ctx.beginPath();
-        ctx.moveTo(CUTE_M + 96 * sc, y + 10 * sc);
-        ctx.lineTo(CUTE_M + 96 * sc, y + boxH - 10 * sc);
-        ctx.strokeStyle = t.frame;
-        ctx.lineWidth = 1.6 * sc;
-        ctx.setLineDash([6, 8]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'left';
-        var by = y + 22 * sc;
-        tkWrap.forEach(function (r) {
-          ctx.fillStyle = t.accent;
-          ctx.font = '400 ' + Math.round(19 * sc) + 'px ' + JUA;
-          ctx.fillText(r.k, CUTE_M + 26 * sc, by + 6 * sc);
-          ctx.fillStyle = t.ink;
-          ctx.font = '400 ' + vSize + 'px ' + JUA;
-          r.v.lines.forEach(function (l, i) { ctx.fillText(l, CUTE_M + 116 * sc, by + i * vLH); });
-          by += r.v.lines.length * vLH + 8 * sc;
-        });
-        drawHeart(ctx, CUTE_M + cw - 24 * sc, y + 20 * sc, 8 * sc, t.frame2, 0.2);
-        drawSparkle(ctx, CUTE_M + cw - 26 * sc, y + boxH - 22 * sc, 8 * sc, t.frame2);
-        ctx.restore();
-      });
-    }
-
-    // ── 프로그램 ──
-    var prog = splitProgram(d.recitalProgram);
-    if (prog.length) {
-      m.gap(26, 1);
-      m.block(1, dashed);
-      m.gap(20, 0);
-      var wSize = Math.round(24 * sc);
-      var pSize = Math.round(24 * sc);
-      var rows = prog.map(function (it) {
-        ctx.font = '400 ' + pSize + 'px ' + DODUM;
-        var pieceLines = wrapText(ctx, it.piece, cw - 80 * sc, 2).lines;
-        return { who: it.who, lines: pieceLines };
-      });
-      var pLH = pSize * 1.6;
-      var rowH = rows.map(function (r) { return (r.who ? wSize * 1.5 : 0) + r.lines.length * pLH + 18 * sc; });
-      var totalH = rowH.reduce(function (a, b) { return a + b; }, 0);
-      m.block(labelH + 14 * sc + totalH, function (y) {
-        label('프로그램', y);
-        var by = y + labelH + 14 * sc;
-        ctx.save();
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'left';
-        rows.forEach(function (r, ri) {
-          var h = rowH[ri] - 6 * sc;
-          roundRect(ctx, CUTE_M, by, cw, h, 18 * sc);
-          ctx.fillStyle = t.pastel;
-          ctx.fill();
-          drawStar(ctx, CUTE_M + 26 * sc, by + 24 * sc, 8 * sc, t.frame2, 0.15);
-          var tx = CUTE_M + 46 * sc;
-          if (r.who) {
-            ctx.fillStyle = t.chipInk;
-            ctx.font = '400 ' + wSize + 'px ' + JUA;
-            ctx.fillText(r.who, tx, by + 8 * sc);
-          }
-          ctx.fillStyle = t.ink;
-          ctx.font = '400 ' + pSize + 'px ' + DODUM;
-          var py = by + 8 * sc + (r.who ? wSize * 1.5 : 0);
-          r.lines.forEach(function (l, i) { ctx.fillText(l, tx, py + i * pLH); });
-          by += h + 8 * sc;
-        });
-        ctx.restore();
-      });
-    }
-
-    // ── 드리는 말씀 ──
-    if (d.recitalNote) {
-      m.gap(26, 1);
-      m.block(1, dashed);
-      m.gap(20, 0);
-      var nSize = Math.round(25 * sc);
-      var nPadX = 30 * sc, nPadY = 26 * sc;
-      ctx.font = '400 ' + nSize + 'px ' + DODUM;
-      var nWrap = wrapText(ctx, d.recitalNote, cw - nPadX * 2 - 24 * sc, 3);
-      var nLH = nSize * 1.66;
-      var nBoxH = nPadY * 2 + nWrap.lines.length * nLH;
-      m.block(labelH + 14 * sc + nBoxH, function (y) {
-        label('오시는 길 · 드리는 말씀', y);
-        var by = y + labelH + 14 * sc;
-        ctx.save();
-        roundRect(ctx, CUTE_M, by, cw, nBoxH, 26 * sc);
-        ctx.fillStyle = t.pastel;
-        ctx.fill();
-        ctx.setLineDash([10, 9]);
-        ctx.lineWidth = 2.4 * sc;
-        ctx.strokeStyle = t.frame;
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'left';
-        ctx.fillStyle = t.ink;
-        ctx.font = '400 ' + nSize + 'px ' + DODUM;
-        nWrap.lines.forEach(function (l, i) { ctx.fillText(l, CUTE_M + nPadX, by + nPadY + i * nLH); });
-        ctx.restore();
-      });
-    }
-
-    return m.done();
-  }
-
-  function drawRecitalCute(ctx, t, d, themeId) {
-    var lg = headerLogo(CARD_W - CUTE_M * 2 - 220, 46);
-    var out = layoutCard(ctx, function () {
-      paintCuteBase(ctx, t, d, lg);
-      paintCuteHeader(ctx, t, d, lg, '발표회 초대');
-    }, function (sc) { return recitalCuteMeasure(ctx, t, d, sc); });
-    paintCuteFooter(ctx, t, out.scale);
-    out.theme = themeId; out.set = 'cute'; out.mode = 'recital-' + t.mode; out.card = 'recital';
-    return out;
-  }
-
-  /* ── 발표회 팜플렛 · Classic 세트 ──────────────────────── */
-  function recitalLuxMeasure(ctx, t, d, sc) {
-    var h = luxHeaderMetrics(d);
-    var m = newModel(h.top, sc, CARD_H - 172);
-    m.flexMax = 76 * sc;
-    var cw = CARD_W - LUX_M * 2;
-    var x0 = LUX_M, x1 = CARD_W - LUX_M;
-    var labelH = 30 * sc;
-
-    // ── 제목 블록 ──
-    var title = d.recitalTitle || '발표회 제목';
-    var tSize = Math.round(50 * sc);
-    ctx.font = '600 ' + tSize + 'px ' + SERIF;
-    var tw = wrapText(ctx, title, cw - 40 * sc, 3);
-    var tlh = tSize * 1.34;
-    var subText = d.recitalSub || d.studio || '';
-    ctx.font = 'italic 500 ' + Math.round(24 * sc) + 'px ' + SERIF;
-    var sw = subText ? wrapText(ctx, subText, cw - 60 * sc, 2) : null;
-    var slh = 24 * sc * 1.6;
-    m.gap(2, 2);
-    m.block(26 * sc + tw.lines.length * tlh + (sw ? 12 * sc + sw.lines.length * slh : 0), function (y) {
-      ctx.save();
-      ctx.textBaseline = 'top';
-      ctx.textAlign = 'center';
-      ctx.font = '500 ' + Math.round(15 * sc) + 'px ' + LATIN;
-      ctx.fillStyle = t.gold;
-      drawTracked(ctx, 'RECITAL  ·  INVITATION', CARD_W / 2, y, 6 * sc, 'center');
-      ctx.fillStyle = t.ink;
-      ctx.font = '600 ' + tSize + 'px ' + SERIF;
       tw.lines.forEach(function (line, i) {
-        drawTracked(ctx, line, CARD_W / 2, y + 26 * sc + i * tlh, 1.6 * sc, 'center');
+        trackedText(ctx, line, cx, yy + tSize * 0.92 + i * tLH, tSize, 0.09, '#F4EEE3', '300', SERIF, 'center');
       });
-      if (sw) {
-        ctx.fillStyle = t.gold;
-        ctx.font = 'italic 500 ' + Math.round(24 * sc) + 'px ' + SERIF;
-        var sy = y + 26 * sc + tw.lines.length * tlh + 12 * sc;
-        sw.lines.forEach(function (line, i) { ctx.fillText(line, CARD_W / 2, sy + i * slh); });
+      yy += tw.lines.length * tLH;
+      if (sub) {
+        yy += 16 * sc;
+        drawSubMix(ctx, sub, cx, yy + subKSize * 0.92, subKSize, subKSize * (25 / 19), 0.22, '#BDAE92', '#D5C098', '200');
       }
       ctx.restore();
     });
+    m.gap(4 * sc, 1);
 
-    // ── 일시 · 장소 ──
-    m.gap(22, 1);
-    m.block(1, function (y) { luxOrnament(ctx, CARD_W / 2, y, 150, t, sc, 5); });
-    m.gap(20, 0);
-    var whenLines = [];
-    if (d.recitalWhen) { ctx.font = '500 ' + Math.round(25 * sc) + 'px ' + SERIF; whenLines.push(wrapText(ctx, d.recitalWhen, cw - 40 * sc, 2)); }
-    if (d.recitalWhere) { ctx.font = '400 ' + Math.round(22 * sc) + 'px ' + SERIF; whenLines.push(wrapText(ctx, d.recitalWhere, cw - 40 * sc, 2)); }
-    var infoH = (whenLines[0] ? whenLines[0].lines.length * 25 * sc * 1.6 : 0) + (whenLines[1] ? 6 * sc + whenLines[1].lines.length * 22 * sc * 1.7 : 0);
-    if (infoH) {
-      m.block(infoH, function (y) {
+    /* 일시 · 장소 */
+    if (when || where) {
+      var whenSize = 15.5 * sc;
+      var wSize = when ? trackedFitSize(ctx, when, cw * 0.5, whenSize, 10 * sc, 0.20, '300', SERIF) : 0;
+      var vSize = where ? trackedFitSize(ctx, where, cw * 0.42, whenSize, 10 * sc, 0.20, '300', SERIF) : 0;
+      var wLine = Math.max(wSize * 1.5, vSize * 1.5, 16 * sc);
+      m.block(wLine, function (y) {
+        var base = y + wLine * 0.62;
         ctx.save();
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'center';
-        var by = y;
-        if (whenLines[0]) {
-          ctx.fillStyle = t.ink;
-          ctx.font = '500 ' + Math.round(25 * sc) + 'px ' + SERIF;
-          whenLines[0].lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, by + i * 25 * sc * 1.6); });
-          by += whenLines[0].lines.length * 25 * sc * 1.6;
+        ctx.textBaseline = 'alphabetic';
+        var total = 0;
+        if (when) { ctx.font = '300 ' + Math.round(wSize) + 'px ' + SERIF; total += trackedWidth(ctx, when, wSize * 0.20); }
+        if (when && where) total += 40 * sc;
+        if (where) { ctx.font = '300 ' + Math.round(vSize) + 'px ' + SERIF; total += trackedWidth(ctx, where, vSize * 0.20); }
+        var x = cx - total / 2;
+        if (when) {
+          trackedText(ctx, when, x, base, wSize, 0.20, '#DBD2C0', '300', SERIF, 'left');
+          x += trackedWidth(ctx, when, wSize * 0.20) + 20 * sc;
         }
-        if (whenLines[1]) {
-          ctx.fillStyle = t.gold;
-          ctx.font = '400 ' + Math.round(22 * sc) + 'px ' + SERIF;
-          whenLines[1].lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, by + 6 * sc + i * 22 * sc * 1.7); });
+        if (when && where) {
+          ctx.strokeStyle = 'rgba(199,168,104,0.46)';
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(x, base - 12 * sc); ctx.lineTo(x, base + 2 * sc); ctx.stroke();
+          x += 20 * sc;
         }
+        if (where) trackedText(ctx, where, x, base, vSize, 0.20, '#C6B997', '300', SERIF, 'left');
         ctx.restore();
       });
+      m.gap(4 * sc, 1);
     }
 
-    // ── 프로그램 ──
-    var prog = splitProgram(d.recitalProgram);
-    if (prog.length) {
-      m.gap(22, 1);
-      var pSize = Math.round(24 * sc);
-      var wSize = Math.round(20 * sc);
-      var rows = prog.map(function (it) {
-        if (it.who) { ctx.font = 'italic 400 ' + wSize + 'px ' + SERIF; }
-        var whoW = it.who ? ctx.measureText(it.who).width + 24 * sc : 0;
-        ctx.font = '400 ' + pSize + 'px ' + SERIF;
-        var pieceWrap = wrapText(ctx, it.piece, cw - whoW - 10 * sc, 2);
-        return { who: it.who, lines: pieceWrap.lines, whoW: whoW };
+    /* 그랜드피아노 실루엣 */
+    var pianoW = 252 * sc, pianoH = 147 * sc;
+    m.block(pianoH, function (y) { drawPianoSilhouette(ctx, cx - pianoW / 2, y, pianoW); });
+    m.gap(4 * sc, 1.3);
+
+    /* 프로그램 */
+    var noW = 26 * sc;
+    var whoSize = 11.5 * sc;
+    var hasWho = pg.items.some(function (it) { return it.who; });
+    var whoW = 0;
+    if (hasWho) {
+      ctx.font = '300 ' + Math.round(whoSize) + 'px ' + SERIF;
+      pg.items.forEach(function (it) {
+        if (!it.who) return;
+        whoW = Math.max(whoW, trackedWidth(ctx, it.who, whoSize * 0.22));
       });
-      var pLH = pSize * 1.5;
-      var rowGap = 15 * sc;
-      var pH = rows.reduce(function (a, r) { return a + r.lines.length * pLH + rowGap; }, 0);
-      m.block(18 * sc + pH, function (y) {
-        luxBillLabel(ctx, t, '프로그램', y, sc);
+      whoW = Math.min(Math.max(whoW, 56 * sc), 150 * sc);
+    }
+    var workMax = cw - noW - 16 * sc - (hasWho ? whoW + 30 * sc : 0);
+    var rows = pg.items.map(function (it, i) {
+      var f = fitWorkLines(ctx, it.piece, workMax, 18.5 * sc, 12.5 * sc, '300', SERIF, 2);
+      return { no: ('0' + (i + 1)).slice(-2), who: it.who || '', work: f.lines, size: f.size, h: f.lines.length * f.size * 1.38 };
+    });
+    var rowGap = 24 * sc;
+    var rowsH = rows.reduce(function (a, r) { return a + r.h; }, 0) + Math.max(0, rows.length - 1) * rowGap;
+    var progH = 12 * sc + 28 * sc + rowsH;
+    m.block(progH, function (y) {
+      var labelY = y + 9 * sc;
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      var lw = 58 * sc;
+      trackedText(ctx, 'PROGRAM', cx, labelY, 11.5 * sc, 0.58, '#B99C60', '400', LATIN, 'center');
+      ctx.font = '400 ' + Math.round(11.5 * sc) + 'px ' + LATIN;
+      var tw2 = trackedWidth(ctx, 'PROGRAM', 11.5 * sc * 0.58);
+      ctx.strokeStyle = 'rgba(199,168,104,0.34)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(cx - tw2 / 2 - 16 * sc - lw, labelY - 4 * sc); ctx.lineTo(cx - tw2 / 2 - 16 * sc, labelY - 4 * sc); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx + tw2 / 2 + 16 * sc, labelY - 4 * sc); ctx.lineTo(cx + tw2 / 2 + 16 * sc + lw, labelY - 4 * sc); ctx.stroke();
+      ctx.restore();
+
+      var ry = y + 12 * sc + 28 * sc;
+      rows.forEach(function (r) {
         ctx.save();
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'left';
-        var by = y + 18 * sc;
-        rows.forEach(function (r) {
-          ctx.fillStyle = t.ink;
-          ctx.font = '400 ' + pSize + 'px ' + SERIF;
-          r.lines.forEach(function (l, i) { ctx.fillText(l, x0, by + i * pLH); });
-          if (r.who) {
-            ctx.fillStyle = t.gold;
-            ctx.font = 'italic 400 ' + wSize + 'px ' + SERIF;
-            ctx.textAlign = 'right';
-            ctx.fillText(r.who, x1, by + 2 * sc);
-            var lw = ctx.measureText(r.who).width;
-            ctx.textAlign = 'left';
-            ctx.font = '400 ' + pSize + 'px ' + SERIF;
-            var plw = Math.max.apply(null, r.lines.map(function (l) { return ctx.measureText(l).width; }));
-            dotLeader(ctx, x0 + plw + 18 * sc, x1 - lw - 18 * sc, by + pSize * 0.78, t.line, sc);
-          }
-          by += r.lines.length * pLH + rowGap;
+        ctx.textBaseline = 'alphabetic';
+        var base = ry + r.size * 0.95;
+        trackedText(ctx, r.no, mx, base, 14 * sc, 0.10, '#BE9F60', '400', LATIN, 'left');
+        r.work.forEach(function (line, li) {
+          trackedText(ctx, line, mx + noW, base + li * r.size * 1.38, r.size, 0.045, pg.empty ? 'rgba(237,231,219,0.55)' : '#EDE7DB', '300', SERIF, 'left');
+        });
+        if (hasWho && r.who) {
+          var workW = 0;
+          ctx.font = '300 ' + Math.round(r.size) + 'px ' + SERIF;
+          r.work.forEach(function (line) { workW = Math.max(workW, trackedWidth(ctx, line, r.size * 0.045)); });
+          ctx.strokeStyle = 'rgba(199,168,104,0.5)';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([1, 4]);
+          ctx.beginPath();
+          ctx.moveTo(mx + noW + workW + 12 * sc, base - 4 * sc);
+          ctx.lineTo(mx + cw - whoW - 14 * sc, base - 4 * sc);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          trackedText(ctx, r.who, mx + cw, base, whoSize, 0.22, '#A99C86', '300', SERIF, 'right');
+        }
+        ctx.restore();
+        ry += r.h + rowGap;
+      });
+    });
+
+    /* 안내 문구 */
+    if (note) {
+      ctx.font = '200 ' + Math.round(11 * sc) + 'px ' + SANS;
+      var nw = wrapText(ctx, note, cw - 20 * sc, 6);
+      var nLH = 11 * sc * 2.05;
+      m.gap(6 * sc, 1.4);
+      m.block(nw.lines.length * nLH, function (y) {
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = 'rgba(219,209,190,0.8)';
+        ctx.font = '200 ' + Math.round(11 * sc) + 'px ' + SANS;
+        nw.lines.forEach(function (line, i) {
+          ctx.fillText(line, cx, y + 11 * sc * 0.95 + i * nLH);
         });
         ctx.restore();
       });
     }
-
-    // ── 드리는 말씀 ──
-    if (d.recitalNote) {
-      m.gap(24, 1);
-      var nSize = Math.round(23 * sc);
-      ctx.font = 'italic 400 ' + nSize + 'px ' + SERIF;
-      var nWrap = wrapText(ctx, d.recitalNote, cw - 50 * sc, 3);
-      var nLH = nSize * 1.72;
-      m.block(nWrap.lines.length * nLH, function (y) {
-        ctx.save();
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = t.soft;
-        ctx.font = 'italic 400 ' + nSize + 'px ' + SERIF;
-        nWrap.lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, y + i * nLH); });
-        ctx.restore();
-      });
-    }
-
+    var widestWork = 0;
+    rows.forEach(function (r) {
+      ctx.font = '300 ' + Math.round(r.size) + 'px ' + SERIF;
+      r.work.forEach(function (l) { widestWork = Math.max(widestWork, trackedWidth(ctx, l, r.size * 0.045)); });
+    });
+    m.info = {
+      style: 'midnight', programRows: rows.length, titleLines: tw.lines.length,
+      noteLines: typeof nw !== 'undefined' ? nw.lines.length : 0,
+      programFit: widestWork <= workMax + 1,
+      textWidth: Math.round(widestWork), textBudget: Math.round(workMax)
+    };
     return m.done();
   }
 
-  function drawRecitalChic(ctx, t, d, themeId) {
-    var out = layoutCard(ctx, function () {
-      paintLuxBg(ctx, t);
-      paintLuxHeader(ctx, t, d);
-    }, function (sc) { return recitalLuxMeasure(ctx, t, d, sc); });
-    paintLuxFooter(ctx, t, out.scale);
-    out.theme = themeId; out.set = 'chic'; out.mode = 'recital-' + t.mode; out.card = 'recital';
-    return out;
+  function recitalMidnight(ctx, d) {
+    return posterCard(ctx, function () { paintMidnightBg(ctx); }, function (sc) {
+      return recitalMidnightMeasure(ctx, d, sc);
+    }, 'midnight');
   }
+
+  /* ══════════════════════════════════════════════════════════
+     B · 샴페인 아치
+     ══════════════════════════════════════════════════════════ */
+  function archPath(ctx, x, y, w, h, ry) {
+    var rx = w / 2, k = 0.5523;
+    ctx.beginPath();
+    ctx.moveTo(x, y + h);
+    ctx.lineTo(x, y + ry);
+    ctx.bezierCurveTo(x, y + ry - k * ry, x + rx - k * rx, y, x + rx, y);
+    ctx.bezierCurveTo(x + rx + k * rx, y, x + w, y + ry - k * ry, x + w, y + ry);
+    ctx.lineTo(x + w, y + h);
+    ctx.closePath();
+  }
+
+  function paintArchBg(ctx) {
+    ctx.fillStyle = '#F6F0E4';
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+    var g = ctx.createLinearGradient(0, 0, 0, CARD_H);
+    g.addColorStop(0, '#F7F1E6');
+    g.addColorStop(0.52, '#F1E8D7');
+    g.addColorStop(1, '#EFE4D0');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    var gt = ctx.createRadialGradient(CARD_W / 2, 80, 30, CARD_W / 2, 80, 620);
+    gt.addColorStop(0, 'rgba(251,246,235,0.95)');
+    gt.addColorStop(1, 'rgba(251,246,235,0)');
+    ctx.fillStyle = gt;
+    ctx.fillRect(0, 0, CARD_W, 800);
+
+    var gb = ctx.createRadialGradient(CARD_W / 2, CARD_H, 40, CARD_W / 2, CARD_H, 700);
+    gb.addColorStop(0, 'rgba(232,220,198,0.85)');
+    gb.addColorStop(1, 'rgba(232,220,198,0)');
+    ctx.fillStyle = gb;
+    ctx.fillRect(0, CARD_H - 760, CARD_W, 760);
+
+    dotTexture(ctx, '#AD8C58', 0.05, 38);
+    grainLayer(ctx, 0.026);
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(160,131,86,0.34)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(38.5, 38.5, CARD_W - 77, CARD_H - 77);
+    ctx.strokeStyle = 'rgba(160,131,86,0.16)';
+    ctx.strokeRect(46.5, 46.5, CARD_W - 93, CARD_H - 93);
+    ctx.restore();
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(160,131,86,0.55)';
+    ctx.lineWidth = 1;
+    archPath(ctx, 183, 84, 714, 1160, 262);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(160,131,86,0.24)';
+    ctx.lineWidth = 0.8;
+    archPath(ctx, 196, 97, 688, 1134, 251);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function recitalArchMeasure(ctx, d, sc) {
+    var cw = 632, cx = CARD_W / 2;
+    var m = posterModel(128, 1192, sc);
+    var studio = String(d.studio || '').trim();
+    var initials = monogram(d.teacher);
+    var year = yearOfRecital(d);
+    var titleText = String(d.recitalTitle || '').trim() || '발표회 제목';
+    var sub = String(d.recitalSub || '').trim() || studio;
+    var when = String(d.recitalWhen || '').trim();
+    var where = String(d.recitalWhere || '').trim();
+    var note = String(d.recitalNote || '').trim();
+    var pg = recitalProgram(d);
+
+    var studioSize = studio ? trackedFitSize(ctx, studio, cw - 40, 12.5 * sc, 8 * sc, 0.44, '300', SERIF) : 0;
+    var headH = 58 * sc + (studio ? 22 * sc + studioSize * 1.5 : 0);
+    m.block(headH, function (y) {
+      var r = 29 * sc;
+      var drew = drawLogoInCircle(ctx, cx, y + r, r, null, 'rgba(252,247,238,0.95)');
+      ctx.save();
+      ctx.strokeStyle = 'rgba(173,140,88,0.65)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.arc(cx, y + r, r, 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = 'rgba(173,140,88,0.35)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.arc(cx, y + r, r - 5, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+      if (!drew) {
+        ctx.save();
+        ctx.textBaseline = 'alphabetic';
+        trackedText(ctx, initials.charAt(0), cx, y + r + 7 * sc, 19 * sc, 0.04, '#8E7143', '400', LATIN, 'center');
+        ctx.restore();
+      }
+      if (studio) {
+        ctx.save();
+        ctx.textBaseline = 'alphabetic';
+        trackedText(ctx, studio, cx, y + 58 * sc + 22 * sc + studioSize * 0.82, studioSize, 0.44, '#8B7451', '300', SERIF, 'center');
+        ctx.restore();
+      }
+    });
+    m.gap(6 * sc, 1);
+
+    var tSize = 47 * sc, tw = null;
+    for (;;) {
+      ctx.font = '300 ' + Math.round(tSize) + 'px ' + SERIF;
+      tw = wrapText(ctx, titleText, cw - 54 * sc, 3);
+      if (!tw.truncated || tSize <= 26 * sc) break;
+      tSize -= Math.max(1, tSize * 0.04);
+    }
+    var tLH = tSize * 1.42;
+    var yearSize = year ? 21 * sc : 0;
+    var subK = sub ? fitSubMix(ctx, sub, cw - 16 * sc, 16.5 * sc, 22 * sc, 0.20, '200') : 0;
+    var subKSize = 16.5 * sc * subK;
+    var titleH = (year ? yearSize * 1.1 + 22 * sc : 0) + tw.lines.length * tLH + (sub ? 14 * sc + subKSize * 1.6 : 0);
+    m.block(titleH, function (y) {
+      var yy = y;
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      if (year) {
+        trackedText(ctx, year, cx, yy + yearSize * 0.95, yearSize, 0.52, '#A98A57', '300', LATIN, 'center');
+        yy += yearSize * 1.1 + 22 * sc;
+      }
+      tw.lines.forEach(function (line, i) {
+        trackedText(ctx, line, cx, yy + tSize * 0.98 + i * tLH, tSize, 0.035, '#2B2721', '300', SERIF, 'center');
+      });
+      yy += tw.lines.length * tLH;
+      if (sub) {
+        yy += 14 * sc;
+        drawSubMix(ctx, sub, cx, yy + subKSize * 0.95, subKSize, subKSize * (22 / 16.5), 0.20, '#7E6C53', '#9E8050', '200');
+      }
+      ctx.restore();
+    });
+    m.gap(4 * sc, 1);
+
+    if (when || where) {
+      var dSize = when ? trackedFitSize(ctx, when, cw - 20, 14.5 * sc, 9 * sc, 0.20, '300', SERIF) : 0;
+      var vSize = where ? trackedFitSize(ctx, where, cw - 20, 13 * sc, 9 * sc, 0.24, '300', SERIF) : 0;
+      var whenH = 8 * sc + 11 * sc + (when ? dSize * 1.5 : 0) + (when && where ? 11 * sc : 0) + (where ? vSize * 1.5 : 0);
+      m.block(whenH, function (y) {
+        var yy = y + 4 * sc;
+        drawDiamond(ctx, cx, yy + 4 * sc, 2 * sc, '#AD8C58', 0.85);
+        ctx.save();
+        ctx.strokeStyle = 'rgba(173,140,88,0.55)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(cx - 44 * sc, yy + 4 * sc); ctx.lineTo(cx - 8 * sc, yy + 4 * sc); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx + 8 * sc, yy + 4 * sc); ctx.lineTo(cx + 44 * sc, yy + 4 * sc); ctx.stroke();
+        ctx.textBaseline = 'alphabetic';
+        var base = yy + 8 * sc + 11 * sc;
+        if (when) {
+          trackedText(ctx, when, cx, base + dSize * 0.95, dSize, 0.20, '#3B352C', '300', SERIF, 'center');
+          base += dSize * 1.5;
+        }
+        if (where) {
+          if (when) base += 11 * sc;
+          trackedText(ctx, where, cx, base + vSize * 0.95, vSize, 0.24, '#7A6950', '300', SERIF, 'center');
+        }
+        ctx.restore();
+      });
+      m.gap(10 * sc, 1.2);
+    }
+
+    /* 프로그램: 로마숫자 + 곡명 + 연주자 */
+    var rnSize = 15.5 * sc;
+    var workSize = 19 * sc;
+    var whoSize = 10.5 * sc;
+    var entries = pg.items.map(function (it, i) {
+      var f = fitWorkLines(ctx, it.piece, cw - 16 * sc, workSize, 12.5 * sc, '300', SERIF, 2);
+      return {
+        rn: ROMAN[i] || String(i + 1), who: it.who || '', work: f.lines, size: f.size,
+        h: rnSize * 1.4 + 7 * sc + f.lines.length * f.size * 1.42 + (it.who ? 6 * sc + whoSize * 1.5 : 0)
+      };
+    });
+    var sepGap = 16 * sc;
+    var entriesH = entries.reduce(function (a, e) { return a + e.h; }, 0) + Math.max(0, entries.length - 1) * sepGap;
+    var progH = 11 * sc + 26 * sc + entriesH;
+    m.block(progH, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      trackedText(ctx, 'PROGRAM', cx, y + 8 * sc, 11 * sc, 0.62, '#A98A57', '400', LATIN, 'center');
+      ctx.restore();
+      var ry = y + 11 * sc + 26 * sc;
+      entries.forEach(function (e, i) {
+        ctx.save();
+        ctx.textBaseline = 'alphabetic';
+        var base = ry + rnSize * 0.95;
+        trackedText(ctx, e.rn, cx, base, rnSize, 0.16, '#AB8551', 'italic 400', LATIN, 'center');
+        var wy = base + 7 * sc;
+        e.work.forEach(function (line, li) {
+          trackedText(ctx, line, cx, wy + e.size * 0.98 + li * e.size * 1.42, e.size, 0.05,
+            pg.empty ? 'rgba(46,42,35,0.5)' : '#2E2A23', '300', SERIF, 'center');
+        });
+        var hy = wy + e.work.length * e.size * 1.42;
+        if (e.who) {
+          trackedText(ctx, e.who, cx, hy + 6 * sc + whoSize * 0.95, whoSize, 0.30, '#8C7A61', '300', SERIF, 'center');
+        }
+        ry += e.h;
+        if (i < entries.length - 1) {
+          var sy = ry + sepGap / 2;
+          ctx.strokeStyle = 'rgba(173,140,88,0.28)';
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(cx - 68 * sc, sy); ctx.lineTo(cx - 8 * sc, sy); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(cx + 8 * sc, sy); ctx.lineTo(cx + 68 * sc, sy); ctx.stroke();
+          drawDiamond(ctx, cx, sy, 1.6 * sc, '#AD8C58', 0.8);
+          ry += sepGap;
+        }
+        ctx.restore();
+      });
+    });
+
+    if (note) {
+      ctx.font = '200 ' + Math.round(11 * sc) + 'px ' + SANS;
+      var nw = wrapText(ctx, note, cw - 30 * sc, 6);
+      var nLH = 11 * sc * 1.95;
+      m.gap(6 * sc, 1.4);
+      m.block(nw.lines.length * nLH + 16 * sc, function (y) {
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.strokeStyle = 'rgba(173,140,88,0.5)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(cx - 20 * sc, y + 1); ctx.lineTo(cx + 20 * sc, y + 1); ctx.stroke();
+        ctx.fillStyle = '#7B6A54';
+        ctx.font = '200 ' + Math.round(11 * sc) + 'px ' + SANS;
+        nw.lines.forEach(function (line, i) {
+          ctx.fillText(line, cx, y + 15 * sc + 11 * sc * 0.95 + i * nLH);
+        });
+        ctx.restore();
+      });
+    }
+    var widestEntry = 0;
+    entries.forEach(function (e) {
+      ctx.font = '300 ' + Math.round(e.size) + 'px ' + SERIF;
+      e.work.forEach(function (l) { widestEntry = Math.max(widestEntry, trackedWidth(ctx, l, e.size * 0.05)); });
+    });
+    m.info = {
+      style: 'arch', programRows: entries.length, titleLines: tw.lines.length,
+      noteLines: typeof nw !== 'undefined' ? nw.lines.length : 0,
+      programFit: widestEntry <= cw - 15,
+      textWidth: Math.round(widestEntry), textBudget: cw - 16
+    };
+    return m.done();
+  }
+
+  function recitalArch(ctx, d) {
+    return posterCard(ctx, function () { paintArchBg(ctx); }, function (sc) {
+      return recitalArchMeasure(ctx, d, sc);
+    }, 'arch');
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     C · 럭셔리 티켓
+     ══════════════════════════════════════════════════════════ */
+  function paintTicketBg(ctx) {
+    var g = ctx.createLinearGradient(0, 0, 0, CARD_H);
+    g.addColorStop(0, '#FAF7F1');
+    g.addColorStop(0.46, '#F7F4ED');
+    g.addColorStop(1, '#F2EDE3');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+    var gt = ctx.createRadialGradient(CARD_W / 2, 0, 30, CARD_W / 2, 0, 760);
+    gt.addColorStop(0, 'rgba(255,255,255,0.75)');
+    gt.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gt;
+    ctx.fillRect(0, 0, CARD_W, 800);
+    grainLayer(ctx, 0.018);
+  }
+
+  function recitalTicketMeasure(ctx, d, sc) {
+    var mx = 86, cw = CARD_W - mx * 2;
+    var insetTop = 82;
+    var m = posterModel(insetTop, CARD_H - 76, sc);
+    var studio = String(d.studio || '').trim();
+    var titleText = String(d.recitalTitle || '').trim() || '발표회 제목';
+    var subRaw = String(d.recitalSub || '').trim();
+    var when = String(d.recitalWhen || '').trim();
+    var where = String(d.recitalWhere || '').trim();
+    var note = String(d.recitalNote || '').trim();
+    var pg = recitalProgram(d);
+    var year = yearOfRecital(d);
+    var parsed = parseWhen(when);
+    /* 티켓 앞면: 부제의 마지막 한글 구절을 큰 제목으로, 라틴 구절은 이탤릭 서브로 */
+    var subParts = subRaw.split(/[·•|]/).map(function (t) { return t.trim(); }).filter(Boolean);
+    var koParts = [], latinParts = [];
+    subParts.forEach(function (pt) {
+      if (/^[A-Za-z0-9 .,'&:\-]+$/.test(pt)) latinParts.push(pt);
+      else koParts.push(pt);
+    });
+    var tkTitle = koParts.length ? koParts[koParts.length - 1] : (latinParts.length ? subRaw.replace(/[·•|]/g, ' ').trim() : '');
+    if (!tkTitle) tkTitle = latinParts.join(' ');
+    var latinPart = latinParts.join(' ');
+    var seasonOf = function (mo) {
+      if (!mo) return '';
+      if (mo === 12 || mo <= 2) return 'WINTER';
+      if (mo <= 5) return 'SPRING';
+      if (mo <= 8) return 'SUMMER';
+      return 'AUTUMN';
+    };
+    var season = seasonOf(parsed.month);
+
+    /* 마스트헤드 */
+    m.block(26 * sc, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      var base = y + 9.5 * sc;
+      trackedText(ctx, [year, season].filter(Boolean).join(' ') + ' RECITAL SEASON', mx, base, 9.5 * sc, 0.38, '#6E6657', '300', JOST, 'left');
+      trackedText(ctx, 'RECITAL PROGRAM', mx + cw, base, 9.5 * sc, 0.38, '#9B907C', '300', JOST, 'right');
+      ctx.fillStyle = 'rgba(220,212,196,1)';
+      ctx.fillRect(mx, y + 26 * sc - 2, cw, 1);
+      ctx.restore();
+    });
+    m.gap(32 * sc, 0.8);
+
+    /* 티켓 박스 */
+    var tkH = 300 * sc;
+    var stubW = 246 * sc;
+    var tkMainW = cw - stubW;
+    var tkTitleSize = tkTitle ? 29 * sc : 0;
+    var tkTitleLines = null;
+    if (tkTitle) {
+      for (;;) {
+        ctx.font = '300 ' + Math.round(tkTitleSize) + 'px ' + SERIF;
+        tkTitleLines = wrapText(ctx, tkTitle, tkMainW - 76 * sc, 2);
+        if (!tkTitleLines.truncated || tkTitleSize <= 16 * sc) break;
+        tkTitleSize -= Math.max(0.5, tkTitleSize * 0.05);
+      }
+    }
+    m.block(tkH, function (y) {
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,255,255,0.45)';
+      ctx.fillRect(mx, y, cw, tkH);
+      ctx.strokeStyle = '#DCD4C4';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(mx + 0.5, y + 0.5, cw - 1, tkH - 1);
+      /* 절취선 */
+      ctx.setLineDash([4 * sc, 4 * sc]);
+      ctx.strokeStyle = '#C9BEA8';
+      ctx.beginPath();
+      ctx.moveTo(mx + tkMainW, y + 1);
+      ctx.lineTo(mx + tkMainW, y + tkH - 1);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.textBaseline = 'alphabetic';
+      var padX = 38 * sc;
+      if (studio) trackedText(ctx, studio, mx + padX, y + 32 * sc + 9.5 * sc * 0.9, 9.5 * sc, 0.36, '#8E8472', '300', SANS, 'left');
+      if (tkTitle) {
+        var ty = y + 32 * sc + (studio ? 50 * sc : 24 * sc);
+        tkTitleLines.lines.forEach(function (line, i) {
+          trackedText(ctx, line, mx + padX, ty + tkTitleSize * 0.95 + i * tkTitleSize * 1.2, tkTitleSize, 0.06, '#17171B', '300', SERIF, 'left');
+        });
+        if (latinPart) {
+          trackedText(ctx, latinPart, mx + padX, ty + tkTitleLines.lines.length * tkTitleSize * 1.2 + 9 * sc + 15 * sc * 0.8, 15 * sc, 0.16, '#9A7C4E', 'italic 300', LATIN, 'left');
+        }
+      }
+      /* 메타: 장소 · 일시 */
+      var metaY = y + tkH - 30 * sc;
+      var mxp = mx + padX;
+      var metaSize = 11.5 * sc;
+      ctx.font = '300 ' + Math.round(metaSize) + 'px ' + SANS;
+      var vW = where ? trackedWidth(ctx, where, metaSize * 0.13) : 0;
+      var wWt = when ? trackedWidth(ctx, when, metaSize * 0.13) : 0;
+      ctx.fillStyle = '#574F42';
+      if (where) {
+        trackedText(ctx, where, mxp, metaY, metaSize, 0.13, '#574F42', '300', SANS, 'left');
+        mxp += vW;
+      }
+      if (where && when) {
+        drawDiamond(ctx, mxp + 9 * sc, metaY - 4 * sc, 1.6 * sc, '#B3A489', 1);
+        mxp += 18 * sc;
+      }
+      if (when) trackedText(ctx, when, mxp, metaY, metaSize, 0.13, '#574F42', '300', SANS, 'left');
+
+      /* 스텁 */
+      var sx = mx + tkMainW;
+      var scx = sx + stubW / 2;
+      ctx.fillStyle = '#9B907C';
+      trackedText(ctx, parsed.day ? (MONTHS[(parsed.month || 1) - 1] || 'RECITAL') : 'RECITAL', scx, y + tkH / 2 - 76 * sc, 8.5 * sc, 0.42, '#9B907C', '300', JOST, 'center');
+      var bigText = parsed.day ? ('0' + parsed.day).slice(-2) : (parsed.year ? String(parsed.year) : '—');
+      var bigSize = parsed.day ? 66 * sc : 40 * sc;
+      ctx.font = '300 ' + Math.round(bigSize) + 'px ' + LATIN;
+      ctx.fillStyle = '#17171B';
+      ctx.textAlign = 'center';
+      ctx.fillText(bigText, scx, y + tkH / 2 + 4 * sc);
+      ctx.textAlign = 'left';
+      var yrLine = [parsed.year ? String(parsed.year) : '', parsed.weekday].filter(Boolean).join(' · ');
+      if (yrLine) trackedText(ctx, yrLine, scx, y + tkH / 2 + 34 * sc, 9 * sc, 0.30, '#6E6657', '300', JOST, 'center');
+      var timeLine = parsed.time || (when && !parsed.day ? when : '');
+      if (timeLine) {
+        var tSize = trackedFitSize(ctx, timeLine, stubW - 40 * sc, 11 * sc, 7.5 * sc, 0.22, '300', SANS);
+        trackedText(ctx, timeLine, scx, y + tkH / 2 + 60 * sc, tSize, 0.22, '#3C362C', '300', SANS, 'center');
+      }
+      trackedText(ctx, 'ADMIT ONE', sx + stubW - 14 * sc, y + tkH - 12 * sc, 7.5 * sc, 0.30, '#B4A88F', '300', JOST, 'right');
+
+      /* 노치 */
+      ctx.fillStyle = '#F7F4ED';
+      ctx.beginPath(); ctx.arc(sx, y, 9.5 * sc, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(sx, y + tkH, 9.5 * sc, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    });
+    m.gap(86 * sc, 1.2);
+
+    /* 헤드라인 + 모노그램 */
+    var hSize = 60 * sc, hw = null;
+    for (;;) {
+      ctx.font = '300 ' + Math.round(hSize) + 'px ' + SANS;
+      hw = wrapText(ctx, titleText, cw - 120 * sc, 3);
+      if (!hw.truncated || hSize <= 30 * sc) break;
+      hSize -= Math.max(1, hSize * 0.04);
+    }
+    var hLH = hSize * 1.26;
+    m.block(hw.lines.length * hLH, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      hw.lines.forEach(function (line, i) {
+        trackedText(ctx, line, mx, y + hSize * 0.92 + i * hLH, hSize, -0.005, '#17171B', '300', SANS, 'left');
+      });
+      var r = 43 * sc, mcx = CARD_W - mx - r, mcy = y + hLH / 2;
+      var drew = drawLogoInCircle(ctx, mcx, mcy, r, null, 'rgba(255,255,255,0.6)');
+      ctx.strokeStyle = 'rgba(23,23,27,0.55)';
+      ctx.lineWidth = 0.7;
+      ctx.beginPath(); ctx.arc(mcx, mcy, r, 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = 'rgba(23,23,27,0.22)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.arc(mcx, mcy, r - 6, 0, Math.PI * 2); ctx.stroke();
+      if (!drew) {
+        ctx.font = '300 ' + Math.round(21 * sc) + 'px ' + LATIN;
+        ctx.fillStyle = 'rgba(23,23,27,0.8)';
+        ctx.textAlign = 'center';
+        ctx.fillText(monogram(d.teacher), mcx, mcy + 7 * sc);
+        ctx.textAlign = 'left';
+      }
+      ctx.restore();
+    });
+    m.gap(74 * sc, 1.4);
+
+    /* 프로그램 표 */
+    var noW = 52 * sc;
+    var whoW = 128 * sc;
+    var workW = cw - noW - whoW - 16 * sc;
+    var rows = pg.items.map(function (it, i) {
+      var f = fitWorkLines(ctx, it.piece, workW, 19 * sc, 12 * sc, '300', SERIF, 2);
+      return { no: ('0' + (i + 1)).slice(-2), who: it.who || '', work: f.lines, size: f.size };
+    });
+    var headH2 = 8.5 * sc * 1.4 + 11 * sc;
+    var rowH = 84 * sc;
+    var tableH = headH2 + rows.length * rowH;
+    m.block(tableH, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      var hy = y + 8.5 * sc;
+      trackedText(ctx, 'NO.', mx, hy, 8.5 * sc, 0.32, '#8C8270', '300', JOST, 'left');
+      trackedText(ctx, 'PROGRAM', mx + noW, hy, 8.5 * sc, 0.32, '#8C8270', '300', JOST, 'left');
+      trackedText(ctx, 'PERFORMER', mx + cw, hy, 8.5 * sc, 0.32, '#8C8270', '300', JOST, 'right');
+      ctx.fillStyle = '#17171B';
+      ctx.fillRect(mx, y + headH2 - 1, cw, 1);
+      var ry = y + headH2;
+      rows.forEach(function (r) {
+        var base = ry + 28 * sc + r.size * 0.95;
+        trackedText(ctx, r.no, mx, base, 12 * sc, 0.14, '#A2937A', '200', JOST, 'left');
+        r.work.forEach(function (line, li) {
+          trackedText(ctx, line, mx + noW, base + li * r.size * 1.35, r.size, 0.01,
+            pg.empty ? 'rgba(28,28,32,0.45)' : '#1C1C20', '300', SERIF, 'left');
+        });
+        if (r.who) trackedText(ctx, r.who, mx + cw, base, 11.5 * sc, 0.16, '#5F5748', '300', SANS, 'right');
+        ctx.strokeStyle = '#E7E0D2';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(mx, ry + rowH - 1); ctx.lineTo(mx + cw, ry + rowH - 1); ctx.stroke();
+        ry += rowH;
+      });
+      ctx.restore();
+    });
+
+    /* 푸터 */
+    var sign = studio;
+    m.gap(10 * sc, 1.6);
+    m.block(0, function () {});
+    if (note || sign) {
+      ctx.font = '200 ' + Math.round(10.5 * sc) + 'px ' + SANS;
+      var nw = wrapText(ctx, note, cw - (sign ? 190 * sc : 0) - 20 * sc, 5);
+      var nLH = 10.5 * sc * 1.95;
+      var footH = 22 * sc + Math.max(nw.lines.length * nLH, 20 * sc);
+      m.block(footH, function (y) {
+        ctx.save();
+        ctx.strokeStyle = '#E7E0D2';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(mx, y + 0.5); ctx.lineTo(mx + cw, y + 0.5); ctx.stroke();
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = '#7E7461';
+        ctx.font = '200 ' + Math.round(10.5 * sc) + 'px ' + SANS;
+        nw.lines.forEach(function (line, i) {
+          ctx.fillText(line, mx, y + 22 * sc + 10.5 * sc * 0.95 + i * nLH);
+        });
+        if (sign) trackedText(ctx, sign, mx + cw, y + 22 * sc + 10.5 * sc * 0.95, 9.5 * sc, 0.24, '#9A907C', '300', SERIF, 'right');
+        ctx.restore();
+      });
+    }
+    var widestWork = 0;
+    rows.forEach(function (r) {
+      ctx.font = '300 ' + Math.round(r.size) + 'px ' + SERIF;
+      r.work.forEach(function (l) { widestWork = Math.max(widestWork, trackedWidth(ctx, l, r.size * 0.01)); });
+    });
+    m.info = {
+      style: 'ticket', programRows: rows.length, titleLines: hw.lines.length,
+      noteLines: typeof nw !== 'undefined' ? nw.lines.length : 0,
+      programFit: widestWork <= workW + 1,
+      textWidth: Math.round(widestWork), textBudget: Math.round(workW)
+    };
+    return m.done();
+  }
+
+  function recitalTicket(ctx, d) {
+    return posterCard(ctx, function () { paintTicketBg(ctx); }, function (sc) {
+      return recitalTicketMeasure(ctx, d, sc);
+    }, 'ticket');
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     D · 로즈골드
+     ══════════════════════════════════════════════════════════ */
+  function paintRibbonBg(ctx) {
+    ctx.fillStyle = '#FBF5EF';
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+    var g = ctx.createLinearGradient(0, 0, 0, CARD_H);
+    g.addColorStop(0, '#FEFAF6');
+    g.addColorStop(0.52, '#FBF5EF');
+    g.addColorStop(1, '#F8F0E9');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    var g1 = ctx.createRadialGradient(240, 30, 20, 240, 30, 560);
+    g1.addColorStop(0, 'rgba(246,214,203,0.62)');
+    g1.addColorStop(1, 'rgba(252,247,242,0)');
+    ctx.fillStyle = g1;
+    ctx.fillRect(0, 0, CARD_W, 700);
+    var g2 = ctx.createRadialGradient(900, 80, 20, 900, 80, 520);
+    g2.addColorStop(0, 'rgba(243,220,206,0.52)');
+    g2.addColorStop(1, 'rgba(252,247,242,0)');
+    ctx.fillStyle = g2;
+    ctx.fillRect(0, 0, CARD_W, 640);
+    var g3 = ctx.createRadialGradient(CARD_W / 2, CARD_H + 40, 30, CARD_W / 2, CARD_H + 40, 620);
+    g3.addColorStop(0, 'rgba(244,226,214,0.55)');
+    g3.addColorStop(1, 'rgba(252,247,242,0)');
+    ctx.fillStyle = g3;
+    ctx.fillRect(0, CARD_H - 700, CARD_W, 700);
+
+    grainLayer(ctx, 0.028);
+    var gv = ctx.createRadialGradient(CARD_W / 2, CARD_H * 0.46, 320, CARD_W / 2, CARD_H * 0.46, 900);
+    gv.addColorStop(0, 'rgba(255,255,255,0)');
+    gv.addColorStop(1, 'rgba(226,196,182,0.14)');
+    ctx.fillStyle = gv;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(185,143,124,0.26)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(34.5, 34.5, CARD_W - 69, CARD_H - 69);
+    ctx.strokeStyle = 'rgba(185,143,124,0.13)';
+    ctx.strokeRect(41.5, 41.5, CARD_W - 83, CARD_H - 83);
+    ctx.restore();
+  }
+
+  function drawSilkBow(ctx, cx, y, w) {
+    var s = w / 212;
+    ctx.save();
+    ctx.translate(cx - 106 * s, y + 6 * s);
+    ctx.scale(s, s);
+    ctx.strokeStyle = 'rgba(185,143,124,0.85)';
+    ctx.lineWidth = 0.9;
+    ctx.lineCap = 'round';
+    ctx.stroke(new Path2D('M104 44 C 86 30 60 25 47 34 C 34 43 46 55 68 53 C 82 52 95 48 104 44 Z'));
+    ctx.stroke(new Path2D('M108 44 C 126 30 152 25 165 34 C 178 43 166 55 144 53 C 130 52 117 48 108 44 Z'));
+    ctx.strokeStyle = 'rgba(185,143,124,0.6)';
+    ctx.stroke(new Path2D('M104 46 C 96 60 88 74 78 86'));
+    ctx.stroke(new Path2D('M108 46 C 116 60 124 74 134 86'));
+    ctx.strokeStyle = 'rgba(185,143,124,0.45)';
+    ctx.stroke(new Path2D('M78 86 C 74 90 76 94 80 93'));
+    ctx.stroke(new Path2D('M134 86 C 138 90 136 94 132 93'));
+    ctx.strokeStyle = 'rgba(185,143,124,0.9)';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.arc(106, 44.5, 3.1 * s * 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(106, 44.5, 3.1, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+  }
+
+  function recitalRibbonMeasure(ctx, d, sc) {
+    var mx = 108, cw = CARD_W - mx * 2, cx = CARD_W / 2;
+    var m = posterModel(86, CARD_H - 90, sc);
+    var studio = String(d.studio || '').trim();
+    var year = yearOfRecital(d);
+    var titleText = String(d.recitalTitle || '').trim() || '발표회 제목';
+    var sub = String(d.recitalSub || '').trim() || studio;
+    var when = String(d.recitalWhen || '').trim();
+    var where = String(d.recitalWhere || '').trim();
+    var note = String(d.recitalNote || '').trim();
+    var pg = recitalProgram(d);
+
+    var studioSize = studio ? trackedFitSize(ctx, studio, cw - 40, 12 * sc, 8 * sc, 0.44, '300', SERIF) : 0;
+    var headH = 110 * sc + (studio ? 6 * sc + studioSize * 1.5 : 0);
+    m.block(headH, function (y) {
+      if (!drawLogoBand(ctx, cx, y + 48 * sc, 74 * sc, '#B98F7C')) drawSilkBow(ctx, cx, y, 240 * sc);
+      if (studio) {
+        ctx.save();
+        ctx.textBaseline = 'alphabetic';
+        trackedText(ctx, studio, cx, y + 110 * sc + 6 * sc + studioSize * 0.82, studioSize, 0.44, '#9C7B6C', '300', SERIF, 'center');
+        ctx.restore();
+      }
+    });
+    m.gap(4 * sc, 1);
+
+    var tSize = 56 * sc, tw = null;
+    for (;;) {
+      ctx.font = '300 ' + Math.round(tSize) + 'px ' + SERIF;
+      tw = wrapText(ctx, titleText, cw * 0.98, 3);
+      if (!tw.truncated || tSize <= 30 * sc) break;
+      tSize -= Math.max(1, tSize * 0.04);
+    }
+    var tLH = tSize * 1.36;
+    var yearSize = year ? 20 * sc : 0;
+    var subK = sub ? fitSubMix(ctx, sub, cw - 16 * sc, 16 * sc, 21 * sc, 0.20, '200') : 0;
+    var subKSize = 16 * sc * subK;
+    var titleH = (year ? yearSize * 1.1 + 20 * sc : 0) + tw.lines.length * tLH + (sub ? 14 * sc + subKSize * 1.6 : 0);
+    m.block(titleH, function (y) {
+      var yy = y;
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      if (year) {
+        trackedText(ctx, year, cx, yy + yearSize * 0.95, yearSize, 0.50, '#B08A76', '300', LATIN, 'center');
+        yy += yearSize * 1.1 + 20 * sc;
+      }
+      tw.lines.forEach(function (line, i) {
+        trackedText(ctx, line, cx, yy + tSize * 0.96 + i * tLH, tSize, 0.045, '#3F322D', '300', SERIF, 'center');
+      });
+      yy += tw.lines.length * tLH;
+      if (sub) {
+        yy += 14 * sc;
+        drawSubMix(ctx, sub, cx, yy + subKSize * 0.95, subKSize, subKSize * (21 / 16), 0.20, '#8E7568', '#A87E69', '200');
+      }
+      ctx.restore();
+    });
+    m.gap(4 * sc, 1);
+
+    if (when || where) {
+      var barW = 680 * sc, barH = 68 * sc;
+      var wSize = when ? trackedFitSize(ctx, when, barW * 0.52, 13.5 * sc, 8.5 * sc, 0.16, '300', SERIF) : 0;
+      var vSize = where ? trackedFitSize(ctx, where, barW * 0.42, 13.5 * sc, 8.5 * sc, 0.16, '300', SERIF) : 0;
+      m.block(barH, function (y) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(255,252,249,0.5)';
+        ctx.fillRect(cx - barW / 2, y, barW, barH);
+        ctx.strokeStyle = 'rgba(185,143,124,0.5)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(cx - barW / 2, y + 0.5); ctx.lineTo(cx + barW / 2, y + 0.5); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx - barW / 2, y + barH - 0.5); ctx.lineTo(cx + barW / 2, y + barH - 0.5); ctx.stroke();
+        ctx.textBaseline = 'alphabetic';
+        var base = y + barH / 2 + 5 * sc;
+        var total = (when ? trackedWidth(ctx, when, wSize * 0.16) : 0) + (where ? trackedWidth(ctx, where, vSize * 0.16) : 0) + (when && where ? 26 * sc : 0);
+        var x = cx - total / 2;
+        if (when) { trackedText(ctx, when, x, base, wSize, 0.16, '#4B3C35', '300', SERIF, 'left'); x += trackedWidth(ctx, when, wSize * 0.16) + 13 * sc; }
+        if (when && where) { drawDiamond(ctx, x, base - 4 * sc, 2.2 * sc, '#B98F7C', 0.8); x += 13 * sc; }
+        if (where) trackedText(ctx, where, x, base, vSize, 0.16, '#8B7266', '300', SERIF, 'left');
+        ctx.restore();
+      });
+      m.gap(10 * sc, 1.2);
+    }
+
+    /* 2열 프로그램 카드 */
+    var cols = pg.items.length === 1 ? 1 : 2;
+    var gap = 16 * sc;
+    var cardW = (cw - gap * (cols - 1)) / cols;
+    var cardH = 172 * sc;
+    var rowsN = Math.ceil(pg.items.length / cols);
+    var cards = pg.items.map(function (it) {
+      var inner = cardW - 30 * sc;
+      var f = fitWorkLines(ctx, it.piece, inner, 19.5 * sc, 12 * sc, '300', SERIF, 2);
+      return { who: it.who || '', work: f.lines, size: f.size };
+    });
+    var gridH = rowsN * cardH + Math.max(0, rowsN - 1) * gap;
+    var progH = 11 * sc + 22 * sc + gridH;
+    m.block(progH, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      trackedText(ctx, 'PROGRAM', cx, y + 8 * sc, 10.5 * sc, 0.62, '#AE8874', '400', LATIN, 'center');
+      ctx.restore();
+      var gy = y + 11 * sc + 22 * sc;
+      cards.forEach(function (c, i) {
+        var col = i % cols, row = Math.floor(i / cols);
+        var x = mx + col * (cardW + gap);
+        var cy = gy + row * (cardH + gap);
+        ctx.save();
+        var grd = ctx.createLinearGradient(0, cy, 0, cy + cardH);
+        grd.addColorStop(0, 'rgba(255,251,248,0.92)');
+        grd.addColorStop(1, 'rgba(253,244,238,0.72)');
+        ctx.fillStyle = grd;
+        ctx.fillRect(x, cy, cardW, cardH);
+        ctx.strokeStyle = 'rgba(185,143,124,0.52)';
+        ctx.lineWidth = 0.9;
+        ctx.strokeRect(x + 0.5, cy + 0.5, cardW - 1, cardH - 1);
+        ctx.strokeStyle = 'rgba(185,143,124,0.16)';
+        ctx.lineWidth = 0.6;
+        ctx.strokeRect(x + 5 * sc, cy + 5 * sc, cardW - 10 * sc, cardH - 10 * sc);
+
+        var inner = cardH - 30 * sc;
+        var blockH = 12.5 * sc * 1.4 + 11 * sc + c.work.length * c.size * 1.4 + (c.who ? 9 * sc + 10.5 * sc * 1.5 : 0);
+        var ty = cy + (cardH - blockH) / 2;
+        ctx.textBaseline = 'alphabetic';
+        trackedText(ctx, ('0' + (i + 1)).slice(-2), x + cardW / 2, ty + 12.5 * sc * 0.95, 12.5 * sc, 0.18, '#B58E7B', '400', LATIN, 'center');
+        var wy = ty + 12.5 * sc * 1.4 + 11 * sc;
+        c.work.forEach(function (line, li) {
+          trackedText(ctx, line, x + cardW / 2, wy + c.size * 0.95 + li * c.size * 1.4, c.size, 0.01,
+            pg.empty ? 'rgba(58,45,40,0.45)' : '#3A2D28', '300', SERIF, 'center');
+        });
+        if (c.who) {
+          trackedText(ctx, c.who, x + cardW / 2, wy + c.work.length * c.size * 1.4 + 9 * sc + 10.5 * sc * 0.95, 10.5 * sc, 0.28, '#9B8377', '300', SANS, 'center');
+        }
+        ctx.restore();
+      });
+    });
+
+    if (note) {
+      ctx.font = '200 ' + Math.round(10 * sc) + 'px ' + SANS;
+      var nw = wrapText(ctx, note, cw - 20 * sc, 6);
+      var nLH = 10 * sc * 1.95;
+      m.gap(6 * sc, 1.4);
+      m.block(nw.lines.length * nLH + 17 * sc, function (y) {
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        drawDiamond(ctx, cx, y + 4 * sc, 1.7 * sc, '#B98F7C', 0.8);
+        ctx.strokeStyle = 'rgba(185,143,124,0.45)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(cx - 52 * sc, y + 4 * sc); ctx.lineTo(cx - 8 * sc, y + 4 * sc); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx + 8 * sc, y + 4 * sc); ctx.lineTo(cx + 52 * sc, y + 4 * sc); ctx.stroke();
+        ctx.fillStyle = '#9A8478';
+        ctx.font = '200 ' + Math.round(10 * sc) + 'px ' + SANS;
+        nw.lines.forEach(function (line, i) {
+          ctx.fillText(line, cx, y + 17 * sc + 10 * sc * 0.95 + i * nLH);
+        });
+        ctx.restore();
+      });
+    }
+    var widestCard = 0;
+    cards.forEach(function (c) {
+      ctx.font = '300 ' + Math.round(c.size) + 'px ' + SERIF;
+      c.work.forEach(function (l) { widestCard = Math.max(widestCard, trackedWidth(ctx, l, c.size * 0.01)); });
+    });
+    m.info = {
+      style: 'ribbon', programRows: cards.length, titleLines: tw.lines.length,
+      noteLines: typeof nw !== 'undefined' ? nw.lines.length : 0,
+      programFit: widestCard <= cardW - 28 * sc,
+      textWidth: Math.round(widestCard), textBudget: Math.round(cardW - 30 * sc)
+    };
+    return m.done();
+  }
+
+  function recitalRibbon(ctx, d) {
+    return posterCard(ctx, function () { paintRibbonBg(ctx); }, function (sc) {
+      return recitalRibbonMeasure(ctx, d, sc);
+    }, 'ribbon');
+  }
+
+  var RECITAL_RENDERERS = {
+    midnight: recitalMidnight,
+    arch: recitalArch,
+    ticket: recitalTicket,
+    ribbon: recitalRibbon
+  };
 
   var RENDERERS = {
     lesson: { clean: drawCleanCard, cute: drawCuteCard, chic: drawLuxCard },
-    billing: { clean: drawBillingClean, cute: drawBillingCute, chic: drawBillingChic },
-    recital: { clean: drawRecitalClean, cute: drawRecitalCute, chic: drawRecitalChic }
+    billing: { clean: drawBillingClean, cute: drawBillingCute, chic: drawBillingChic }
   };
 
   function drawCard(canvas, themeId, data, cardMode) {
@@ -4060,6 +4998,11 @@
     var ctx = canvas.getContext('2d');
     ctx.setTransform(SS, 0, 0, SS, 0, 0);
     ctx.clearRect(0, 0, CARD_W, CARD_H);
+    // 발표회 팜플렛은 9종 테마 대신 연주회 전용 4종 스타일로 그린다
+    if (cardMode === 'recital') {
+      var style = RECITAL_RENDERERS[state.recitalStyle] || RECITAL_RENDERERS[DEFAULT_RECITAL_STYLE];
+      return style(ctx, data);
+    }
     var group = RENDERERS[cardMode] || RENDERERS.lesson;
     var fn = group[t.set] || group.clean;
     return fn(ctx, t, data, themeId);
@@ -4116,6 +5059,7 @@
   var LS_STUDENTS = 'lessoncard.students.v1';
   var LS_LOGO = 'lessoncard.logo.v1';
   var LS_MODE = 'lessoncard.mode.v1';
+  var LS_RECITAL_STYLE = 'lessoncard.recitalStyle.v1';
   var LS_ACCOUNT = 'lessoncard.account.v1';
   var LOGO_MAX = 420;      // 로고는 긴 변 기준 420px까지만 보관 (1080px 카드에 충분)
 
@@ -4221,6 +5165,7 @@
     mode: 'lesson',
     theme: DEFAULT_THEME,
     set: 'clean',
+    recitalStyle: DEFAULT_RECITAL_STYLE,
     themeBySet: { clean: 'linen', cute: 'blush', chic: 'sage' },
     subject: 'piano',
     tags: [],
@@ -4334,6 +5279,11 @@
       el.hidden = el.getAttribute('data-modes').split(' ').indexOf(id) < 0;
     });
     if (els.saveRecordBtn) els.saveRecordBtn.hidden = id !== 'lesson';
+    // 미리보기 상단: 발표회 팜플렛 모드에서는 9종 테마 대신 팜플렛 전용 4종 스타일
+    var isRecital = id === 'recital';
+    if (els.themeSets) els.themeSets.hidden = isRecital;
+    if (els.themeRow) els.themeRow.hidden = isRecital;
+    if (els.recitalStyles) els.recitalStyles.hidden = !isRecital;
     if (els.studentsHint) {
       els.studentsHint.textContent = id === 'lesson'
         ? '누르면 지난 기록 + 회차 1 올려서 불러와요'
@@ -5021,6 +5971,52 @@
     return null;
   }
 
+  /* 발표회 팜플렛 전용 스타일 4종 버튼 */
+  function renderRecitalStyles() {
+    if (!els.recitalStyles) return;
+    els.recitalStyles.innerHTML = '';
+    RECITAL_STYLES.forEach(function (s) {
+      var on = s.id === state.recitalStyle;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'recital-btn' + (on ? ' is-on' : '');
+      b.setAttribute('data-recital-style', s.id);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.setAttribute('title', s.label);
+      var sw = document.createElement('span');
+      sw.className = 'swatches';
+      s.swatches.forEach(function (c) {
+        var i = document.createElement('i');
+        i.style.background = c;
+        sw.appendChild(i);
+      });
+      var nm = document.createElement('span');
+      nm.className = 'name';
+      nm.textContent = s.label;
+      b.appendChild(sw);
+      b.appendChild(nm);
+      b.addEventListener('click', function () { setRecitalStyle(s.id); });
+      els.recitalStyles.appendChild(b);
+    });
+  }
+
+  function syncRecitalStylesState() {
+    if (!els.recitalStyles) return;
+    Array.prototype.forEach.call(els.recitalStyles.querySelectorAll('.recital-btn'), function (b) {
+      var on = b.getAttribute('data-recital-style') === state.recitalStyle;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function setRecitalStyle(id) {
+    if (RECITAL_STYLE_IDS.indexOf(id) < 0) return;
+    state.recitalStyle = id;
+    safeSet(LS_RECITAL_STYLE, id);
+    syncRecitalStylesState();
+    scheduleRender(true);
+  }
+
   /* 세트 탭 3종 (Minimal · Cute · Classic) */
   function renderThemeSets() {
     if (!els.themeSets) return;
@@ -5408,7 +6404,11 @@
     '500 22px "Cormorant Garamond"', 'italic 500 23px "Cormorant Garamond"',
     '600 23px "Cormorant Garamond"',
     '400 96px "Jua"', '400 36px "Jua"', '400 23px "Jua"', '400 20px "Jua"',
-    '400 27px "Gowun Dodum"', '400 18px "Gowun Dodum"'
+    '400 27px "Gowun Dodum"', '400 18px "Gowun Dodum"',
+    /* 발표회 팜플렛 4종 */
+    '300 64px "Noto Serif KR"', '200 19px "Noto Serif KR"', '500 12px Jost', '300 9.5px Jost',
+    'italic 300 25px "Cormorant Garamond"', '400 14px "Cormorant Garamond"', '200 11px "Noto Sans KR"',
+    '300 60px "Noto Sans KR"', '300 47px "Noto Serif KR"', '300 19px "Noto Serif KR"'
   ];
   function ensureFonts() {
     if (!document.fonts) { state.fontReady = true; return Promise.resolve(); }
@@ -5588,6 +6588,7 @@
       modal: document.getElementById('upgradeModal'), proStartBtn: document.getElementById('proStartBtn'),
       themeRow: document.getElementById('themeRow'),
       themeSets: document.getElementById('themeSets'),
+      recitalStyles: document.getElementById('recitalStyles'),
       toast: document.getElementById('toast'), toastText: document.getElementById('toastText'),
       canvasWrap: document.querySelector('.canvas-wrap'),
       zoom: document.getElementById('zoom'), zoomCanvas: document.getElementById('zoomCanvas'),
@@ -5619,6 +6620,11 @@
     safeSet(LS_SET, state.set);
     renderThemeSets();
     renderThemeButtons();
+
+    var savedStyle = safeGet(LS_RECITAL_STYLE);
+    state.recitalStyle = RECITAL_STYLE_IDS.indexOf(savedStyle) >= 0 ? savedStyle : DEFAULT_RECITAL_STYLE;
+    safeSet(LS_RECITAL_STYLE, state.recitalStyle);
+    renderRecitalStyles();
 
     var savedSubject = safeGet(LS_SUBJECT);
     if (subjectById(savedSubject)) state.subject = savedSubject;
@@ -5664,6 +6670,9 @@
       render: render,
       renderNow: function () { render(); return state.lastLayout; },
       setTheme: setTheme,
+      setRecitalStyle: setRecitalStyle,
+      recitalStyle: function () { return state.recitalStyle; },
+      recitalStyles: RECITAL_STYLES,
       setSubject: setSubject,
       applyNotePreset: applyNotePreset,
       subjects: SUBJECTS,
@@ -5693,7 +6702,7 @@
       saveStudentRecord: function () { return persistStudent(true); },
       bumpSession: bumpSession,
       removeLogo: removeLogo,
-      keys: { students: LS_STUDENTS, logo: LS_LOGO, subject: LS_SUBJECT, theme: LS_THEME, themeSet: LS_SET, mode: LS_MODE, account: LS_ACCOUNT, draft: LS_DRAFT }
+      keys: { students: LS_STUDENTS, logo: LS_LOGO, subject: LS_SUBJECT, theme: LS_THEME, themeSet: LS_SET, mode: LS_MODE, account: LS_ACCOUNT, draft: LS_DRAFT, recitalStyle: LS_RECITAL_STYLE }
     };
   }
 
