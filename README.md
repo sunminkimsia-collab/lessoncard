@@ -233,6 +233,7 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 반응형 | 데스크톱 1280 세트 탭 420/420 · 테마명 잘림 0 / 모바일 390 픽커 폭 332px(29~361) · 탭 330/330 · 테마명 잘림 0 · 가로 오버플로 0 |
 | 콘솔 에러 | **0건** (데스크톱·모바일, pageerror 포함) |
 | 테스트 스크립트 | `tests/test-v4.py` · 결과 `tests/shots/v4-report.json` · 카드 원본 `tests/shots/v4-cards/` · 미리보기 `preview-v4-sets.png`, `preview-v4-mobile.png`, `preview-v4-themes.png` |
+| 배포본 재검증 | `https://sunminkimsia-collab.github.io/lessoncard/` 에서 같은 스크립트 전 항목 통과(실패 0 · 콘솔 에러 0) · 배포본과 저장소 `index.html` MD5 일치(`fac93e00…`, HTTP 200) · 결과 `tests/shots/v4-live-report.json` |
 
 ---
 
