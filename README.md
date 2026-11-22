@@ -295,7 +295,7 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 반응형 | 데스크톱 1280 탭 3개 각 136px · `themeSets` 420/420(넘침 0) / 모바일 390 탭 각 106px · 330/330 · 가로 오버플로 0 |
 | 전체 회귀 | `tests/test-v6.py` 전 항목 통과 — 3모드 × 3세트 × 3테마 27장 렌더 · 글자 잘림 0 · PNG 1080×1350 · 모드/계좌 저장 복원 (실패 0 · 콘솔 에러 0) |
 | 미리보기 | `preview-v7-tabs-desktop.png` · `preview-v7-tabs-mobile.png` · `preview-v7-guide.png` · `preview-v7-desktop.png` |
-| 배포본 재검증 | `https://sunminkimsia-collab.github.io/lessoncard/` HTTP **200** · 배포본과 저장소 `index.html` MD5 일치 |
+| 배포본 재검증 | `https://sunminkimsia-collab.github.io/lessoncard/` HTTP **200** · 배포본과 저장소 `index.html` MD5 일치(`680748a6…`) · 배포본에서도 탭 `Minimal`·`Cute`·`Classic` 표시·전환(clic → `clean`·`cute`·`chic`)·가로 오버플로 0·콘솔 에러 0 |
 
 ---
 
