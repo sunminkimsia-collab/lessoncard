@@ -2795,16 +2795,8 @@
     } catch (e) { /* 공유 미지원 브라우저 */ }
 
     var savedTheme = safeGet(LS_THEME);
-    var savedSet = safeGet(LS_SET);
-    var themeId = null;
-    if (savedTheme && THEMES[savedTheme] && themeSetOf(savedTheme)) {
-      themeId = savedTheme;
-    } else if (savedSet) {
-      THEME_SETS.forEach(function (s) {
-        if (s.id === savedSet) themeId = state.themeBySet[s.id] || s.themes[0];
-      });
-    }
-    if (!themeId) themeId = DEFAULT_THEME;
+    // 예전 크림 클래식 등 9종에 없는 값은 웜 리넨으로 조용히 옮긴다
+    var themeId = (savedTheme && THEMES[savedTheme] && themeSetOf(savedTheme)) ? savedTheme : DEFAULT_THEME;
     state.theme = themeId;
     state.set = themeSetOf(themeId);
     state.themeBySet[state.set] = themeId;
