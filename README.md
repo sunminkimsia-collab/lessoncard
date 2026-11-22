@@ -335,7 +335,7 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 
 | 항목 | 결과 |
 | --- | --- |
-| OG 썸네일 | `og-image.png` **1200×630** · 페이지와 같은 팔레트(크림 `#FAF6EE` · 에스프레소 `#1D1A16` · 골드 `#A9835A`)·폰트(Noto Serif/Sans KR · Cormorant Garamond · Jost)로 제작 — 좌측 타이포(`LESSONCARD.KR · FOR MUSIC TEACHERS` 라벨 · `레슨카드 · LessonCard` 타이틀 · `30초 만에 만드는 레슨 노트 / 레슨비 정산 · 발표회 팜플렛` 서브카피), 우측 레슨 노트 카드(위신원·쇼팽 왈츠)와 발표회 팜플렛(미드나잇 홀) 미니 목업 + 금빛 헤어라인 피아노 건반 · 600×315 축소(카톡 미리보기 크기)에서 타이포 판독 확인 |
+| OG 썸네일 | `og-image.png` **1200×630** · 페이지와 같은 팔레트(크림 `#FAF6EE` · 에스프레소 `#1D1A16` · 골드 `#A9835A`)·폰트(Noto Serif/Sans KR · Cormorant Garamond · Jost)로 제작 — 좌측 타이포(`LESSONCARD.KR · FOR MUSIC TEACHERS` 라벨 · `레슨카드 · LessonCard` 타이틀 · `30초 만에 만드는 레슨 노트 / 레슨비 정산 · 발표회 팜플렛` 서브카피), 우측 레슨 노트 카드(박하은·쇼팽 왈츠)와 발표회 팜플렛(미드나잇 홀) 미니 목업 + 금빛 헤어라인 피아노 건반 · 600×315 축소(카톡 미리보기 크기)에서 타이포 판독 확인 |
 | 파비콘 | `favicon.ico`(16/32/48/64 다중 사이즈 ICO · 9.8KB) · `icon.png` 512×512 · `apple-touch-icon.png` 180×180 — 에스프레소 라운드 사각 + 크림 음표 심볼, 16px에서도 판독 확인 · apple-touch는 풀블리드(모서리 라운드 없음) |
 | 메타태그 | `og:type/url/title/description/image(+secure_url/type/width/height/alt)` · `twitter:card summary_large_image` + title/description/image/alt · `canonical` · 아이콘 `link rel=icon`(`/favicon.ico` + `/icon.png`)·`apple-touch-icon` 3종 |
 | 회귀 | 메타 추가 외 `index.html` 본문 무변경 · 로컬 렌더 콘솔 에러 0 · title/description/앱 동작 그대로 |

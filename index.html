@@ -768,11 +768,11 @@
         <div class="grid-2">
           <div class="field">
             <div class="label-row"><label for="studio">스튜디오 이름</label></div>
-            <input class="input" id="studio" name="studio" type="text" maxlength="30" placeholder="김선민 피아노 스튜디오">
+            <input class="input" id="studio" name="studio" type="text" maxlength="30" placeholder="하모니 피아노 스튜디오">
           </div>
           <div class="field">
             <div class="label-row"><label for="teacher">선생님 이름</label></div>
-            <input class="input" id="teacher" name="teacher" type="text" maxlength="14" placeholder="김선민">
+            <input class="input" id="teacher" name="teacher" type="text" maxlength="14" placeholder="이서연">
           </div>
         </div>
 
@@ -796,7 +796,7 @@
 
         <div class="field" data-modes="lesson billing">
           <div class="label-row"><label for="student">학생 이름<span class="req" aria-hidden="true">*</span></label><span class="hint" id="studentHint">카드에 가장 크게 들어가요</span></div>
-          <input class="input" id="student" name="student" type="text" maxlength="14" placeholder="위신원">
+          <input class="input" id="student" name="student" type="text" maxlength="14" placeholder="박하은">
         </div>
 
         <div class="grid-2" data-modes="lesson">
@@ -853,7 +853,7 @@
         <!-- ── 레슨비 정산 입력 ───────────────────────────── -->
         <div class="field" data-modes="billing">
           <div class="label-row"><label for="guardian">보호자 호칭</label><span class="hint">선택 · 비우면 '학부모님'</span></div>
-          <input class="input" id="guardian" name="guardian" type="text" maxlength="16" placeholder="위신원 어머님">
+          <input class="input" id="guardian" name="guardian" type="text" maxlength="16" placeholder="박하은 어머님">
         </div>
 
         <div class="grid-2" data-modes="billing">
@@ -915,7 +915,7 @@
           </div>
           <div class="field">
             <div class="label-row"><label for="bankHolder">예금주</label></div>
-            <input class="input" id="bankHolder" name="bankHolder" type="text" maxlength="14" placeholder="김선민">
+            <input class="input" id="bankHolder" name="bankHolder" type="text" maxlength="14" placeholder="이서연">
           </div>
         </div>
 
@@ -933,7 +933,7 @@
 
         <div class="field" data-modes="recital">
           <div class="label-row"><label for="recitalSub">부제 · 주최</label><span class="hint">비우면 스튜디오 이름</span></div>
-          <input class="input" id="recitalSub" name="recitalSub" type="text" maxlength="46" placeholder="김선민 피아노 스튜디오 · 가을의 노래">
+          <input class="input" id="recitalSub" name="recitalSub" type="text" maxlength="46" placeholder="하모니 피아노 스튜디오 · 가을의 노래">
         </div>
 
         <div class="grid-2" data-modes="recital">
@@ -943,13 +943,13 @@
           </div>
           <div class="field">
             <div class="label-row"><label for="recitalWhere">장소</label></div>
-            <input class="input" id="recitalWhere" name="recitalWhere" type="text" maxlength="30" placeholder="삼성동 마리아칼라스홀">
+            <input class="input" id="recitalWhere" name="recitalWhere" type="text" maxlength="30" placeholder="서초 클래식 아트홀">
           </div>
         </div>
 
         <div class="field" data-modes="recital">
           <div class="label-row"><label for="recitalProgram">프로그램 · 출연진</label><span class="hint" id="programCount">0 / 8줄</span></div>
-          <textarea class="textarea program-area" id="recitalProgram" name="recitalProgram" rows="5" maxlength="620" placeholder="위신원 — 쇼팽 왈츠 Op.64 No.2&#10;김서연 — 부르크뮐러 목가 Op.100 No.1&#10;우쩌쉬안 — 드뷔시 아라베스크 1번"></textarea>
+          <textarea class="textarea program-area" id="recitalProgram" name="recitalProgram" rows="5" maxlength="620" placeholder="박하은 — 쇼팽 왈츠 Op.64 No.2&#10;한지우 — 부르크뮐러 목가 Op.100 No.1&#10;정민준 — 드뷔시 아라베스크 1번"></textarea>
           <p class="mini-note">한 줄에 한 명씩, <b>연주자 — 곡명</b> 순서로 적으면 카드에 그대로 들어가요. (최대 8줄)</p>
         </div>
 
@@ -5130,9 +5130,9 @@
   ];
 
   var EXAMPLE = {
-    studio: '김선민 피아노 스튜디오',
-    teacher: '김선민',
-    student: '위신원',
+    studio: '하모니 피아노 스튜디오',
+    teacher: '이서연',
+    student: '박하은',
     session: '12회차',
     piece: '쇼팽 왈츠 Op.64 No.2 — 오른손 프레이즈 다듬기',
     tags: ['박자감이 좋아요', '페달링이 안정됐어요', '표현력이 자랐어요'],
@@ -5141,10 +5141,10 @@
   };
 
   var EXAMPLE_BILLING = {
-    studio: '김선민 피아노 스튜디오',
-    teacher: '김선민',
-    student: '위신원',
-    guardian: '위신원 어머님',
+    studio: '하모니 피아노 스튜디오',
+    teacher: '이서연',
+    student: '박하은',
+    guardian: '박하은 어머님',
     period: '2026년 12월분',
     due: '12월 5일까지',
     lessonSpec: '주 1회 50분 × 4회',
@@ -5156,19 +5156,19 @@
   };
 
   var EXAMPLE_RECITAL = {
-    studio: '김선민 피아노 스튜디오',
-    teacher: '김선민',
+    studio: '하모니 피아노 스튜디오',
+    teacher: '이서연',
     recitalTitle: '2026 겨울 정기연주회',
-    recitalSub: '김선민 피아노 스튜디오 · 겨울의 노래',
+    recitalSub: '하모니 피아노 스튜디오 · 겨울의 노래',
     recitalWhen: '2026. 12. 19 (토) 오후 3시',
-    recitalWhere: '삼성동 마리아칼라스홀',
-    recitalProgram: '위신원 — 쇼팽 왈츠 Op.64 No.2\n김서연 — 부르크뮬러 목가 Op.100 No.1\n우쩌쉬안 — 드뷔시 아라베스크 1번\n임주현 — 슈만 트로이메라이 Op.15 No.7',
+    recitalWhere: '서초 클래식 아트홀',
+    recitalProgram: '박하은 — 쇼팽 왈츠 Op.64 No.2\n한지우 — 부르크뮬러 목가 Op.100 No.1\n정민준 — 드뷔시 아라베스크 1번\n최수아 — 슈만 트로이메라이 Op.15 No.7',
     recitalNote: '주차는 건물 지하 주차장(2시간 무료)을 이용하실 수 있습니다. 공연 중 사진 촬영도 환영합니다.'
   };
 
   // 처음 방문한 강사가 바로 눌러 볼 수 있는 샘플 학생 2명
   var SEED_STUDENTS = [    {
-      name: '위신원', studio: '김선민 피아노 스튜디오', teacher: '김선민', session: '12회차',
+      name: '박하은', studio: '하모니 피아노 스튜디오', teacher: '이서연', session: '12회차',
       piece: '쇼팽 왈츠 Op.64 No.2 — 오른손 프레이즈 다듬기',
       tags: ['박자감이 좋아요', '페달링이 안정됐어요'],
       mission: '매일 15분, 오른손 8마디씩 메트로놈 60에 맞춰 연습하기.',
@@ -5176,7 +5176,7 @@
       date: '', savedAt: 0
     },
     {
-      name: '김서연', studio: '김선민 피아노 스튜디오', teacher: '김선민', session: '4회차',
+      name: '한지우', studio: '하모니 피아노 스튜디오', teacher: '이서연', session: '4회차',
       piece: '부르크뮐러 목가 Op.100 No.1',
       tags: ['집중력이 좋아요', '악보 읽기가 빨라졌어요'],
       mission: '왼손 반주만 따로 3번 천천히, 오른손은 노래하듯이.',
@@ -5653,7 +5653,7 @@
         var saved = savedAccount();
         bd.bankName = saved.bankName || '국민은행';
         bd.bankNo = saved.bankNo || '123-45-6789012';
-        bd.bankHolder = saved.bankHolder || '김선민';
+        bd.bankHolder = saved.bankHolder || '이서연';
       }
       applyData(bd);
     } else if (mode === 'recital') {
@@ -6437,7 +6437,7 @@
   function ensureFonts() {
     if (!document.fonts) { state.fontReady = true; return Promise.resolve(); }
     return Promise.all(FONT_SPECS.map(function (spec) {
-      try { return document.fonts.load(spec, '위신원 레슨 카드 ABC'); } catch (e) { return Promise.resolve(); }
+      try { return document.fonts.load(spec, '박하은 레슨 카드 ABC'); } catch (e) { return Promise.resolve(); }
     })).then(function () { return document.fonts.ready; }).then(function () {
       state.fontReady = true;
     }).catch(function () { state.fontReady = true; });
