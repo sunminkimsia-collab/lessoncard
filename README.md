@@ -323,6 +323,7 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 성능 | 카드 1회 렌더 3.2~7.8ms(2160×2700 슈퍼샘플링 기준) — 타이핑 중 실시간 미리보기 유지 |
 | 콘솔 에러 | **0건** (데스크톱·모바일, pageerror 포함) |
 | 테스트 스크립트 | `tests/test-v8.py` · 결과 `tests/shots/v8-report.json` · 카드 원본 `tests/shots/v8-cards/` · 미리보기 `preview-v8-recital-a.png`, `preview-v8-recital-d.png`, `preview-v8-recital-grid.png` |
+| 배포본 재검증 | `https://lessoncard.kr/` HTTP **200** (github.io/lessoncard/는 301 → lessoncard.kr) · 배포본과 저장소 `index.html` MD5 일치(`97dbe5db…`) · 배포본에서 같은 스크립트 전 항목 통과(실패 0 · 콘솔 에러 0) · `CNAME`(`lessoncard.kr`) 유지 · 결과 `tests/shots/v8-live-report.json` |
 | v6 스크립트 | 발표회 팜플렛이 전용 4종으로 바뀌어 `tests/test-v6.py`는 **레슨 노트·레슨비 정산 9테마 회귀 전용**으로 조정(발표회 검증은 test-v8) |
 
 ---
