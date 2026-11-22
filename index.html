@@ -159,6 +159,42 @@
     box-shadow:var(--shadow-sm);
   }
 
+  /* ── 카드 종류 전환 (레슨 노트 · 레슨비 정산 · 발표회 팜플렛) ── */
+  .mode-bar{
+    grid-column:1 / -1;
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;
+    padding:8px;border:1px solid var(--line);border-radius:18px;
+    background:linear-gradient(180deg,#FFFDF9 0%,#F6F1E8 100%);
+    box-shadow:var(--shadow-sm);
+  }
+  .mode-tab{
+    display:flex;align-items:center;gap:11px;min-width:0;
+    padding:10px 13px;border-radius:13px;border:1px solid transparent;background:transparent;
+    font-family:inherit;text-align:left;cursor:pointer;
+    transition:background .16s ease,border-color .16s ease,box-shadow .16s ease;
+  }
+  .mode-tab .mt-ico{
+    width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;
+    background:#fff;border:1px solid var(--line);color:var(--gold-deep);
+    transition:background .18s ease,color .18s ease,border-color .18s ease;
+  }
+  .mode-tab .mt-txt{display:flex;flex-direction:column;gap:2px;min-width:0;line-height:1.22}
+  .mode-tab .mt-txt b{font-size:13.4px;font-weight:700;letter-spacing:-.015em;color:var(--ink-2);white-space:nowrap}
+  .mode-tab .mt-txt small{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mode-tab .mt-new{
+    margin-left:auto;flex:none;font-family:var(--font-latin);font-size:9.6px;font-weight:700;letter-spacing:.12em;
+    color:var(--gold-deep);background:var(--gold-soft);border:1px solid var(--gold-line);
+    border-radius:999px;padding:2px 7px;
+  }
+  .mode-tab:hover{background:#FFFDF8;border-color:var(--line-2)}
+  .mode-tab.is-on{
+    background:#fff;border-color:var(--gold-line);
+    box-shadow:0 1px 2px rgba(29,26,22,.07), 0 0 0 2.5px rgba(169,131,90,.10);
+  }
+  .mode-tab.is-on .mt-ico{background:linear-gradient(180deg,#2C2721 0%,#1B1814 100%);border-color:#141210;color:#FBF4E7}
+  .mode-tab.is-on .mt-txt b{color:var(--ink)}
+  .mode-tab:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
   /* ── 폼 ─────────────────────────────────────────────────── */
   .form-col{padding:clamp(18px,2.4vw,26px)}
   .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:nowrap}
@@ -320,6 +356,33 @@
   .form-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line-2);flex-wrap:wrap}
   .autosave{display:inline-flex;align-items:center;gap:6px;font-size:11.6px;color:var(--muted)}
   .autosave .dot{width:5px;height:5px;border-radius:50%;background:#9AB58A}
+
+  /* ── 레슨비 정산 · 발표회 팜플렛 입력 ─────────────────── */
+  [data-modes][hidden]{display:none !important}
+  .btn[hidden]{display:none !important}
+  .mini-note{margin:0;font-size:11.3px;line-height:1.55;color:var(--muted)}
+  .mini-note b{color:var(--ink-2);font-weight:600}
+  .money-wrap{position:relative;display:flex;align-items:center}
+  .money-wrap .input{padding-right:36px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:0}
+  .money-wrap .won{position:absolute;right:13px;font-size:12.4px;color:var(--muted);pointer-events:none}
+  .total-line{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:11px 14px;border-radius:11px;
+    background:var(--gold-soft);border:1px solid var(--gold-line);
+  }
+  .total-line .tl-label{font-size:12.2px;font-weight:700;color:var(--gold-deep);letter-spacing:-.01em}
+  .total-line .tl-value{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--gold-deep);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .total-line .tl-value .unit{font-family:var(--font-ui);font-size:12.4px;font-weight:600;margin-left:2px}
+
+  .acct-field{
+    display:flex;flex-direction:column;gap:9px;
+    padding:13px 14px;border:1px solid var(--line);border-radius:var(--r-md);
+    background:linear-gradient(180deg,#FFFDF9 0%,var(--surface-2) 100%);
+  }
+  .acct-field .label-row{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .acct-field .label{font-size:12.3px;font-weight:600;color:var(--ink-2)}
+  .acct-field .hint{font-size:11.2px;color:var(--muted);font-weight:400}
+  .program-area{min-height:118px;line-height:1.7}
 
   /* ── 미리보기 컬럼 ──────────────────────────────────────── */
   .preview-col{
@@ -511,6 +574,7 @@
   /* ── 반응형 ────────────────────────────────────────────── */
   @media (max-width:1000px){
     .workspace{grid-template-columns:1fr}
+    .mode-bar{order:-3}
     .preview-col{position:static;order:-1}
     .canvas-wrap{max-width:300px;margin:0 auto;border-radius:10px}
     .preview-col{gap:12px;align-items:stretch}
@@ -525,6 +589,13 @@
   }
   @media (max-width:600px){
     .shell{padding:18px 14px 92px}
+    .mode-bar{gap:5px;padding:6px;border-radius:15px}
+    .mode-tab{gap:6px;padding:8px 6px;border-radius:11px}
+    .mode-tab .mt-ico{width:26px;height:26px;border-radius:7px}
+    .mode-tab .mt-ico svg{width:14px;height:14px}
+    .mode-tab .mt-txt b{font-size:11px}
+    .mode-tab .mt-txt small{display:none}
+    .mode-tab .mt-new{display:none}
     .form-col{padding:16px 14px}
     .panel-head{margin-bottom:16px}
     .grid-2{grid-template-columns:1fr 1fr}
@@ -611,12 +682,36 @@
   </section>
 
   <div class="workspace">
+    <!-- ── 카드 종류 선택 ──────────────────────────────── -->
+    <div class="mode-bar" role="tablist" aria-label="카드 종류">
+      <button class="mode-tab is-on" type="button" role="tab" data-mode="lesson" aria-selected="true" aria-controls="lessonForm">
+        <span class="mt-ico" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M5 3.4h7.2L15 6.2v10.4H5V3.4Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M11.9 3.6v2.8H14.8M7.3 9h5.4M7.3 12.2h3.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </span>
+        <span class="mt-txt"><b>레슨 노트</b><small>오늘의 레슨 피드백</small></span>
+      </button>
+      <button class="mode-tab" type="button" role="tab" data-mode="billing" aria-selected="false" aria-controls="lessonForm">
+        <span class="mt-ico" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M5 3.2h10v13.6l-2.5-1.6-2.5 1.6-2.5-1.6-2.5 1.6V3.2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 7.4h4M8 10.6h2.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </span>
+        <span class="mt-txt"><b>레슨비 정산</b><small>회차·입금 계좌 안내</small></span>
+        <span class="mt-new" aria-hidden="true">NEW</span>
+      </button>
+      <button class="mode-tab" type="button" role="tab" data-mode="recital" aria-selected="false" aria-controls="lessonForm">
+        <span class="mt-ico" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3.4l1.8 3.9 4.2.5-3.1 2.9.8 4.2L10 12.8l-3.7 2.1.8-4.2L4 7.8l4.2-.5L10 3.4Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="mt-txt"><b>발표회 팜플렛</b><small>프로그램·초대장</small></span>
+        <span class="mt-new" aria-hidden="true">NEW</span>
+      </button>
+    </div>
+
     <!-- ── 입력 폼 ──────────────────────────────────────── -->
     <section class="panel form-col" aria-label="레슨 정보 입력">
       <div class="panel-head">
         <div>
-          <h2>레슨 정보</h2>
-          <p>오늘 레슨에서 기억할 것만 적어 주세요.</p>
+          <h2 id="formTitle">레슨 정보</h2>
+          <p id="formSub">오늘 레슨에서 기억할 것만 적어 주세요.</p>
         </div>
         <div class="head-actions">
           <button class="btn btn-sm btn-ghost" id="exampleBtn" type="button">예시 채우기</button>
@@ -625,11 +720,11 @@
       </div>
 
       <form class="form-body" id="lessonForm" autocomplete="off" novalidate>
-        <div class="students-block" id="studentsBlock" aria-label="내 학생">
+        <div class="students-block" id="studentsBlock" data-modes="lesson billing" aria-label="내 학생">
           <div class="students-head">
             <div class="students-title">
               <span class="label" id="studentsLabel">내 학생</span>
-              <span class="hint">누르면 지난 기록 + 회차 1 올려서 불러와요</span>
+              <span class="hint" id="studentsHint">누르면 지난 기록 + 회차 1 올려서 불러와요</span>
             </div>
             <button class="btn btn-sm btn-outline" id="saveRecordBtn" type="button" title="지금 입력한 내용을 이 학생의 최근 기록으로 저장">학생 기록 저장</button>
           </div>
@@ -665,12 +760,12 @@
           <input type="file" id="logoInput" accept="image/png,image/jpeg" hidden>
         </div>
 
-        <div class="field">
-          <div class="label-row"><label for="student">학생 이름<span class="req" aria-hidden="true">*</span></label><span class="hint">카드에 가장 크게 들어가요</span></div>
+        <div class="field" data-modes="lesson billing">
+          <div class="label-row"><label for="student">학생 이름<span class="req" aria-hidden="true">*</span></label><span class="hint" id="studentHint">카드에 가장 크게 들어가요</span></div>
           <input class="input" id="student" name="student" type="text" maxlength="14" placeholder="위신원">
         </div>
 
-        <div class="grid-2">
+        <div class="grid-2" data-modes="lesson">
           <div class="field">
             <div class="label-row"><label for="date">레슨 날짜</label><span class="hint" id="dateHint">2026. 11. 21</span></div>
             <input class="input" id="date" name="date" type="date">
@@ -681,7 +776,7 @@
           </div>
         </div>
 
-        <div class="field">
+        <div class="field" data-modes="lesson">
           <div class="label-row"><label for="piece">오늘의 곡 / 진도</label><span class="hint">곡 이름 + 오늘 다룬 부분</span></div>
           <input class="input" id="piece" name="piece" type="text" maxlength="70" list="pieceList" placeholder="쇼팽 왈츠 Op.64 No.2 — 오른손 프레이즈">
           <datalist id="pieceList">
@@ -695,7 +790,7 @@
           </datalist>
         </div>
 
-        <div class="field">
+        <div class="field" data-modes="lesson">
           <div class="label-row">
             <span class="label" id="tagsLabel">잘한 점</span>
             <span class="hint" id="tagCount">0 / 4 선택</span>
@@ -710,15 +805,124 @@
           </div>
         </div>
 
-        <div class="field">
+        <div class="field" data-modes="lesson">
           <div class="label-row"><label for="mission">집에서 연습할 미션</label><span class="hint" id="missionCount">0 / 120</span></div>
           <textarea class="textarea" id="mission" name="mission" rows="2" maxlength="120" placeholder="매일 15분, 오른손 8마디씩 메트로놈 60에 맞춰 연습하기"></textarea>
         </div>
 
-        <div class="field">
+        <div class="field" data-modes="lesson">
           <div class="label-row"><label for="note">다음 레슨 안내 · 한마디</label><span class="hint" id="noteCount">0 / 110</span></div>
           <div class="note-presets" id="notePresets" role="group" aria-label="상황별 한마디 문구"></div>
           <textarea class="textarea" id="note" name="note" rows="2" maxlength="110" placeholder="다음 주에는 처음부터 끝까지 천천히 이어서 들어볼게요."></textarea>
+        </div>
+
+        <!-- ── 레슨비 정산 입력 ───────────────────────────── -->
+        <div class="field" data-modes="billing">
+          <div class="label-row"><label for="guardian">보호자 호칭</label><span class="hint">선택 · 비우면 '학부모님'</span></div>
+          <input class="input" id="guardian" name="guardian" type="text" maxlength="16" placeholder="위신원 어머님">
+        </div>
+
+        <div class="grid-2" data-modes="billing">
+          <div class="field">
+            <div class="label-row"><label for="billPeriod">정산 기간</label></div>
+            <input class="input" id="billPeriod" name="billPeriod" type="text" maxlength="26" placeholder="2026년 12월분">
+          </div>
+          <div class="field">
+            <div class="label-row"><label for="billDue">납부 기한</label></div>
+            <input class="input" id="billDue" name="billDue" type="text" maxlength="26" placeholder="12월 5일까지">
+          </div>
+        </div>
+
+        <div class="field" data-modes="billing">
+          <div class="label-row"><label for="billSpec">수업 내역 · 회차</label><span class="hint">주 1회 50분 × 4회</span></div>
+          <input class="input" id="billSpec" name="billSpec" type="text" maxlength="48" placeholder="주 1회 50분 × 4회">
+        </div>
+
+        <div class="field" data-modes="billing">
+          <div class="label-row"><label for="billDates">수업 날짜 · 결석/보강 메모</label><span class="hint" id="billDatesCount">0 / 90</span></div>
+          <textarea class="textarea" id="billDates" name="billDates" rows="2" maxlength="90" placeholder="12/2, 12/9, 12/16, 12/23 — 4회 모두 진행"></textarea>
+        </div>
+
+        <div class="field" data-modes="billing">
+          <div class="label-row"><label for="billTuition">수강료</label><span class="hint">숫자만 적으면 콤마가 붙어요</span></div>
+          <div class="money-wrap"><input class="input" id="billTuition" name="billTuition" type="text" inputmode="numeric" maxlength="12" placeholder="240,000" autocomplete="off"><span class="won">원</span></div>
+        </div>
+
+        <div class="grid-2" data-modes="billing">
+          <div class="field">
+            <div class="label-row"><label for="billExtraLabel">추가 항목</label><span class="hint">선택</span></div>
+            <input class="input" id="billExtraLabel" name="billExtraLabel" type="text" maxlength="14" placeholder="교재비">
+          </div>
+          <div class="field">
+            <div class="label-row"><label for="billExtra">금액</label><span class="hint">음수 = 할인</span></div>
+            <div class="money-wrap"><input class="input" id="billExtra" name="billExtra" type="text" inputmode="numeric" maxlength="12" placeholder="-30,000" autocomplete="off"><span class="won">원</span></div>
+          </div>
+        </div>
+
+        <div class="total-line" data-modes="billing" aria-live="polite">
+          <span class="tl-label">이번 달 합계</span>
+          <span class="tl-value" id="billTotalText">0<span class="unit">원</span></span>
+        </div>
+
+        <div class="acct-field" data-modes="billing">
+          <div class="label-row">
+            <span class="label">입금 계좌</span>
+            <span class="hint">한 번 입력하면 다음부터 자동으로 채워져요</span>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label for="bankName">은행</label></div>
+              <input class="input" id="bankName" name="bankName" type="text" maxlength="14" placeholder="국민은행">
+            </div>
+            <div class="field">
+              <div class="label-row"><label for="bankNo">계좌번호</label></div>
+              <input class="input" id="bankNo" name="bankNo" type="text" inputmode="numeric" maxlength="24" placeholder="123-45-6789012">
+            </div>
+          </div>
+          <div class="field">
+            <div class="label-row"><label for="bankHolder">예금주</label></div>
+            <input class="input" id="bankHolder" name="bankHolder" type="text" maxlength="14" placeholder="김선민">
+          </div>
+        </div>
+
+        <div class="field" data-modes="billing">
+          <div class="label-row"><label for="billNote">안내 한마디</label><span class="hint" id="billNoteCount">0 / 120</span></div>
+          <div class="note-presets" id="billPresets" role="group" aria-label="정산 안내 문구"></div>
+          <textarea class="textarea" id="billNote" name="billNote" rows="2" maxlength="120" placeholder="이번 달 레슨비 안내드립니다. 확인해 주시고 기한 안에 입금 부탁드려요."></textarea>
+        </div>
+
+        <!-- ── 발표회 팜플렛 입력 ─────────────────────────── -->
+        <div class="field" data-modes="recital">
+          <div class="label-row"><label for="recitalTitle">공연 · 발표회 제목</label></div>
+          <input class="input" id="recitalTitle" name="recitalTitle" type="text" maxlength="46" placeholder="제5회 슈만 피아노 아카데미 발표회">
+        </div>
+
+        <div class="field" data-modes="recital">
+          <div class="label-row"><label for="recitalSub">부제 · 주최</label><span class="hint">비우면 스튜디오 이름</span></div>
+          <input class="input" id="recitalSub" name="recitalSub" type="text" maxlength="46" placeholder="김선민 피아노 스튜디오 · 가을의 노래">
+        </div>
+
+        <div class="grid-2" data-modes="recital">
+          <div class="field">
+            <div class="label-row"><label for="recitalWhen">일시</label></div>
+            <input class="input" id="recitalWhen" name="recitalWhen" type="text" maxlength="30" placeholder="2026. 12. 19 (토) 오후 3시">
+          </div>
+          <div class="field">
+            <div class="label-row"><label for="recitalWhere">장소</label></div>
+            <input class="input" id="recitalWhere" name="recitalWhere" type="text" maxlength="30" placeholder="삼성동 마리아칼라스홀">
+          </div>
+        </div>
+
+        <div class="field" data-modes="recital">
+          <div class="label-row"><label for="recitalProgram">프로그램 · 출연진</label><span class="hint" id="programCount">0 / 8줄</span></div>
+          <textarea class="textarea program-area" id="recitalProgram" name="recitalProgram" rows="5" maxlength="620" placeholder="위신원 — 쇼팽 왈츠 Op.64 No.2&#10;김서연 — 부르크뮐러 목가 Op.100 No.1&#10;우쩌쉬안 — 드뷔시 아라베스크 1번"></textarea>
+          <p class="mini-note">한 줄에 한 명씩, <b>연주자 — 곡명</b> 순서로 적으면 카드에 그대로 들어가요. (최대 8줄)</p>
+        </div>
+
+        <div class="field" data-modes="recital">
+          <div class="label-row"><label for="recitalNote">오시는 길 · 드리는 말씀</label><span class="hint" id="recitalNoteCount">0 / 140</span></div>
+          <div class="note-presets" id="recitalPresets" role="group" aria-label="드리는 말씀 문구"></div>
+          <textarea class="textarea" id="recitalNote" name="recitalNote" rows="3" maxlength="140" placeholder="주차는 건물 지하 1층을 이용하실 수 있습니다. 공연 중 사진 촬영도 환영합니다."></textarea>
         </div>
       </form>
 
@@ -809,6 +1013,7 @@
       <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>카드 저장 무제한</b> — 학생 수와 상관없이</span></li>
       <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>브랜드 워터마크 제거</b> — 내 스튜디오 이름만</span></li>
       <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>테마 9종 전체</b> — 콘서트홀·시즌 한정 디자인 추가</span></li>
+      <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>레슨비 정산 · 발표회 팜플렛</b> — Pro 전용 카드 2종</span></li>
       <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>학생별 레슨 기록</b> — 지난 카드 복제·수정</span></li>
     </ul>
     <div class="modal-actions">
@@ -859,6 +1064,10 @@
       <li>
         <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2.6 4.4 6.8v8.6h9.2V6.8L9 2.6Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M7.4 15.4v-3.6h3.2v3.6" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
         <span>입력한 학생 정보는 <b>서버에 남지 않고</b> 내 기기(브라우저)에만 안전하게 저장돼요.</span>
+      </li>
+      <li>
+        <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4.2 5.2h9.6M4.2 9h9.6M4.2 12.8h5.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span>위쪽 탭에서 <b>레슨 노트 · 레슨비 정산 · 발표회 팜플렛</b>을 골라 쓰세요. 세 카드 모두 같은 테마·로고·저장 방식이에요.</span>
       </li>
       <li>
         <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4.2 5.2h9.6M4.2 9h9.6M4.2 12.8h5.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -1090,6 +1299,12 @@
     return parts.join('  ·  ');
   }
 
+  /* 헤더 오른쪽/아래에 들어가는 작은 메타줄 — 카드 종류별로 다르게 넘길 수 있다 */
+  function headMeta(d) {
+    if (d && d.headMeta != null) return d.headMeta;
+    return metaLine(d || {});
+  }
+
   /* 헤더용 로고 박스 (비율 유지·최대 폭 제한) */
   function headerLogo(innerW, h) {
     var im = state.logoImg;
@@ -1249,7 +1464,7 @@
     var floorY = (typeof bottom === 'number') ? bottom : CONTENT_BOTTOM;
     var m = {
       items: [], total: 0, top: top, avail: floorY - top,
-      scale: sc, overflow: false
+      scale: sc, overflow: false, clip: false, flexMax: 30 * sc
     };
     m.gap = function (h, flex) {
       m.items.push({ type: 'gap', h: h * sc, flex: flex || 0 });
@@ -1266,7 +1481,7 @@
   function flowItems(ctx, m) {
     var flexCount = m.items.filter(function (i) { return i.flex > 0; }).length || 1;
     var extra = Math.max(0, m.avail - m.total);
-    var per = Math.min(extra / flexCount, 30 * m.scale);
+    var per = Math.min(extra / flexCount, m.flexMax || 30 * m.scale);
     var y = m.top;
     m.items.forEach(function (item) {
       if (item.type === 'gap') {
@@ -1348,7 +1563,7 @@
   }
 
   function paintCleanHeader(ctx, t, d, cfg) {
-    var meta = metaLine(d);
+    var meta = headMeta(d);
     var studio = (d.studio || '피아노 스튜디오').toUpperCase();
     var lg = headerLogo(CARD_W - cfg.mx * 2 - 260, 42);
     ctx.save();
@@ -1721,7 +1936,7 @@
     return {
       scale: sc, contentHeight: m.total, available: m.avail,
       overflow: m.total > m.avail + 0.5, bottom: y, top: m.top,
-      theme: themeId, set: 'clean', mode: t.mode
+      theme: themeId, set: 'clean', mode: t.mode, card: 'lesson', clip: !!m.clip
     };
   }
 
@@ -1845,12 +2060,12 @@
     ctx.restore();
   }
 
-  function paintCuteHeader(ctx, t, d, lg) {
+  function paintCuteHeader(ctx, t, d, lg, pillText) {
     var studio = d.studio || '피아노 스튜디오';
-    var meta = metaLine(d);
+    var meta = headMeta(d);
 
     // 라벨 스티커
-    cutePill(ctx, CUTE_M - 6, 120, '레슨 노트', 20, 18, 38, t.accent, '#FFFFFF', -0.045, true);
+    cutePill(ctx, CUTE_M - 6, 120, pillText || '레슨 노트', 20, 18, 38, t.accent, '#FFFFFF', -0.045, true);
 
     // 스튜디오 이름
     ctx.save();
@@ -2196,7 +2411,7 @@
     return {
       scale: sc, contentHeight: m.total, available: m.avail,
       overflow: m.total > m.avail + 0.5, bottom: y, top: m.top,
-      theme: themeId, set: 'cute', mode: t.mode
+      theme: themeId, set: 'cute', mode: t.mode, card: 'lesson', clip: !!m.clip
     };
   }
 
@@ -2294,7 +2509,7 @@
   function paintLuxHeader(ctx, t, d) {
     var h = luxHeaderMetrics(d);
     var studio = (d.studio || '피아노 스튜디오').toUpperCase();
-    var meta = metaLine(d);
+    var meta = headMeta(d);
     ctx.save();
     ctx.textBaseline = 'top';
 
@@ -2429,16 +2644,27 @@
     var tags = (d.tags || []).slice(0, 4);
     if (tags.length) {
       m.gap(40, 1);
-      var chipFont = '500 ' + Math.round(22 * sc) + 'px ' + SERIF;
-      ctx.font = chipFont;
+      var chipFontBase = function (size) { return '500 ' + Math.round(size) + 'px ' + SERIF; };
       var padX = 22 * sc, pillH = 46 * sc, gapX = 12 * sc, gapY = 12 * sc;
       var rows = [[]];
       tags.forEach(function (tag) {
-        var w = Math.min(trackedWidth(ctx, tag, 0.8 * sc), cw - padX * 2) + padX * 2;
+        // 칩 폭은 줄이지 않는다 — 폭이 모자라면 글꼴만 줄여서 끝까지 담는다
+        var size = Math.round(22 * sc);
+        var tw = 0;
+        for (;;) {
+          ctx.font = chipFontBase(size);
+          tw = trackedWidth(ctx, tag, 0.8 * sc);
+          if (tw + padX * 2 <= cw || size <= Math.round(15 * sc)) break;
+          size -= 1;
+        }
+        var item = { tag: tag, w: Math.min(tw + padX * 2, cw), tw: tw, size: size };
+        if (tw + padX * 2 > cw + 0.5) m.clip = true;
+        m.chips = m.chips || [];
+        m.chips.push({ text: tag, need: Math.round(tw + padX * 2), have: Math.round(item.w), size: size });
         var row = rows[rows.length - 1];
         var used = row.reduce(function (a, b) { return a + b.w + gapX; }, 0);
-        if (row.length && used + w > cw) rows.push([{ tag: tag, w: w }]);
-        else row.push({ tag: tag, w: w });
+        if (row.length && used + item.w > cw) rows.push([item]);
+        else row.push(item);
       });
       var visible = rows.slice(0, 2);
       var blockH = visible.length * pillH + (visible.length - 1) * gapY;
@@ -2459,10 +2685,8 @@
             ctx.fill();
             ctx.stroke();
             ctx.fillStyle = t.ink;
-            ctx.font = chipFont;
-            var labelText = item.tag;
-            while (trackedWidth(ctx, labelText, 0.8 * sc) > item.w - padX * 2 && labelText.length > 2) labelText = labelText.slice(0, -1);
-            drawTracked(ctx, labelText, px + item.w / 2, ry + pillH / 2 + 1, 0.8 * sc, 'center');
+            ctx.font = chipFontBase(item.size);
+            drawTracked(ctx, item.tag, px + item.w / 2, ry + pillH / 2 + 1, 0.8 * sc, 'center');
             px += item.w + gapX;
           });
         });
@@ -2580,20 +2804,1264 @@
     return {
       scale: sc, contentHeight: m.total, available: m.avail,
       overflow: m.total > m.avail + 0.5, bottom: y, top: m.top,
-      theme: themeId, set: 'chic', mode: t.mode
+      theme: themeId, set: 'chic', mode: t.mode, card: 'lesson', clip: !!m.clip, chips: m.chips || []
     };
   }
 
-  var RENDERERS = { clean: drawCleanCard, cute: drawCuteCard, chic: drawLuxCard };
+  /* ══════════════════════════════════════════════════════════
+     레슨비 정산 · 발표회 팜플렛 — 공용 도구
+     ══════════════════════════════════════════════════════════ */
+  // 측정 → 넘치면 줄여서 다시 측정 → 배치
+  function layoutCard(ctx, paint, measure) {
+    var sc = 1, m = null, tries = 0;
+    for (;;) {
+      ctx.clearRect(0, 0, CARD_W, CARD_H);
+      paint();
+      m = measure(sc);
+      if (!m.overflow || tries >= 14 || sc <= 0.50) break;
+      sc -= 0.045; tries++;
+    }
+    var bottom = flowItems(ctx, m);
+    return {
+      scale: sc, contentHeight: m.total, available: m.avail,
+      overflow: m.total > m.avail + 0.5, bottom: bottom, top: m.top,
+      clip: !!m.clip, chips: m.chips || []
+    };
+  }
 
-  function drawCard(canvas, themeId, data) {
+  function parseMoney(v) {
+    var raw = String(v == null ? '' : v);
+    var neg = /^\s*-/.test(raw);
+    var digits = raw.replace(/[^\d]/g, '');
+    if (!digits) return 0;
+    var n = parseInt(digits, 10);
+    return neg ? -n : n;
+  }
+  function moneyText(v) {
+    var n = Math.round(Number(v) || 0);
+    return (n < 0 ? '-' : '') + Math.abs(n).toLocaleString('ko-KR');
+  }
+
+  // '연주자 — 곡명' 한 줄을 나눈다 (—, –, -, :, | 모두 허용)
+  function splitProgram(text) {
+    var lines = String(text == null ? '' : text).replace(/\r/g, '').split('\n');
+    var out = [];
+    for (var i = 0; i < lines.length && out.length < 8; i++) {
+      var line = lines[i].replace(/\s+/g, ' ').trim();
+      if (!line) continue;
+      var mm = line.match(/^(.{1,24}?)\s*[—–\-:]\s*(.+)$/);
+      if (mm) out.push({ who: mm[1].trim(), piece: mm[2].trim() });
+      else out.push({ who: '', piece: line });
+    }
+    return out;
+  }
+
+  // 점선 리더 (금액표·프로그램용)
+  function dotLeader(ctx, x0, x1, y, color, sc) {
+    if (x1 - x0 < 12 * sc) return;
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1 * sc;
+    ctx.setLineDash([1.5 * sc, 5 * sc]);
+    ctx.beginPath();
+    ctx.moveTo(x0, y + 0.5);
+    ctx.lineTo(x1, y + 0.5);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function textAscent(ctx, text, size) {
+    var nm = ctx.measureText(text);
+    return Math.min(nm.fontBoundingBoxAscent || size * 0.78, size * 1.04);
+  }
+  function textDescent(ctx, text, size) {
+    var nm = ctx.measureText(text);
+    return Math.min(nm.fontBoundingBoxDescent || size * 0.2, size * 0.3);
+  }
+
+  /* ── 레슨비 정산 · 깔끔 세트 ─────────────────────────────── */
+  function billingCleanMeasure(ctx, t, d, sc, cfg) {
+    var m = newModel(cfg.top, sc);
+    var rail = cfg.rail * sc;
+    var cx = cfg.mx + rail;
+    var cw = CARD_W - cfg.mx * 2 - rail;
+    var railMode = cfg.label === 'rail';
+    var labelH = railMode ? 47 * sc : 22 * sc;
+    var seqNo = 0;
+    function seq() { seqNo++; return railMode ? ('0' + seqNo) : null; }
+    function rule(y) {
+      if (!cfg.rule) return;
+      ctx.fillStyle = t.mode === 'slate' ? t.accent : t.line;
+      ctx.globalAlpha = t.mode === 'slate' ? 0.26 : 1;
+      ctx.fillRect(cfg.mx, y + 0.5, CARD_W - cfg.mx * 2, 1);
+      ctx.globalAlpha = 1;
+    }
+    function section(gap) {
+      m.gap(gap == null ? Math.round(cfg.gapSec * 0.8) : gap, 1);
+      m.block(1, rule);
+      m.gap(14, 0);
+    }
+
+    // ── 수강생 ──
+    var nameText = d.student || '학생 이름';
+    var placeholder = !d.student;
+    var nameSize = fitText(ctx, nameText, cw - 210 * sc, Math.round(cfg.name.size * 0.84 * sc), 38 * sc, '700', SANS);
+    var asc = textAscent(ctx, nameText, nameSize);
+    var desc = textDescent(ctx, nameText, nameSize);
+    var nameH = asc + desc;
+    var guardian = d.guardian || '';
+    m.gap(cfg.gapName, 2);
+    m.block(labelH + nameH + (guardian ? 34 * sc : 0), function (y) {
+      cleanSectionLabel(ctx, t, cfg, '수강생', cfg.mx, y, sc, seq());
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = placeholder ? t.soft : t.ink;
+      ctx.font = '700 ' + Math.round(nameSize) + 'px ' + SANS;
+      var ny = y + labelH + asc;
+      drawTracked(ctx, nameText, cx, ny, -1.4 * sc, 'left');
+      var nw = trackedWidth(ctx, nameText, -1.4 * sc);
+      if (!placeholder && nw + 110 * sc < cw) {
+        ctx.font = '500 ' + Math.round(21 * sc) + 'px ' + SANS;
+        ctx.fillStyle = t.soft;
+        ctx.fillText('학생', cx + nw + 14 * sc, ny - 4 * sc);
+      }
+      if (guardian) {
+        ctx.textBaseline = 'top';
+        ctx.font = '500 ' + Math.round(23 * sc) + 'px ' + SANS;
+        ctx.fillStyle = t.soft;
+        drawTracked(ctx, guardian, cx, y + labelH + nameH + 6 * sc, 0.4 * sc, 'left');
+      }
+      ctx.restore();
+    });
+
+    // ── 수업 내역 ──
+    if (d.lessonSpec || d.lessonDates) {
+      section();
+      var specSize = Math.round(31 * sc);
+      var specWrap = d.lessonSpec ? wrapText(ctx, d.lessonSpec, cw - 10 * sc, 2) : null;
+      var specLH = specSize * 1.42;
+      var dSize = Math.round(23 * sc);
+      var datesWrap = d.lessonDates ? wrapText(ctx, d.lessonDates, cw - 10 * sc, 3) : null;
+      var dateLH = dSize * 1.62;
+      var h = labelH + (specWrap ? specWrap.lines.length * specLH + 8 * sc : 0) + (datesWrap ? 10 * sc + datesWrap.lines.length * dateLH : 0);
+      m.block(h, function (y) {
+        cleanSectionLabel(ctx, t, cfg, '수업 내역', cfg.mx, y, sc, seq());
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        var by = y + labelH;
+        if (specWrap) {
+          ctx.fillStyle = t.ink;
+          ctx.font = '600 ' + specSize + 'px ' + SANS;
+          specWrap.lines.forEach(function (line, i) { ctx.fillText(line, cx, by + i * specLH); });
+          by += specWrap.lines.length * specLH + 8 * sc;
+        }
+        if (datesWrap) {
+          ctx.fillStyle = t.soft;
+          ctx.font = '400 ' + dSize + 'px ' + SANS;
+          datesWrap.lines.forEach(function (line, i) { ctx.fillText(line, cx, by + 10 * sc + i * dateLH); });
+        }
+        ctx.restore();
+      });
+    }
+
+    // ── 정산 내역 ──
+    section();
+    var rows = [];
+    if (d.tuition) rows.push({ label: '수강료', amount: d.tuition, strong: false });
+    if (d.extraAmount) rows.push({ label: d.extraLabel || '추가 금액', amount: d.extraAmount, strong: false });
+    var rowH = 42 * sc;
+    var totalH = 60 * sc;
+    var totalValue = (d.tuition || 0) + (d.extraAmount || 0);
+    m.block(labelH + rows.length * rowH + 16 * sc + totalH + (d.due ? 30 * sc : 0), function (y) {
+      cleanSectionLabel(ctx, t, cfg, '정산 내역', cfg.mx, y, sc, seq());
+      ctx.save();
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      var ry = y + labelH;
+      if (!rows.length) {
+        ctx.fillStyle = t.soft;
+        ctx.font = '400 ' + Math.round(24 * sc) + 'px ' + SANS;
+        ctx.fillText('금액을 입력하면 여기에 정리돼요', cx, ry + rowH / 2);
+      }
+      rows.forEach(function (row) {
+        ctx.fillStyle = t.soft;
+        ctx.font = '500 ' + Math.round(23 * sc) + 'px ' + SANS;
+        ctx.fillText(row.label, cx, ry + rowH / 2);
+        var lw = ctx.measureText(row.label).width;
+        ctx.fillStyle = t.ink;
+        ctx.font = '600 ' + Math.round(26 * sc) + 'px ' + SANS;
+        var amt = moneyText(row.amount) + '원';
+        var aw = ctx.measureText(amt).width;
+        ctx.textAlign = 'right';
+        ctx.fillText(amt, cx + cw, ry + rowH / 2);
+        ctx.textAlign = 'left';
+        dotLeader(ctx, cx + lw + 16 * sc, cx + cw - aw - 16 * sc, ry + rowH / 2, t.line, sc);
+        ry += rowH;
+      });
+      // 합계
+      var ty = ry + 16 * sc;
+      ctx.fillStyle = t.mode === 'slate' ? t.accent : t.ink;
+      ctx.fillRect(cx, ty, cw, t.mode === 'poster' ? 2 * sc : 1);
+      ctx.fillStyle = t.soft;
+      ctx.font = '600 ' + Math.round(20 * sc) + 'px ' + SANS;
+      ctx.textBaseline = 'middle';
+      drawTracked(ctx, '합계', cx, ty + totalH / 2 + 2 * sc, 2.4 * sc, 'left');
+      ctx.font = '600 ' + Math.round(22 * sc) + 'px ' + SANS;
+      var unitW = ctx.measureText('원').width;
+      ctx.textAlign = 'right';
+      ctx.fillStyle = t.soft;
+      ctx.fillText('원', cx + cw, ty + totalH / 2 + 4 * sc);
+      ctx.fillStyle = t.ink;
+      ctx.font = '700 ' + Math.round(40 * sc) + 'px ' + SANS;
+      ctx.fillText(moneyText(totalValue), cx + cw - unitW - 6 * sc, ty + totalH / 2 + 1 * sc);
+      ctx.textAlign = 'left';
+      if (d.due) {
+        ctx.fillStyle = t.mode === 'poster' ? t.accent : t.soft;
+        ctx.font = '600 ' + Math.round(22 * sc) + 'px ' + SANS;
+        ctx.textAlign = 'right';
+        ctx.fillText('납부 기한  ' + d.due, cx + cw, ty + totalH + 8 * sc);
+      }
+      ctx.restore();
+    });
+
+    // ── 입금 계좌 ──
+    if (d.bankNo || d.bankName) {
+      section();
+      var acctLine = [d.bankName, d.bankNo].filter(Boolean).join('  ');
+      ctx.font = '600 ' + Math.round(28 * sc) + 'px ' + SANS;
+      var acctWrap = wrapText(ctx, acctLine, cw - 20 * sc, 2);
+      var acctLH = 28 * sc * 1.44;
+      m.block(labelH + 14 * sc + acctWrap.lines.length * acctLH + (d.bankHolder ? 32 * sc : 0), function (y) {
+        cleanSectionLabel(ctx, t, cfg, '입금 계좌', cfg.mx, y, sc, seq());
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        var by = y + labelH + 14 * sc;
+        if (cfg.panel === 'fill') {
+          roundRect(ctx, cx - 16 * sc, by - 12 * sc, cw + 16 * sc, acctWrap.lines.length * acctLH + 24 * sc + (d.bankHolder ? 32 * sc : 0), 6 * sc);
+          ctx.fillStyle = t.panelBg;
+          ctx.fill();
+        }
+        ctx.fillStyle = t.ink;
+        ctx.font = '600 ' + Math.round(28 * sc) + 'px ' + SANS;
+        acctWrap.lines.forEach(function (line, i) { ctx.fillText(line, cx, by + i * acctLH); });
+        if (d.bankHolder) {
+          ctx.fillStyle = t.soft;
+          ctx.font = '500 ' + Math.round(21 * sc) + 'px ' + SANS;
+          ctx.fillText('예금주  ' + d.bankHolder, cx, by + acctWrap.lines.length * acctLH + 6 * sc);
+        }
+        ctx.restore();
+      });
+    }
+
+    // ── 안내 ──
+    if (d.note) {
+      section();
+      var nSize = Math.round((t.mode === 'slate' ? 27 : 26) * sc);
+      ctx.font = '400 ' + nSize + 'px ' + SANS;
+      var nWrap = wrapText(ctx, d.note, cw - 26 * sc, 3);
+      var nLH = nSize * 1.66;
+      var signName = d.teacher || d.studio || '';
+      m.block(labelH + 10 * sc + nWrap.lines.length * nLH + (signName ? 34 * sc : 0), function (y) {
+        cleanSectionLabel(ctx, t, cfg, '안내', cfg.mx, y, sc, seq());
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        var by = y + labelH + 10 * sc;
+        ctx.fillStyle = t.mode === 'poster' ? t.accent : t.line;
+        ctx.fillRect(cx, by + 3 * sc, 2 * sc, nWrap.lines.length * nLH - 10 * sc);
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + nSize + 'px ' + SANS;
+        nWrap.lines.forEach(function (line, i) { ctx.fillText(line, cx + 24 * sc, by + i * nLH); });
+        if (signName) {
+          ctx.textAlign = 'right';
+          ctx.font = '600 ' + Math.round(20 * sc) + 'px ' + SANS;
+          ctx.fillStyle = t.soft;
+          ctx.fillText('— ' + signName, CARD_W - cfg.mx, by + nWrap.lines.length * nLH + 8 * sc);
+        }
+        ctx.restore();
+      });
+    }
+
+    return m.done();
+  }
+
+  function drawBillingClean(ctx, t, d, themeId) {
+    var cfg = cleanCfg(t);
+    var out = layoutCard(ctx, function () {
+      paintCleanBg(ctx, t, cfg);
+      paintCleanHeader(ctx, t, d, cfg);
+    }, function (sc) { return billingCleanMeasure(ctx, t, d, sc, cfg); });
+    paintCleanFooter(ctx, t, cfg, d, out.scale);
+    out.theme = themeId; out.set = 'clean'; out.mode = 'bill-' + t.mode; out.card = 'billing';
+    return out;
+  }
+
+  /* ── 레슨비 정산 · 귀여운 세트 ─────────────────────────── */
+  function billingCuteMeasure(ctx, t, d, sc) {
+    var m = newModel(CUTE_TOP, sc);
+    var cw = CARD_W - CUTE_M * 2;
+    var labelH = 40 * sc;
+    function label(text, y) {
+      cutePill(ctx, CUTE_M, y, text, 21 * sc, 20 * sc, 38 * sc, t.accentSoft, t.accent, 0, true);
+    }
+    function dashed(y) { cuteDashes(ctx, y, t.frame, sc); }
+
+    // ── 수강생 ──
+    var nameText = d.student || '학생 이름';
+    var placeholder = !d.student;
+    var nameSize = fitText(ctx, nameText, cw - 120 * sc, 86 * sc, 42 * sc, '400', JUA);
+    var asc = textAscent(ctx, nameText, nameSize);
+    var desc = textDescent(ctx, nameText, nameSize);
+    var nameH = asc + desc;
+    var nameW = ctx.measureText(nameText).width;
+    var guardian = d.guardian || '';
+    m.gap(0, 2);
+    m.block(nameH + 26 * sc + (guardian ? 34 * sc : 0), function (y) {
+      ctx.save();
+      ctx.textBaseline = 'alphabetic';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = placeholder ? t.soft : t.ink;
+      ctx.font = '400 ' + Math.round(nameSize) + 'px ' + JUA;
+      ctx.fillText(nameText, CUTE_M, y + asc);
+      if (!placeholder && nameW + 132 * sc < cw) {
+        cutePill(ctx, CUTE_M + nameW + 16 * sc, y + asc - 44 * sc, '학생', 22 * sc, 17 * sc, 35 * sc, t.pastel, t.accent, 0, true);
+      }
+      var sqW = Math.min(nameW + 24 * sc, cw);
+      drawSquiggle(ctx, CUTE_M + 2, y + nameH + 8 * sc, sqW, t.accent2, 6 * sc);
+      drawHeart(ctx, CUTE_M + sqW + 16 * sc, y + nameH + 6 * sc, 8 * sc, t.frame2, 0.1);
+      if (guardian) {
+        ctx.textBaseline = 'top';
+        ctx.font = '400 ' + Math.round(23 * sc) + 'px ' + DODUM;
+        ctx.fillStyle = t.soft;
+        ctx.fillText(guardian, CUTE_M, y + nameH + 26 * sc);
+      }
+      ctx.restore();
+    });
+
+    // ── 수업 내역 ──
+    if (d.lessonSpec || d.lessonDates) {
+      m.gap(20, 1);
+      m.block(1, dashed);
+      m.gap(16, 0);
+      var specSize = Math.round(29 * sc);
+      var specWrap = d.lessonSpec ? wrapText(ctx, d.lessonSpec, cw - 56 * sc, 2) : null;
+      var specLH = specSize * 1.5;
+      var dSize = Math.round(23 * sc);
+      var datesWrap = d.lessonDates ? wrapText(ctx, d.lessonDates, cw - 56 * sc, 3) : null;
+      var dateLH = dSize * 1.62;
+      var padY = 22 * sc;
+      var boxH = padY * 2 + (specWrap ? specWrap.lines.length * specLH : 0) + (datesWrap ? 12 * sc + datesWrap.lines.length * dateLH : 0);
+      m.block(labelH + 12 * sc + boxH, function (y) {
+        label('수업 내역', y);
+        var by = y + labelH + 12 * sc;
+        ctx.save();
+        roundRect(ctx, CUTE_M, by, cw, boxH, 26 * sc);
+        ctx.fillStyle = t.pastel;
+        ctx.fill();
+        ctx.setLineDash([11, 9]);
+        ctx.lineWidth = 2.4 * sc;
+        ctx.strokeStyle = t.frame;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + specSize + 'px ' + JUA;
+        var ty = by + padY;
+        if (specWrap) specWrap.lines.forEach(function (line, i) { ctx.fillText(line, CUTE_M + 28 * sc, ty + i * specLH); });
+        if (specWrap) ty += specWrap.lines.length * specLH;
+        ctx.fillStyle = t.soft;
+        ctx.font = '400 ' + dSize + 'px ' + DODUM;
+        if (datesWrap) datesWrap.lines.forEach(function (line, i) { ctx.fillText(line, CUTE_M + 28 * sc, ty + 12 * sc + i * dateLH); });
+        ctx.restore();
+      });
+    }
+
+    // ── 이번 달 레슨비 (총액 스티커) ──
+    m.gap(20, 1);
+    m.block(1, dashed);
+    m.gap(16, 0);
+    var total = (d.tuition || 0) + (d.extraAmount || 0);
+    var hasRows = !!(d.tuition || d.extraAmount);
+    var subRows = [];
+    if (d.tuition) subRows.push({ l: '수강료', v: d.tuition });
+    if (d.extraAmount) subRows.push({ l: d.extraLabel || '추가', v: d.extraAmount });
+    var boxH2 = (d.due ? 196 : 164) * sc;
+    m.block(labelH + 12 * sc + boxH2, function (y) {
+      label('이번 달 레슨비', y);
+      var by = y + labelH + 12 * sc;
+      ctx.save();
+      // 스티커 판
+      ctx.save();
+      ctx.shadowColor = 'rgba(74,43,51,0.10)';
+      ctx.shadowBlur = 16 * sc;
+      ctx.shadowOffsetY = 5 * sc;
+      roundRect(ctx, CUTE_M, by, cw, boxH2, 34 * sc);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.restore();
+      ctx.lineWidth = 3.4 * sc;
+      ctx.strokeStyle = t.frame2;
+      roundRect(ctx, CUTE_M, by, cw, boxH2, 34 * sc);
+      ctx.stroke();
+      // 안쪽 점선
+      ctx.setLineDash([9, 8]);
+      ctx.lineWidth = 1.8 * sc;
+      ctx.strokeStyle = t.frame;
+      roundRect(ctx, CUTE_M + 12 * sc, by + 12 * sc, cw - 24 * sc, boxH2 - 24 * sc, 26 * sc);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.font = '400 ' + Math.round(30 * sc) + 'px ' + JUA;
+      ctx.fillStyle = t.accent;
+      ctx.fillText(hasRows ? '이번 달 합계' : '금액을 입력해 주세요', CARD_W / 2, by + 20 * sc);
+
+      ctx.font = '400 ' + Math.round(58 * sc) + 'px ' + JUA;
+      ctx.fillStyle = hasRows ? t.ink : t.soft;
+      var amtStr = moneyText(total);
+      ctx.fillText(amtStr + '원', CARD_W / 2, by + 56 * sc);
+
+      if (subRows.length) {
+        ctx.font = '400 ' + Math.round(21 * sc) + 'px ' + DODUM;
+        ctx.fillStyle = t.soft;
+        var line = subRows.map(function (r) { return r.l + ' ' + moneyText(r.v) + '원'; }).join('   ·   ');
+        ctx.fillText(line, CARD_W / 2, by + 130 * sc);
+      }
+      if (d.due) {
+        cutePill(ctx, CARD_W / 2 - (Math.min(ctx.measureText('납부 기한 ' + d.due).width, cw - 80 * sc) + 40 * sc) / 2, by + boxH2 - 48 * sc, '납부 기한 ' + d.due, 20 * sc, 18 * sc, 34 * sc, t.accent, '#FFFFFF', -0.03, true);
+      }
+      ctx.restore();
+    });
+
+    // ── 입금 계좌 ──
+    if (d.bankNo || d.bankName) {
+      m.gap(20, 1);
+      m.block(1, dashed);
+      m.gap(16, 0);
+      var acctLine = [d.bankName, d.bankNo].filter(Boolean).join('  ');
+      ctx.font = '400 ' + Math.round(30 * sc) + 'px ' + JUA;
+      var acctWrap = wrapText(ctx, acctLine, cw - 64 * sc, 2);
+      var acctLH = 30 * sc * 1.5;
+      var aBoxH = 30 * sc + acctWrap.lines.length * acctLH + (d.bankHolder ? 32 * sc : 0);
+      m.block(labelH + 12 * sc + aBoxH + 8 * sc, function (y) {
+        label('입금 계좌', y);
+        var by = y + labelH + 12 * sc;
+        ctx.save();
+        roundRect(ctx, CUTE_M, by, cw, aBoxH, 20 * sc);
+        ctx.fillStyle = t.pastel;
+        ctx.fill();
+        ctx.strokeStyle = t.frame;
+        ctx.lineWidth = 2.4 * sc;
+        ctx.stroke();
+        drawTape(ctx, CUTE_M + cw / 2, by, 190 * sc, 30 * sc, -0.02, t.tape);
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + Math.round(30 * sc) + 'px ' + JUA;
+        acctWrap.lines.forEach(function (l, i) { ctx.fillText(l, CUTE_M + 32 * sc, by + 32 * sc + i * acctLH); });
+        if (d.bankHolder) {
+          ctx.fillStyle = t.soft;
+          ctx.font = '400 ' + Math.round(22 * sc) + 'px ' + DODUM;
+          ctx.fillText('예금주  ' + d.bankHolder, CUTE_M + 32 * sc, by + 32 * sc + acctWrap.lines.length * acctLH + 4 * sc);
+        }
+        ctx.restore();
+      });
+    }
+
+    // ── 한마디 ──
+    if (d.note) {
+      m.gap(20, 1);
+      m.block(1, dashed);
+      m.gap(16, 0);
+      var nSize = Math.round(26 * sc);
+      var nPadX = 32 * sc, nPadY = 24 * sc;
+      ctx.font = '400 ' + nSize + 'px ' + DODUM;
+      var nWrap = wrapText(ctx, d.note, cw - nPadX * 2 - 26 * sc, 3);
+      var nLH = nSize * 1.66;
+      var signName = d.teacher || d.studio || '';
+      var nBoxH = nPadY * 2 + nWrap.lines.length * nLH + (signName ? 32 * sc : 0);
+      m.block(labelH + 12 * sc + nBoxH, function (y) {
+        label('한마디', y);
+        var by = y + labelH + 12 * sc;
+        ctx.save();
+        roundRect(ctx, CUTE_M, by, cw, nBoxH, 26 * sc);
+        ctx.fillStyle = t.pastel;
+        ctx.fill();
+        ctx.setLineDash([10, 9]);
+        ctx.lineWidth = 2.4 * sc;
+        ctx.strokeStyle = t.frame;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        drawHeart(ctx, CUTE_M + 22 * sc, by + nPadY + 8 * sc, 9 * sc, t.frame2);
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + nSize + 'px ' + DODUM;
+        nWrap.lines.forEach(function (l, i) { ctx.fillText(l, CUTE_M + nPadX + 16 * sc, by + nPadY + i * nLH); });
+        if (signName) {
+          ctx.textAlign = 'right';
+          ctx.font = '400 ' + Math.round(22 * sc) + 'px ' + JUA;
+          ctx.fillStyle = t.accent;
+          ctx.fillText(signName, CARD_W - CUTE_M - nPadX, by + nPadY + nWrap.lines.length * nLH + 4 * sc);
+        }
+        ctx.restore();
+      });
+    }
+
+    return m.done();
+  }
+
+  function drawBillingCute(ctx, t, d, themeId) {
+    var lg = headerLogo(CARD_W - CUTE_M * 2 - 220, 46);
+    var out = layoutCard(ctx, function () {
+      paintCuteBase(ctx, t, d, lg);
+      paintCuteHeader(ctx, t, d, lg, '레슨비 정산');
+    }, function (sc) { return billingCuteMeasure(ctx, t, d, sc); });
+    paintCuteFooter(ctx, t, out.scale);
+    out.theme = themeId; out.set = 'cute'; out.mode = 'bill-' + t.mode; out.card = 'billing';
+    return out;
+  }
+
+  /* ── 레슨비 정산 · 세련된 세트 ─────────────────────────── */
+  function billingLuxMeasure(ctx, t, d, sc) {
+    var h = luxHeaderMetrics(d);
+    var m = newModel(h.top, sc, CARD_H - 172);
+    m.flexMax = 62 * sc;
+    var cw = CARD_W - LUX_M * 2;
+    var labelH = 30 * sc;
+    var x0 = LUX_M, x1 = CARD_W - LUX_M;
+
+    // ── 수강생 ──
+    var nameText = d.student || '학생 이름';
+    var placeholder = !d.student;
+    var nameSize = fitText(ctx, nameText, cw - 60 * sc, 74 * sc, 38 * sc, '600', SERIF);
+    var asc = textAscent(ctx, nameText, nameSize);
+    var desc = textDescent(ctx, nameText, nameSize);
+    var nameH = asc + desc;
+    var sub = d.guardian ? d.guardian : (placeholder ? '' : '학생');
+    m.gap(4, 2);
+    m.block(nameH + (sub ? 70 : 34) * sc, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.font = '500 ' + Math.round(16 * sc) + 'px ' + LATIN;
+      ctx.fillStyle = t.gold;
+      drawTracked(ctx, 'TUITION STATEMENT', CARD_W / 2, y, 6.2 * sc, 'center');
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillStyle = placeholder ? t.soft : t.ink;
+      ctx.font = '600 ' + Math.round(nameSize) + 'px ' + SERIF;
+      drawTracked(ctx, nameText, CARD_W / 2, y + 34 * sc + asc, 3.4 * sc, 'center');
+      ctx.textBaseline = 'top';
+      ctx.font = '400 ' + Math.round(20 * sc) + 'px ' + SERIF;
+      ctx.fillStyle = t.gold;
+      if (sub) drawTracked(ctx, sub, CARD_W / 2, y + 34 * sc + nameH + 8 * sc, 2.6 * sc, 'center');
+      ctx.restore();
+    });
+
+    // ── 수업 내역 ──
+    if (d.lessonSpec || d.lessonDates) {
+      m.gap(26, 1);
+      var specSize = Math.round(26 * sc);
+      var specWrap = d.lessonSpec ? wrapText(ctx, d.lessonSpec, cw - 60 * sc, 2) : null;
+      var specLH = specSize * 1.6;
+      var dSize = Math.round(21 * sc);
+      var datesWrap = d.lessonDates ? wrapText(ctx, d.lessonDates, cw - 60 * sc, 3) : null;
+      var dateLH = dSize * 1.8;
+      m.block(labelH + 10 * sc + (specWrap ? specWrap.lines.length * specLH : 0) + (datesWrap ? 10 * sc + datesWrap.lines.length * dateLH : 0), function (y) {
+        luxBillLabel(ctx, t, '수업 내역', y, sc);
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        var by = y + labelH + 10 * sc;
+        if (specWrap) {
+          ctx.fillStyle = t.ink;
+          ctx.font = '500 ' + specSize + 'px ' + SERIF;
+          specWrap.lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, by + i * specLH); });
+          by += specWrap.lines.length * specLH;
+        }
+        if (datesWrap) {
+          ctx.fillStyle = t.soft;
+          ctx.font = '400 ' + dSize + 'px ' + SERIF;
+          datesWrap.lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, by + 10 * sc + i * dateLH); });
+        }
+        ctx.restore();
+      });
+    }
+
+    // ── 정산 내역 (도트 리더 장부) ──
+    m.gap(24, 1);
+    var rows = [];
+    if (d.tuition) rows.push({ label: '수강료', amount: d.tuition });
+    if (d.extraAmount) rows.push({ label: d.extraLabel || '추가 금액', amount: d.extraAmount });
+    var total = (d.tuition || 0) + (d.extraAmount || 0);
+    var rowH = 42 * sc;
+    var totalH = 66 * sc;
+    m.block(labelH + 8 * sc + rows.length * rowH + 16 * sc + totalH + (d.due ? 38 * sc : 0), function (y) {
+      luxBillLabel(ctx, t, '정산 내역', y, sc);
+      ctx.save();
+      ctx.textBaseline = 'middle';
+      var ry = y + labelH + 8 * sc;
+      ctx.textAlign = 'left';
+      if (!rows.length) {
+        ctx.fillStyle = t.soft;
+        ctx.font = '400 ' + Math.round(22 * sc) + 'px ' + SERIF;
+        ctx.textAlign = 'center';
+        ctx.fillText('금액을 입력하면 여기에 정리돼요', CARD_W / 2, ry + rowH / 2);
+        ctx.textAlign = 'left';
+      }
+      rows.forEach(function (row) {
+        ctx.fillStyle = t.soft;
+        ctx.font = '400 ' + Math.round(23 * sc) + 'px ' + SERIF;
+        ctx.fillText(row.label, x0, ry + rowH / 2 + 1);
+        var lw = ctx.measureText(row.label).width;
+        ctx.fillStyle = t.ink;
+        ctx.font = '500 ' + Math.round(24 * sc) + 'px ' + SERIF;
+        var amt = moneyText(row.amount) + '원';
+        var aw = ctx.measureText(amt).width;
+        ctx.textAlign = 'right';
+        ctx.fillText(amt, x1, ry + rowH / 2 + 1);
+        ctx.textAlign = 'left';
+        dotLeader(ctx, x0 + lw + 18 * sc, x1 - aw - 18 * sc, ry + rowH / 2 + 6 * sc, t.line, sc);
+        ry += rowH;
+      });
+      var ty = ry + 16 * sc;
+      ctx.strokeStyle = t.line;
+      ctx.lineWidth = 1 * sc;
+      ctx.beginPath();
+      ctx.moveTo(x0, ty); ctx.lineTo(x1, ty);
+      ctx.moveTo(x0, ty + 5 * sc); ctx.lineTo(x1, ty + 5 * sc);
+      ctx.stroke();
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = t.gold;
+      ctx.font = '600 ' + Math.round(16 * sc) + 'px ' + SERIF;
+      drawTracked(ctx, '합계', x0, ty + totalH / 2 + 4 * sc, 4.4 * sc, 'left');
+      ctx.textAlign = 'right';
+      ctx.fillStyle = t.ink;
+      ctx.font = '600 ' + Math.round(42 * sc) + 'px ' + SERIF;
+      ctx.fillText(moneyText(total), x1 - 40 * sc, ty + totalH / 2 + 2 * sc);
+      ctx.font = '400 ' + Math.round(22 * sc) + 'px ' + SERIF;
+      ctx.fillStyle = t.soft;
+      ctx.fillText('원', x1, ty + totalH / 2 + 6 * sc);
+      ctx.textAlign = 'center';
+      if (d.due) {
+        ctx.font = '500 ' + Math.round(18 * sc) + 'px ' + SERIF;
+        ctx.fillStyle = t.gold;
+        drawTracked(ctx, '납부 기한  ' + d.due, CARD_W / 2, ty + totalH + 18 * sc, 2.2 * sc, 'center');
+      }
+      ctx.restore();
+    });
+
+    // ── 입금 계좌 ──
+    if (d.bankNo || d.bankName) {
+      m.gap(26, 1);
+      var acctLine = [d.bankName, d.bankNo].filter(Boolean).join('   ');
+      ctx.font = '500 ' + Math.round(26 * sc) + 'px ' + SERIF;
+      var acctWrap = wrapText(ctx, acctLine, cw - 80 * sc, 2);
+      var acctLH = 26 * sc * 1.6;
+      var boxH = 30 * sc + acctWrap.lines.length * acctLH + (d.bankHolder ? 30 * sc : 0);
+      m.block(boxH + 22 * sc, function (y) {
+        ctx.save();
+        ctx.strokeStyle = t.line;
+        ctx.lineWidth = 1 * sc;
+        roundRect(ctx, x0, y, cw, boxH, 1);
+        ctx.stroke();
+        ctx.fillStyle = t.panel;
+        roundRect(ctx, x0 + 6 * sc, y + 6 * sc, cw - 12 * sc, boxH - 12 * sc, 1);
+        ctx.fill();
+        drawDiamond(ctx, CARD_W / 2, y, 4 * sc, t.gold);
+        drawDiamond(ctx, CARD_W / 2, y + boxH, 4 * sc, t.gold);
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.font = '500 ' + Math.round(15 * sc) + 'px ' + LATIN;
+        ctx.fillStyle = t.gold;
+        drawTracked(ctx, 'ACCOUNT', CARD_W / 2, y + 18 * sc, 5.4 * sc, 'center');
+        ctx.fillStyle = t.ink;
+        ctx.font = '500 ' + Math.round(26 * sc) + 'px ' + SERIF;
+        acctWrap.lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, y + 46 * sc + i * acctLH); });
+        if (d.bankHolder) {
+          ctx.fillStyle = t.soft;
+          ctx.font = '400 ' + Math.round(20 * sc) + 'px ' + SERIF;
+          ctx.fillText('예금주  ' + d.bankHolder, CARD_W / 2, y + 46 * sc + acctWrap.lines.length * acctLH + 2 * sc);
+        }
+        ctx.restore();
+      });
+    }
+
+    // ── 안내 ──
+    if (d.note) {
+      m.gap(28, 1);
+      var nSize = Math.round(25 * sc);
+      ctx.font = '400 ' + nSize + 'px ' + SERIF;
+      var nWrap = wrapText(ctx, d.note, cw - 60 * sc, 3);
+      var nLH = nSize * 1.72;
+      var signName = d.teacher || d.studio || '';
+      m.block(nWrap.lines.length * nLH + (signName ? 38 * sc : 0), function (y) {
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + nSize + 'px ' + SERIF;
+        nWrap.lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, y + i * nLH); });
+        if (signName) {
+          ctx.font = 'italic 500 ' + Math.round(23 * sc) + 'px ' + LATIN;
+          ctx.fillStyle = t.gold;
+          ctx.fillText(signName, CARD_W / 2, y + nWrap.lines.length * nLH + 10 * sc);
+        }
+        ctx.restore();
+      });
+    }
+
+    return m.done();
+  }
+
+  function luxBillLabel(ctx, t, text, y, sc) {
+    ctx.save();
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'center';
+    ctx.font = '600 ' + Math.round(18 * sc) + 'px ' + SERIF;
+    ctx.fillStyle = t.gold;
+    var tr = 4.4 * sc;
+    drawTracked(ctx, text, CARD_W / 2, y, tr, 'center');
+    var tw = trackedWidth(ctx, text, tr);
+    var g = 18 * sc, len = 56 * sc;
+    ctx.strokeStyle = t.line;
+    ctx.lineWidth = 1 * sc;
+    ctx.beginPath();
+    ctx.moveTo(CARD_W / 2 - tw / 2 - g, y + 9 * sc);
+    ctx.lineTo(CARD_W / 2 - tw / 2 - g - len, y + 9 * sc);
+    ctx.moveTo(CARD_W / 2 + tw / 2 + g, y + 9 * sc);
+    ctx.lineTo(CARD_W / 2 + tw / 2 + g + len, y + 9 * sc);
+    ctx.stroke();
+    drawDiamond(ctx, CARD_W / 2 - tw / 2 - g - len - 6 * sc, y + 9 * sc, 3 * sc, t.gold);
+    drawDiamond(ctx, CARD_W / 2 + tw / 2 + g + len + 6 * sc, y + 9 * sc, 3 * sc, t.gold);
+    ctx.restore();
+  }
+
+  function drawBillingChic(ctx, t, d, themeId) {
+    var out = layoutCard(ctx, function () {
+      paintLuxBg(ctx, t);
+      paintLuxHeader(ctx, t, d);
+    }, function (sc) { return billingLuxMeasure(ctx, t, d, sc); });
+    paintLuxFooter(ctx, t, out.scale);
+    out.theme = themeId; out.set = 'chic'; out.mode = 'bill-' + t.mode; out.card = 'billing';
+    return out;
+  }
+
+  /* ── 발표회 팜플렛 · 깔끔 세트 ─────────────────────────── */
+  function recitalCleanMeasure(ctx, t, d, sc, cfg) {
+    var m = newModel(cfg.top, sc);
+    var rail = cfg.rail * sc;
+    var cx = cfg.mx + rail;
+    var cw = CARD_W - cfg.mx * 2 - rail;
+    var railMode = cfg.label === 'rail';
+    var labelH = railMode ? 54 * sc : 24 * sc;
+    var seqNo = 0;
+    function seq() { seqNo++; return railMode ? ('0' + seqNo) : null; }
+    function rule(y) {
+      if (!cfg.rule) return;
+      ctx.fillStyle = t.mode === 'slate' ? t.accent : t.line;
+      ctx.globalAlpha = t.mode === 'slate' ? 0.26 : 1;
+      ctx.fillRect(cfg.mx, y + 0.5, CARD_W - cfg.mx * 2, 1);
+      ctx.globalAlpha = 1;
+    }
+    function section(gap) {
+      m.gap(gap == null ? cfg.gapSec : gap, 1);
+      m.block(1, rule);
+      m.gap(18, 0);
+    }
+    var x0 = cx, x1 = cx + cw;
+
+    // ── 제목 ──
+    var title = d.recitalTitle || '발표회 제목';
+    var tSize = Math.round((t.mode === 'slate' ? 56 : t.mode === 'airy' ? 52 : 60) * sc);
+    ctx.font = '700 ' + tSize + 'px ' + SANS;
+    var tw = wrapText(ctx, title, cw - 8 * sc, 3);
+    var tlh = tSize * 1.28;
+    var subText = d.recitalSub || d.studio || '';
+    ctx.font = '500 ' + Math.round(24 * sc) + 'px ' + SANS;
+    var sw = subText ? wrapText(ctx, subText, cw - 8 * sc, 2) : null;
+    var slh = 24 * sc * 1.55;
+    m.gap(cfg.gapName, 2);
+    m.block((t.mode === 'slate' ? 44 : 24) * sc + tw.lines.length * tlh + (sw ? 12 * sc + sw.lines.length * slh : 0), function (y) {
+      ctx.save();
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.font = '600 ' + Math.round(15 * sc) + 'px ' + SANS;
+      ctx.fillStyle = t.accent;
+      ctx.globalAlpha = 0.9;
+      drawTracked(ctx, 'INVITATION', x0, y, 4.6 * sc, 'left');
+      ctx.globalAlpha = 1;
+      if (t.mode === 'slate') {
+        ctx.fillStyle = t.accent;
+        ctx.fillRect(x0, y + 32 * sc, 44 * sc, 3 * sc);
+      }
+      ctx.fillStyle = t.ink;
+      ctx.font = '700 ' + tSize + 'px ' + SANS;
+      tw.lines.forEach(function (line, i) {
+        drawTracked(ctx, line, x0, y + (t.mode === 'slate' ? 44 * sc : 24 * sc) + i * tlh, -1.2 * sc, 'left');
+      });
+      if (sw) {
+        ctx.fillStyle = t.soft;
+        ctx.font = '500 ' + Math.round(24 * sc) + 'px ' + SANS;
+        var sy = y + (t.mode === 'slate' ? 44 * sc : 24 * sc) + tw.lines.length * tlh + 12 * sc;
+        sw.lines.forEach(function (line, i) { ctx.fillText(line, x0, sy + i * slh); });
+      }
+      ctx.restore();
+    });
+
+    // ── 일시 · 장소 ──
+    section();
+    var infoRows = [];
+    if (d.recitalWhen) infoRows.push({ k: '일시', v: d.recitalWhen });
+    if (d.recitalWhere) infoRows.push({ k: '장소', v: d.recitalWhere });
+    var iSize = Math.round(27 * sc);
+    var kl = 78 * sc;
+    var iWrap = infoRows.map(function (r) {
+      ctx.font = '600 ' + iSize + 'px ' + SANS;
+      return { k: r.k, v: wrapText(ctx, r.v, cw - kl - 8 * sc, 2) };
+    });
+    var iLH = iSize * 1.5;
+    var infoH = iWrap.reduce(function (a, r) { return a + r.v.lines.length * iLH + 10 * sc; }, 0);
+    m.block(labelH + 8 * sc + infoH, function (y) {
+      cleanSectionLabel(ctx, t, cfg, '일시 · 장소', cfg.mx, y, sc, seq());
+      ctx.save();
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      var by = y + labelH + 8 * sc;
+      iWrap.forEach(function (r) {
+        ctx.fillStyle = t.soft;
+        ctx.font = '500 ' + Math.round(21 * sc) + 'px ' + SANS;
+        ctx.fillText(r.k, x0, by + 5 * sc);
+        ctx.fillStyle = t.ink;
+        ctx.font = '600 ' + iSize + 'px ' + SANS;
+        r.v.lines.forEach(function (line, i) { ctx.fillText(line, x0 + kl, by + i * iLH); });
+        by += r.v.lines.length * iLH + 10 * sc;
+      });
+      ctx.restore();
+    });
+
+    // ── 프로그램 ──
+    var prog = splitProgram(d.recitalProgram);
+    if (prog.length) {
+      section();
+      var wSize = Math.round(24 * sc);
+      var pSize = Math.round(26 * sc);
+      var pw = prog.map(function (it) {
+        ctx.font = '400 ' + pSize + 'px ' + SANS;
+        return { who: it.who, lines: wrapText(ctx, it.piece, cw - 62 * sc, 2).lines };
+      });
+      var pLH = pSize * 1.42;
+      var rowGap = 16 * sc;
+      var pH = pw.reduce(function (a, r) { return a + (r.who ? wSize * 1.4 : 0) + r.lines.length * pLH + rowGap; }, 0);
+      m.block(labelH + 8 * sc + pH, function (y) {
+        cleanSectionLabel(ctx, t, cfg, '프로그램', cfg.mx, y, sc, seq());
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        var by = y + labelH + 8 * sc;
+        pw.forEach(function (r, ri) {
+          ctx.font = '600 ' + Math.round(17 * sc) + 'px ' + SANS;
+          ctx.fillStyle = t.mode === 'slate' ? t.accent : t.soft;
+          ctx.fillText(('0' + (ri + 1)).slice(-2), cfg.mx, by + 4 * sc);
+          var tx = x0;
+          if (r.who) {
+            ctx.fillStyle = t.accent;
+            ctx.font = '600 ' + wSize + 'px ' + SANS;
+            ctx.fillText(r.who, tx, by);
+            by += wSize * 1.4;
+          }
+          ctx.fillStyle = t.ink;
+          ctx.font = '400 ' + pSize + 'px ' + SANS;
+          r.lines.forEach(function (line, i) { ctx.fillText(line, tx, by + i * pLH); });
+          by += r.lines.length * pLH + rowGap;
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 드리는 말씀 ──
+    if (d.recitalNote) {
+      section();
+      var nSize = Math.round(25 * sc);
+      ctx.font = '400 ' + nSize + 'px ' + SANS;
+      var nWrap = wrapText(ctx, d.recitalNote, cw - 44 * sc, 4);
+      var nLH = nSize * 1.62;
+      var nBoxH = nWrap.lines.length * nLH + 32 * sc;
+      m.block(labelH + 8 * sc + nBoxH, function (y) {
+        cleanSectionLabel(ctx, t, cfg, '오시는 길 · 드리는 말씀', cfg.mx, y, sc, seq());
+        var by = y + labelH + 8 * sc;
+        ctx.save();
+        if (cfg.panel !== 'none') {
+          roundRect(ctx, x0, by, cw, nBoxH, cfg.panel === 'soft' ? 3 : cfg.panel === 'fill' ? 8 : 2);
+          if (cfg.panel === 'fill') { ctx.fillStyle = t.panelBg; ctx.fill(); }
+          else if (cfg.panel === 'soft') { ctx.fillStyle = '#FFFFFF'; ctx.fill(); }
+          if (cfg.panel === 'hair' || cfg.panel === 'soft') { ctx.strokeStyle = t.panelLine; ctx.lineWidth = 1; ctx.stroke(); }
+        }
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + nSize + 'px ' + SANS;
+        nWrap.lines.forEach(function (line, i) { ctx.fillText(line, x0 + 20 * sc, by + 16 * sc + i * nLH); });
+        ctx.restore();
+      });
+    }
+
+    return m.done();
+  }
+
+  function drawRecitalClean(ctx, t, d, themeId) {
+    var cfg = cleanCfg(t);
+    var out = layoutCard(ctx, function () {
+      paintCleanBg(ctx, t, cfg);
+      paintCleanHeader(ctx, t, d, cfg);
+    }, function (sc) { return recitalCleanMeasure(ctx, t, d, sc, cfg); });
+    paintCleanFooter(ctx, t, cfg, d, out.scale);
+    out.theme = themeId; out.set = 'clean'; out.mode = 'recital-' + t.mode; out.card = 'recital';
+    return out;
+  }
+
+  /* ── 발표회 팜플렛 · 귀여운 세트 ─────────────────────────── */
+  function recitalCuteMeasure(ctx, t, d, sc) {
+    var m = newModel(CUTE_TOP, sc);
+    var cw = CARD_W - CUTE_M * 2;
+    var labelH = 40 * sc;
+    function label(text, y) {
+      cutePill(ctx, CUTE_M, y, text, 21 * sc, 20 * sc, 38 * sc, t.accentSoft, t.accent, 0, true);
+    }
+    function dashed(y) { cuteDashes(ctx, y, t.frame, sc); }
+
+    // ── 제목 ──
+    var title = d.recitalTitle || '발표회 제목';
+    var tSize = Math.round(46 * sc);
+    ctx.font = '400 ' + tSize + 'px ' + JUA;
+    var tw = wrapText(ctx, title, cw - 10 * sc, 3);
+    var tlh = tSize * 1.34;
+    var subText = d.recitalSub || d.studio || '';
+    ctx.font = '400 ' + Math.round(23 * sc) + 'px ' + DODUM;
+    var sw = subText ? wrapText(ctx, subText, cw - 10 * sc, 2) : null;
+    var slh = 23 * sc * 1.6;
+    m.gap(-6, 2);
+    m.block(tw.lines.length * tlh + (sw ? 10 * sc + sw.lines.length * slh : 0) + 14 * sc, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = t.ink;
+      ctx.font = '400 ' + tSize + 'px ' + JUA;
+      tw.lines.forEach(function (line, i) { ctx.fillText(line, CARD_W / 2, y + i * tlh); });
+      if (sw) {
+        ctx.fillStyle = t.soft;
+        ctx.font = '400 ' + Math.round(23 * sc) + 'px ' + DODUM;
+        var sy = y + tw.lines.length * tlh + 10 * sc;
+        sw.lines.forEach(function (line, i) { ctx.fillText(line, CARD_W / 2, sy + i * slh); });
+      }
+      drawStar(ctx, CUTE_M + 420 * sc, y + 8 * sc, 8 * sc, t.frame2, 0.2);
+      ctx.restore();
+    });
+
+    // ── 초대 티켓 (일시·장소) ──
+    m.gap(20, 1);
+    var tkRows = [];
+    if (d.recitalWhen) tkRows.push({ k: '일시', v: d.recitalWhen });
+    if (d.recitalWhere) tkRows.push({ k: '장소', v: d.recitalWhere });
+    if (tkRows.length) {
+      var vSize = Math.round(26 * sc);
+      var tkWrap = tkRows.map(function (r) {
+        ctx.font = '400 ' + vSize + 'px ' + JUA;
+        return { k: r.k, v: wrapText(ctx, r.v, cw - 110 * sc, 2) };
+      });
+      var vLH = vSize * 1.5;
+      var boxH = 24 * sc + tkWrap.reduce(function (a, r) { return a + r.v.lines.length * vLH + 8 * sc; }, 0);
+      m.block(boxH + 10 * sc, function (y) {
+        ctx.save();
+        roundRect(ctx, CUTE_M, y, cw, boxH, 24 * sc);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        ctx.setLineDash([12, 9]);
+        ctx.lineWidth = 2.6 * sc;
+        ctx.strokeStyle = t.frame2;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        // 티켓 반질선
+        ctx.beginPath();
+        ctx.moveTo(CUTE_M + 96 * sc, y + 10 * sc);
+        ctx.lineTo(CUTE_M + 96 * sc, y + boxH - 10 * sc);
+        ctx.strokeStyle = t.frame;
+        ctx.lineWidth = 1.6 * sc;
+        ctx.setLineDash([6, 8]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        var by = y + 22 * sc;
+        tkWrap.forEach(function (r) {
+          ctx.fillStyle = t.accent;
+          ctx.font = '400 ' + Math.round(19 * sc) + 'px ' + JUA;
+          ctx.fillText(r.k, CUTE_M + 26 * sc, by + 6 * sc);
+          ctx.fillStyle = t.ink;
+          ctx.font = '400 ' + vSize + 'px ' + JUA;
+          r.v.lines.forEach(function (l, i) { ctx.fillText(l, CUTE_M + 116 * sc, by + i * vLH); });
+          by += r.v.lines.length * vLH + 8 * sc;
+        });
+        drawHeart(ctx, CUTE_M + cw - 24 * sc, y + 20 * sc, 8 * sc, t.frame2, 0.2);
+        drawSparkle(ctx, CUTE_M + cw - 26 * sc, y + boxH - 22 * sc, 8 * sc, t.frame2);
+        ctx.restore();
+      });
+    }
+
+    // ── 프로그램 ──
+    var prog = splitProgram(d.recitalProgram);
+    if (prog.length) {
+      m.gap(26, 1);
+      m.block(1, dashed);
+      m.gap(20, 0);
+      var wSize = Math.round(24 * sc);
+      var pSize = Math.round(24 * sc);
+      var rows = prog.map(function (it) {
+        ctx.font = '400 ' + pSize + 'px ' + DODUM;
+        var pieceLines = wrapText(ctx, it.piece, cw - 80 * sc, 2).lines;
+        return { who: it.who, lines: pieceLines };
+      });
+      var pLH = pSize * 1.6;
+      var rowH = rows.map(function (r) { return (r.who ? wSize * 1.5 : 0) + r.lines.length * pLH + 18 * sc; });
+      var totalH = rowH.reduce(function (a, b) { return a + b; }, 0);
+      m.block(labelH + 14 * sc + totalH, function (y) {
+        label('프로그램', y);
+        var by = y + labelH + 14 * sc;
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        rows.forEach(function (r, ri) {
+          var h = rowH[ri] - 6 * sc;
+          roundRect(ctx, CUTE_M, by, cw, h, 18 * sc);
+          ctx.fillStyle = t.pastel;
+          ctx.fill();
+          drawStar(ctx, CUTE_M + 26 * sc, by + 24 * sc, 8 * sc, t.frame2, 0.15);
+          var tx = CUTE_M + 46 * sc;
+          if (r.who) {
+            ctx.fillStyle = t.chipInk;
+            ctx.font = '400 ' + wSize + 'px ' + JUA;
+            ctx.fillText(r.who, tx, by + 8 * sc);
+          }
+          ctx.fillStyle = t.ink;
+          ctx.font = '400 ' + pSize + 'px ' + DODUM;
+          var py = by + 8 * sc + (r.who ? wSize * 1.5 : 0);
+          r.lines.forEach(function (l, i) { ctx.fillText(l, tx, py + i * pLH); });
+          by += h + 8 * sc;
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 드리는 말씀 ──
+    if (d.recitalNote) {
+      m.gap(26, 1);
+      m.block(1, dashed);
+      m.gap(20, 0);
+      var nSize = Math.round(25 * sc);
+      var nPadX = 30 * sc, nPadY = 26 * sc;
+      ctx.font = '400 ' + nSize + 'px ' + DODUM;
+      var nWrap = wrapText(ctx, d.recitalNote, cw - nPadX * 2 - 24 * sc, 3);
+      var nLH = nSize * 1.66;
+      var nBoxH = nPadY * 2 + nWrap.lines.length * nLH;
+      m.block(labelH + 14 * sc + nBoxH, function (y) {
+        label('오시는 길 · 드리는 말씀', y);
+        var by = y + labelH + 14 * sc;
+        ctx.save();
+        roundRect(ctx, CUTE_M, by, cw, nBoxH, 26 * sc);
+        ctx.fillStyle = t.pastel;
+        ctx.fill();
+        ctx.setLineDash([10, 9]);
+        ctx.lineWidth = 2.4 * sc;
+        ctx.strokeStyle = t.frame;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = t.ink;
+        ctx.font = '400 ' + nSize + 'px ' + DODUM;
+        nWrap.lines.forEach(function (l, i) { ctx.fillText(l, CUTE_M + nPadX, by + nPadY + i * nLH); });
+        ctx.restore();
+      });
+    }
+
+    return m.done();
+  }
+
+  function drawRecitalCute(ctx, t, d, themeId) {
+    var lg = headerLogo(CARD_W - CUTE_M * 2 - 220, 46);
+    var out = layoutCard(ctx, function () {
+      paintCuteBase(ctx, t, d, lg);
+      paintCuteHeader(ctx, t, d, lg, '발표회 초대');
+    }, function (sc) { return recitalCuteMeasure(ctx, t, d, sc); });
+    paintCuteFooter(ctx, t, out.scale);
+    out.theme = themeId; out.set = 'cute'; out.mode = 'recital-' + t.mode; out.card = 'recital';
+    return out;
+  }
+
+  /* ── 발표회 팜플렛 · 세련된 세트 ─────────────────────────── */
+  function recitalLuxMeasure(ctx, t, d, sc) {
+    var h = luxHeaderMetrics(d);
+    var m = newModel(h.top, sc, CARD_H - 172);
+    m.flexMax = 76 * sc;
+    var cw = CARD_W - LUX_M * 2;
+    var x0 = LUX_M, x1 = CARD_W - LUX_M;
+    var labelH = 30 * sc;
+
+    // ── 제목 블록 ──
+    var title = d.recitalTitle || '발표회 제목';
+    var tSize = Math.round(50 * sc);
+    ctx.font = '600 ' + tSize + 'px ' + SERIF;
+    var tw = wrapText(ctx, title, cw - 40 * sc, 3);
+    var tlh = tSize * 1.34;
+    var subText = d.recitalSub || d.studio || '';
+    ctx.font = 'italic 500 ' + Math.round(24 * sc) + 'px ' + SERIF;
+    var sw = subText ? wrapText(ctx, subText, cw - 60 * sc, 2) : null;
+    var slh = 24 * sc * 1.6;
+    m.gap(2, 2);
+    m.block(26 * sc + tw.lines.length * tlh + (sw ? 12 * sc + sw.lines.length * slh : 0), function (y) {
+      ctx.save();
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.font = '500 ' + Math.round(15 * sc) + 'px ' + LATIN;
+      ctx.fillStyle = t.gold;
+      drawTracked(ctx, 'RECITAL  ·  INVITATION', CARD_W / 2, y, 6 * sc, 'center');
+      ctx.fillStyle = t.ink;
+      ctx.font = '600 ' + tSize + 'px ' + SERIF;
+      tw.lines.forEach(function (line, i) {
+        drawTracked(ctx, line, CARD_W / 2, y + 26 * sc + i * tlh, 1.6 * sc, 'center');
+      });
+      if (sw) {
+        ctx.fillStyle = t.gold;
+        ctx.font = 'italic 500 ' + Math.round(24 * sc) + 'px ' + SERIF;
+        var sy = y + 26 * sc + tw.lines.length * tlh + 12 * sc;
+        sw.lines.forEach(function (line, i) { ctx.fillText(line, CARD_W / 2, sy + i * slh); });
+      }
+      ctx.restore();
+    });
+
+    // ── 일시 · 장소 ──
+    m.gap(22, 1);
+    m.block(1, function (y) { luxOrnament(ctx, CARD_W / 2, y, 150, t, sc, 5); });
+    m.gap(20, 0);
+    var whenLines = [];
+    if (d.recitalWhen) { ctx.font = '500 ' + Math.round(25 * sc) + 'px ' + SERIF; whenLines.push(wrapText(ctx, d.recitalWhen, cw - 40 * sc, 2)); }
+    if (d.recitalWhere) { ctx.font = '400 ' + Math.round(22 * sc) + 'px ' + SERIF; whenLines.push(wrapText(ctx, d.recitalWhere, cw - 40 * sc, 2)); }
+    var infoH = (whenLines[0] ? whenLines[0].lines.length * 25 * sc * 1.6 : 0) + (whenLines[1] ? 6 * sc + whenLines[1].lines.length * 22 * sc * 1.7 : 0);
+    if (infoH) {
+      m.block(infoH, function (y) {
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        var by = y;
+        if (whenLines[0]) {
+          ctx.fillStyle = t.ink;
+          ctx.font = '500 ' + Math.round(25 * sc) + 'px ' + SERIF;
+          whenLines[0].lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, by + i * 25 * sc * 1.6); });
+          by += whenLines[0].lines.length * 25 * sc * 1.6;
+        }
+        if (whenLines[1]) {
+          ctx.fillStyle = t.gold;
+          ctx.font = '400 ' + Math.round(22 * sc) + 'px ' + SERIF;
+          whenLines[1].lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, by + 6 * sc + i * 22 * sc * 1.7); });
+        }
+        ctx.restore();
+      });
+    }
+
+    // ── 프로그램 ──
+    var prog = splitProgram(d.recitalProgram);
+    if (prog.length) {
+      m.gap(22, 1);
+      var pSize = Math.round(24 * sc);
+      var wSize = Math.round(20 * sc);
+      var rows = prog.map(function (it) {
+        if (it.who) { ctx.font = 'italic 400 ' + wSize + 'px ' + SERIF; }
+        var whoW = it.who ? ctx.measureText(it.who).width + 24 * sc : 0;
+        ctx.font = '400 ' + pSize + 'px ' + SERIF;
+        var pieceWrap = wrapText(ctx, it.piece, cw - whoW - 10 * sc, 2);
+        return { who: it.who, lines: pieceWrap.lines, whoW: whoW };
+      });
+      var pLH = pSize * 1.5;
+      var rowGap = 15 * sc;
+      var pH = rows.reduce(function (a, r) { return a + r.lines.length * pLH + rowGap; }, 0);
+      m.block(18 * sc + pH, function (y) {
+        luxBillLabel(ctx, t, '프로그램', y, sc);
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        var by = y + 18 * sc;
+        rows.forEach(function (r) {
+          ctx.fillStyle = t.ink;
+          ctx.font = '400 ' + pSize + 'px ' + SERIF;
+          r.lines.forEach(function (l, i) { ctx.fillText(l, x0, by + i * pLH); });
+          if (r.who) {
+            ctx.fillStyle = t.gold;
+            ctx.font = 'italic 400 ' + wSize + 'px ' + SERIF;
+            ctx.textAlign = 'right';
+            ctx.fillText(r.who, x1, by + 2 * sc);
+            var lw = ctx.measureText(r.who).width;
+            ctx.textAlign = 'left';
+            ctx.font = '400 ' + pSize + 'px ' + SERIF;
+            var plw = Math.max.apply(null, r.lines.map(function (l) { return ctx.measureText(l).width; }));
+            dotLeader(ctx, x0 + plw + 18 * sc, x1 - lw - 18 * sc, by + pSize * 0.78, t.line, sc);
+          }
+          by += r.lines.length * pLH + rowGap;
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 드리는 말씀 ──
+    if (d.recitalNote) {
+      m.gap(24, 1);
+      var nSize = Math.round(23 * sc);
+      ctx.font = 'italic 400 ' + nSize + 'px ' + SERIF;
+      var nWrap = wrapText(ctx, d.recitalNote, cw - 50 * sc, 3);
+      var nLH = nSize * 1.72;
+      m.block(nWrap.lines.length * nLH, function (y) {
+        ctx.save();
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = t.soft;
+        ctx.font = 'italic 400 ' + nSize + 'px ' + SERIF;
+        nWrap.lines.forEach(function (l, i) { ctx.fillText(l, CARD_W / 2, y + i * nLH); });
+        ctx.restore();
+      });
+    }
+
+    return m.done();
+  }
+
+  function drawRecitalChic(ctx, t, d, themeId) {
+    var out = layoutCard(ctx, function () {
+      paintLuxBg(ctx, t);
+      paintLuxHeader(ctx, t, d);
+    }, function (sc) { return recitalLuxMeasure(ctx, t, d, sc); });
+    paintLuxFooter(ctx, t, out.scale);
+    out.theme = themeId; out.set = 'chic'; out.mode = 'recital-' + t.mode; out.card = 'recital';
+    return out;
+  }
+
+  var RENDERERS = {
+    lesson: { clean: drawCleanCard, cute: drawCuteCard, chic: drawLuxCard },
+    billing: { clean: drawBillingClean, cute: drawBillingCute, chic: drawBillingChic },
+    recital: { clean: drawRecitalClean, cute: drawRecitalCute, chic: drawRecitalChic }
+  };
+
+  function drawCard(canvas, themeId, data, cardMode) {
     var t = THEMES[themeId] || THEMES.linen;
     canvas.width = CARD_W * SS;
     canvas.height = CARD_H * SS;
     var ctx = canvas.getContext('2d');
     ctx.setTransform(SS, 0, 0, SS, 0, 0);
     ctx.clearRect(0, 0, CARD_W, CARD_H);
-    var fn = RENDERERS[t.set] || RENDERERS.clean;
+    var group = RENDERERS[cardMode] || RENDERERS.lesson;
+    var fn = group[t.set] || group.clean;
     return fn(ctx, t, data, themeId);
   }
 
@@ -2647,7 +4115,51 @@
   var LS_SUBJECT = 'lessoncard.subject.v1';
   var LS_STUDENTS = 'lessoncard.students.v1';
   var LS_LOGO = 'lessoncard.logo.v1';
+  var LS_MODE = 'lessoncard.mode.v1';
+  var LS_ACCOUNT = 'lessoncard.account.v1';
   var LOGO_MAX = 420;      // 로고는 긴 변 기준 420px까지만 보관 (1080px 카드에 충분)
+
+  /* ── 카드 종류 3종 ─────────────────────────────────────── */
+  var MODES = ['lesson', 'billing', 'recital'];
+  var MODE_INFO = {
+    lesson: {
+      title: '레슨 정보', sub: '오늘 레슨에서 기억할 것만 적어 주세요.',
+      hero: '레슨 후 <em>30초</em>, 학부모님께 보내는 레슨 카드',
+      heroP: '오늘의 곡과 잘한 점만 적으면 카카오톡에 보낼 카드가 완성됩니다. 예시로 바로 시작해 보세요.',
+      preview: '레슨 피드백 카드 미리보기',
+      example: '피아노 레슨 예시를 채웠어요',
+      hint: '카드에 가장 크게 들어가요'
+    },
+    billing: {
+      title: '레슨비 정산 정보', sub: '회차와 금액만 적으면 청구서 카드가 완성돼요.',
+      hero: '이번 달 레슨비, <em>한 장</em>으로 정산',
+      heroP: '회차·금액·계좌를 적으면 학부모님께 보낼 정산 카드와 카톡 청구 문구가 바로 나옵니다.',
+      preview: '레슨비 정산 카드 미리보기',
+      example: '12월 정산 예시를 채웠어요',
+      hint: '내 학생 기록에서 이름을 가져와요'
+    },
+    recital: {
+      title: '발표회 정보', sub: '프로그램과 안내만 적으면 초대장 카드가 완성돼요.',
+      hero: '발표회 프로그램부터 <em>초대장</em>까지',
+      heroP: '제목·일시·프로그램을 적으면 학부모님께 보낼 팜플렛 카드와 카톡 초대 문구가 만들어집니다.',
+      preview: '발표회 팜플렛 미리보기',
+      example: '겨울 발표회 예시를 채웠어요',
+      hint: ''
+    }
+  };
+
+  var BILL_PRESETS = [
+    { label: '정중 안내', text: '이번 달 레슨비 안내드립니다. 확인해 주시고 기한 안에 입금 부탁드려요. 아이가 이번 달 정말 잘 따라줬습니다!' },
+    { label: '보강 포함', text: '결석 1회는 보강으로 진행되어 4회 전액으로 정산합니다. 보강 일정은 따로 카톡으로 여쭐게요.' },
+    { label: '교재비 포함', text: '이번 달부터 새 교재를 사용해 교재비가 함께 포함되어 있습니다. 아이가 새 책을 아주 좋아해요!' },
+    { label: '형제 할인', text: '형제 수강 할인이 적용된 금액입니다. 항상 잘 챙겨 주셔서 감사합니다.' }
+  ];
+  var RECITAL_PRESETS = [
+    { label: '주차 안내', text: '주차는 건물 지하 주차장(2시간 무료)을 이용하실 수 있습니다. 발렛 요원께 학원 이름을 말씀해 주세요.' },
+    { label: '꽃다발·사진 촬영', text: '꽃다발은 공연장 입구에서 받으실 수 있고, 공연 중 사진·영상 촬영도 환영합니다. 아이들이 기다리고 있어요.' },
+    { label: '입장·유의사항', text: '입장은 공연 20분 전부터입니다. 아이의 순서가 끝난 뒤에도 끝까지 함께해 주시면 큰 힘이 됩니다.' },
+    { label: '감사 인사', text: '한 학기 동안 아이를 믿고 맡겨 주셔서 감사합니다. 무대에서만큼은 마음껏 즐기고 오길 바랍니다.' }
+  ];
 
   var EXAMPLE = {
     studio: '김선민 피아노 스튜디오',
@@ -2660,9 +4172,34 @@
     note: '다음 주에는 처음부터 끝까지 천천히 이어서 들어볼게요. 이번 주 연습 정말 잘 해줬어요!'
   };
 
+  var EXAMPLE_BILLING = {
+    studio: '김선민 피아노 스튜디오',
+    teacher: '김선민',
+    student: '위신원',
+    guardian: '위신원 어머님',
+    period: '2026년 12월분',
+    due: '12월 5일까지',
+    lessonSpec: '주 1회 50분 × 4회',
+    lessonDates: '12/2, 12/9, 12/16, 12/23 — 4회 모두 진행',
+    tuition: 240000,
+    extraLabel: '교재비',
+    extraAmount: 15000,
+    billNote: '이번 달 레슨비 안내드립니다. 확인해 주시고 기한 안에 입금 부탁드려요. 아이가 이번 달 정말 잘 따라줬습니다!'
+  };
+
+  var EXAMPLE_RECITAL = {
+    studio: '김선민 피아노 스튜디오',
+    teacher: '김선민',
+    recitalTitle: '2026 겨울 정기연주회',
+    recitalSub: '김선민 피아노 스튜디오 · 겨울의 노래',
+    recitalWhen: '2026. 12. 19 (토) 오후 3시',
+    recitalWhere: '삼성동 마리아칼라스홀',
+    recitalProgram: '위신원 — 쇼팽 왈츠 Op.64 No.2\n김서연 — 부르크뮬러 목가 Op.100 No.1\n우쩌쉬안 — 드뷔시 아라베스크 1번\n임주현 — 슈만 트로이메라이 Op.15 No.7',
+    recitalNote: '주차는 건물 지하 주차장(2시간 무료)을 이용하실 수 있습니다. 공연 중 사진 촬영도 환영합니다.'
+  };
+
   // 처음 방문한 강사가 바로 눌러 볼 수 있는 샘플 학생 2명
-  var SEED_STUDENTS = [
-    {
+  var SEED_STUDENTS = [    {
       name: '위신원', studio: '김선민 피아노 스튜디오', teacher: '김선민', session: '12회차',
       piece: '쇼팽 왈츠 Op.64 No.2 — 오른손 프레이즈 다듬기',
       tags: ['박자감이 좋아요', '페달링이 안정됐어요'],
@@ -2681,6 +4218,7 @@
   ];
 
   var state = {
+    mode: 'lesson',
     theme: DEFAULT_THEME,
     set: 'clean',
     themeBySet: { clean: 'linen', cute: 'blush', chic: 'sage' },
@@ -2721,17 +4259,48 @@
   function safeSet(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
 
   function readData() {
-    return {
-      studio: (els.studio.value || '').trim(),
-      teacher: (els.teacher.value || '').trim(),
-      student: (els.student.value || '').trim(),
+    function v(k) { return els[k] ? String(els[k].value || '').trim() : ''; }
+    var d = {
+      mode: state.mode,
+      studio: v('studio'),
+      teacher: v('teacher'),
+      student: v('student'),
       date: els.date.value || todayISO(),
-      session: (els.session.value || '').trim(),
-      piece: (els.piece.value || '').trim(),
+      session: v('session'),
+      piece: v('piece'),
       tags: state.tags.slice(0, MAX_TAGS),
-      mission: (els.mission.value || '').trim(),
-      note: (els.note.value || '').trim()
+      mission: v('mission'),
+      note: v('note'),
+      // ── 레슨비 정산 ──
+      guardian: v('guardian'),
+      period: v('billPeriod'),
+      due: v('billDue'),
+      lessonSpec: v('billSpec'),
+      lessonDates: v('billDates'),
+      tuition: parseMoney(v('billTuition')),
+      extraLabel: v('billExtraLabel'),
+      extraAmount: parseMoney(v('billExtra')),
+      bankName: v('bankName'),
+      bankNo: v('bankNo'),
+      bankHolder: v('bankHolder'),
+      billNote: v('billNote'),
+      // ── 발표회 팜플렛 ──
+      recitalTitle: v('recitalTitle'),
+      recitalSub: v('recitalSub'),
+      recitalWhen: v('recitalWhen'),
+      recitalWhere: v('recitalWhere'),
+      recitalProgram: v('recitalProgram'),
+      recitalNote: v('recitalNote')
     };
+    d.headMeta = state.mode === 'billing' ? d.period : (state.mode === 'lesson' ? metaLine(d) : '');
+    return d;
+  }
+
+  /* 카드 종류에 따라 미리보기에 넘길 본문을 맞춘다 (렌더러는 note 하나로 받는다) */
+  function cardBody(d) {
+    if (state.mode === 'billing') return Object.assign({}, d, { note: d.billNote });
+    if (state.mode === 'recital') return Object.assign({}, d, { note: d.recitalNote });
+    return d;
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -2744,9 +4313,77 @@
   }
 
   function render() {
-    var data = readData();
-    state.lastLayout = drawCard(els.canvas, state.theme, data);
+    var data = cardBody(readData());
+    state.lastLayout = drawCard(els.canvas, state.theme, data, state.mode);
     window.lessonCardDebug = state.lastLayout;
+  }
+
+  /* ── 카드 종류 전환 (레슨 노트 · 레슨비 정산 · 발표회 팜플렛) ── */
+  function setMode(id, opts) {
+    if (MODES.indexOf(id) < 0) id = 'lesson';
+    state.mode = id;
+    safeSet(LS_MODE, id);
+    var info = MODE_INFO[id];
+    Array.prototype.forEach.call(document.querySelectorAll('.mode-tab'), function (b) {
+      var on = b.getAttribute('data-mode') === id;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-modes]'), function (el) {
+      el.hidden = el.getAttribute('data-modes').split(' ').indexOf(id) < 0;
+    });
+    if (els.saveRecordBtn) els.saveRecordBtn.hidden = id !== 'lesson';
+    if (els.studentsHint) {
+      els.studentsHint.textContent = id === 'lesson'
+        ? '누르면 지난 기록 + 회차 1 올려서 불러와요'
+        : '누르면 학생 이름만 가져와요';
+    }
+    if (els.formTitle) els.formTitle.textContent = info.title;
+    if (els.formSub) els.formSub.textContent = info.sub;
+    if (els.heroTitle) els.heroTitle.innerHTML = info.hero;
+    if (els.heroLede) els.heroLede.textContent = info.heroP;
+    if (els.studentHint) els.studentHint.textContent = info.hint;
+    if (els.canvas) els.canvas.setAttribute('aria-label', info.preview);
+    if (els.form) els.form.setAttribute('aria-label', info.formLabel || (info.title + ' 입력'));
+    updateBillTotal();
+    syncCounters();
+    // 처음 그 모드로 오면 빈 화면 대신 예시로 바로 보여준다
+    if (!opts || !opts.noExample) {
+      if (id === 'billing' && !els.billTuition.value && !els.billSpec.value) {
+        fillExample(false);
+        toast('12월 정산 예시를 채워 뒀어요 · 숫자만 바꾸면 돼요');
+      } else if (id === 'recital' && !els.recitalTitle.value && !els.recitalProgram.value) {
+        fillExample(false);
+        toast('겨울 발표회 예시를 채워 뒀어요 · 내용만 바꾸면 돼요');
+      }
+    }
+    render();
+    if (!opts || !opts.silent) saveDraft();
+  }
+
+  function updateBillTotal() {
+    if (!els.billTotalText) return;
+    var total = parseMoney(els.billTuition.value) + parseMoney(els.billExtra.value);
+    els.billTotalText.innerHTML = '';
+    els.billTotalText.appendChild(document.createTextNode(moneyText(total)));
+    var unit = document.createElement('span');
+    unit.className = 'unit';
+    unit.textContent = '원';
+    els.billTotalText.appendChild(unit);
+  }
+
+  /* 숫자만 남기고 3자리 콤마 — 커서가 끝에 있을 때만 자리를 다시 잡아준다 */
+  function formatMoneyField(el) {
+    var atEnd = el.selectionStart === null || el.selectionStart === el.value.length;
+    var neg = /^\s*-/.test(el.value);
+    var digits = el.value.replace(/[^\d]/g, '');
+    var n = parseInt(digits || '0', 10);
+    var out = digits === '' ? (neg ? '-' : '') : moneyText(neg && n ? -n : n);
+    if (el.value !== out) {
+      el.value = out;
+      if (atEnd) { try { el.setSelectionRange(out.length, out.length); } catch (e) {} }
+    }
   }
 
   function updateDateHint() {
@@ -2759,6 +4396,14 @@
     els.tagCount.textContent = state.tags.length + ' / ' + MAX_TAGS + ' 선택';
     els.missionCount.textContent = els.mission.value.length + ' / 120';
     els.noteCount.textContent = els.note.value.length + ' / 110';
+    if (els.billDatesCount) els.billDatesCount.textContent = els.billDates.value.length + ' / 90';
+    if (els.billNoteCount) els.billNoteCount.textContent = els.billNote.value.length + ' / 120';
+    if (els.recitalNoteCount) els.recitalNoteCount.textContent = els.recitalNote.value.length + ' / 140';
+    if (els.programCount) {
+      var lines = els.recitalProgram.value.split(/\n/).filter(function (l) { return l.trim(); }).length;
+      els.programCount.textContent = lines + ' / 8줄';
+    }
+    updateBillTotal();
   }
 
   function subjectById(id) {
@@ -2841,6 +4486,82 @@
     saveDraft();
   }
 
+  /* ── 레슨비 정산 · 발표회 문구 칩 ─────────────────────── */
+  var BILL_PRESET_LIST = BILL_PRESETS;
+  var RECITAL_PRESET_LIST = RECITAL_PRESETS;
+  function renderPresetGroup(wrap, list, area, onPick) {
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    list.forEach(function (p, i) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'note-chip';
+      btn.setAttribute('data-preset', String(i));
+      btn.setAttribute('aria-pressed', 'false');
+      btn.textContent = p.label;
+      btn.addEventListener('click', function () {
+        area.value = p.text;
+        syncPresetStates();
+        syncCounters();
+        scheduleRender(true);
+        saveDraft();
+        if (onPick) onPick();
+      });
+      wrap.appendChild(btn);
+    });
+  }
+
+  function renderBillPresets() {
+    renderPresetGroup(els.billPresets, BILL_PRESET_LIST, els.billNote);
+    syncPresetStates();
+  }
+  function renderRecitalPresets() {
+    renderPresetGroup(els.recitalPresets, RECITAL_PRESET_LIST, els.recitalNote);
+    syncPresetStates();
+  }
+
+  function syncPresetStates() {
+    [
+      { wrap: els.billPresets, list: BILL_PRESET_LIST, area: els.billNote },
+      { wrap: els.recitalPresets, list: RECITAL_PRESET_LIST, area: els.recitalNote }
+    ].forEach(function (g) {
+      if (!g.wrap || !g.area) return;
+      var val = String(g.area.value || '').trim();
+      Array.prototype.forEach.call(g.wrap.querySelectorAll('.note-chip'), function (btn, i) {
+        var on = !!(g.list[i] && g.list[i].text === val);
+        btn.classList.toggle('is-on', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    });
+  }
+
+  /* ── 입금 계좌 기억 (선생님이 매번 안 쳐도 되게) ────────── */
+  function savedAccount() {
+    var raw = safeGet(LS_ACCOUNT);
+    if (!raw) return {};
+    try {
+      var o = JSON.parse(raw);
+      return (o && typeof o === 'object') ? o : {};
+    } catch (e) { return {}; }
+  }
+  var accountTimer = null;
+  function saveAccountSoon() {
+    if (accountTimer) clearTimeout(accountTimer);
+    accountTimer = setTimeout(function () {
+      safeSet(LS_ACCOUNT, JSON.stringify({
+        bankName: String(els.bankName.value || '').trim(),
+        bankNo: String(els.bankNo.value || '').trim(),
+        bankHolder: String(els.bankHolder.value || '').trim()
+      }));
+    }, 400);
+  }
+  function restoreAccount() {
+    var a = savedAccount();
+    if (!els.bankName.value && a.bankName) els.bankName.value = a.bankName;
+    if (!els.bankNo.value && a.bankNo) els.bankNo.value = a.bankNo;
+    if (!els.bankHolder.value && a.bankHolder) els.bankHolder.value = a.bankHolder;
+  }
+
   function renderChips() {
     var wrap = els.chipWrap;
     wrap.innerHTML = '';
@@ -2904,27 +4625,69 @@
   }
 
   function applyData(d, opts) {
-    els.studio.value = d.studio || '';
-    els.teacher.value = d.teacher || '';
-    els.student.value = d.student || '';
-    els.date.value = d.date || todayISO();
-    els.session.value = d.session || '';
-    els.piece.value = d.piece || '';
-    els.mission.value = d.mission || '';
-    els.note.value = d.note || '';
-    state.tags = (d.tags || []).slice(0, MAX_TAGS);
+    opts = opts || {};
+    var all = !!opts.reset;
+    function set(k, val, key) {
+      if (!els[k]) return;
+      if (all || Object.prototype.hasOwnProperty.call(d, key || k)) els[k].value = (val == null ? '' : val);
+    }
+    set('studio', d.studio);
+    set('teacher', d.teacher);
+    set('student', d.student);
+    set('date', d.date || todayISO());
+    set('session', d.session);
+    set('piece', d.piece);
+    set('mission', d.mission);
+    set('note', d.note);
+    // 레슨비 정산
+    set('guardian', d.guardian);
+    set('billPeriod', d.period, 'period');
+    set('billDue', d.due, 'due');
+    set('billSpec', d.lessonSpec, 'lessonSpec');
+    set('billDates', d.lessonDates, 'lessonDates');
+    set('billTuition', d.tuition ? moneyText(d.tuition) : '', 'tuition');
+    set('billExtraLabel', d.extraLabel, 'extraLabel');
+    set('billExtra', d.extraAmount ? moneyText(d.extraAmount) : '', 'extraAmount');
+    set('bankName', d.bankName);
+    set('bankNo', d.bankNo);
+    set('bankHolder', d.bankHolder);
+    set('billNote', d.billNote);
+    // 발표회 팜플렛
+    set('recitalTitle', d.recitalTitle);
+    set('recitalSub', d.recitalSub);
+    set('recitalWhen', d.recitalWhen);
+    set('recitalWhere', d.recitalWhere);
+    set('recitalProgram', d.recitalProgram);
+    set('recitalNote', d.recitalNote);
+    if (all || Object.prototype.hasOwnProperty.call(d, 'tags')) {
+      state.tags = (d.tags || []).slice(0, MAX_TAGS);
+    }
     renderChips();
     syncNotePresetState();
+    syncPresetStates();
     syncCounters();
     updateDateHint();
     render();
-    if (!opts || !opts.silent) saveDraft();
+    if (!opts.silent) saveDraft();
   }
 
   function fillExample(showToast) {
-    var d = Object.assign({}, EXAMPLE, { date: els.date.value || todayISO() });
-    applyData(d);
-    if (showToast) toast('피아노 레슨 예시를 채웠어요');
+    var mode = state.mode;
+    if (mode === 'billing') {
+      var bd = Object.assign({}, EXAMPLE_BILLING);
+      if (!bd.bankNo) {
+        var saved = savedAccount();
+        bd.bankName = saved.bankName || '국민은행';
+        bd.bankNo = saved.bankNo || '123-45-6789012';
+        bd.bankHolder = saved.bankHolder || '김선민';
+      }
+      applyData(bd);
+    } else if (mode === 'recital') {
+      applyData(Object.assign({}, EXAMPLE_RECITAL));
+    } else {
+      applyData(Object.assign({}, EXAMPLE, { date: els.date.value || todayISO() }));
+    }
+    if (showToast) toast(MODE_INFO[mode].example);
   }
 
   function loadDraft() {
@@ -2932,7 +4695,11 @@
     if (raw) {
       try {
         var d = JSON.parse(raw);
-        if (d && typeof d === 'object') { applyData(d, { silent: true }); return true; }
+        if (d && typeof d === 'object') {
+          if (d.mode && MODES.indexOf(d.mode) >= 0) setMode(d.mode, { silent: true });
+          applyData(d, { silent: true });
+          return true;
+        }
       } catch (e) {}
     }
     return false;
@@ -3024,11 +4791,23 @@
     return true;
   }
 
-  // 학생 칩 클릭 → 직전 기록 + 회차 1 + 오늘 날짜
+  // 학생 칩 클릭 → 직전 기록 + 회차 1 + 오늘 날짜 (정산·발표회 모드에서는 이름만 가져온다)
   function loadStudent(name) {
     var i = studentIndex(name);
     if (i < 0) return;
     var rec = state.students[i];
+    if (state.mode !== 'lesson') {
+      els.student.value = rec.name;
+      if (rec.studio && !els.studio.value) els.studio.value = rec.studio;
+      if (rec.teacher && !els.teacher.value) els.teacher.value = rec.teacher;
+      state.activeStudent = rec.name;
+      renderStudentChips();
+      if (state.mode === 'billing' && !els.guardian.value.trim()) els.guardian.value = rec.name + ' 어머님';
+      render();
+      saveDraft();
+      toast(rec.name + ' 이름을 가져왔어요');
+      return;
+    }
     var prevSession = rec.session || '';
     var nextSession = bumpSession(prevSession);
     applyData({
@@ -3361,6 +5140,15 @@
 
   function fileName() {
     var d = readData();
+    if (state.mode === 'billing') {
+      var who = (d.student || '학생').replace(/[\\/:*?"<>|]/g, '');
+      var per = (d.period || formatDateCompact(d.date) || '').replace(/[\\/:*?"<>|\s]/g, '');
+      return '레슨비정산_' + who + (per ? '_' + per : '') + '.png';
+    }
+    if (state.mode === 'recital') {
+      var t = (d.recitalTitle || '발표회').replace(/[\\/:*?"<>|\s]/g, '');
+      return '발표회팜플렛_' + (t || 'card') + '.png';
+    }
     var name = (d.student || '학생').replace(/[\\/:*?"<>|]/g, '');
     return '레슨카드_' + name + '_' + (formatDateCompact(d.date) || 'card') + '.png';
   }
@@ -3368,7 +5156,7 @@
   function downloadCard() {
     render();
     var studentName = els.student.value.trim();
-    if (studentName) persistStudent(true);
+    if (studentName && state.mode === 'lesson') persistStudent(true);
     var out = document.createElement('canvas');
     out.width = CARD_W;
     out.height = CARD_H;
@@ -3413,7 +5201,7 @@
   function shareCard() {
     render();
     var studentName = els.student.value.trim();
-    if (studentName) persistStudent(true);
+    if (studentName && state.mode === 'lesson') persistStudent(true);
     if (!navigator.canShare) { downloadCard(); return; }
     var out = exportCanvas();
     out.toBlob(function (blob) {
@@ -3436,6 +5224,8 @@
 
   function buildShareText() {
     var d = readData();
+    if (state.mode === 'billing') return buildBillingText(d);
+    if (state.mode === 'recital') return buildRecitalText(d);
     var lines = [];
     lines.push('🎹 ' + (d.student || '학생') + ' 레슨 노트');
     var meta = [formatDateDot(d.date), d.session].filter(Boolean).join(' · ');
@@ -3451,6 +5241,51 @@
     if (d.note) { lines.push('▸ 한마디'); lines.push(d.note); lines.push(''); }
     lines.push('— ' + (d.teacher || d.studio || '선생님'));
     if (d.teacher && d.studio) lines.push(d.studio);
+    return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  }
+
+  function buildBillingText(d) {
+    var lines = [];
+    lines.push('🧾 ' + (d.student || '학생') + ' 레슨비 정산' + (d.period ? ' · ' + d.period : ''));
+    if (d.guardian) lines.push(d.guardian + '께');
+    lines.push('');
+    if (d.lessonSpec) { lines.push('▸ 수업 내역'); lines.push(d.lessonSpec); if (d.lessonDates) lines.push(d.lessonDates); lines.push(''); }
+    lines.push('▸ 정산 내역');
+    if (d.tuition) lines.push('· 수강료 ' + moneyText(d.tuition) + '원');
+    if (d.extraAmount) lines.push('· ' + (d.extraLabel || '추가') + ' ' + moneyText(d.extraAmount) + '원');
+    lines.push('· 합계 ' + moneyText((d.tuition || 0) + (d.extraAmount || 0)) + '원');
+    lines.push('');
+    if (d.due) lines.push('▸ 납부 기한');
+    if (d.due) { lines.push(d.due); lines.push(''); }
+    if (d.bankNo || d.bankName) {
+      lines.push('▸ 입금 계좌');
+      lines.push([d.bankName, d.bankNo].filter(Boolean).join(' '));
+      if (d.bankHolder) lines.push('예금주 ' + d.bankHolder);
+      lines.push('');
+    }
+    if (d.billNote) { lines.push('▸ 안내'); lines.push(d.billNote); lines.push(''); }
+    lines.push('— ' + (d.teacher || d.studio || '선생님'));
+    if (d.teacher && d.studio) lines.push(d.studio);
+    return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  }
+
+  function buildRecitalText(d) {
+    var prog = splitProgram(d.recitalProgram);
+    var lines = [];
+    lines.push('🎼 ' + (d.recitalTitle || '발표회'));
+    if (d.recitalSub) lines.push(d.recitalSub);
+    lines.push('');
+    var meta = [d.recitalWhen, d.recitalWhere].filter(Boolean).join(' · ');
+    if (meta) { lines.push(meta); lines.push(''); }
+    if (prog.length) {
+      lines.push('▸ 프로그램');
+      prog.forEach(function (it, i) {
+        lines.push((i + 1) + '. ' + (it.who ? it.who + ' — ' : '') + it.piece);
+      });
+      lines.push('');
+    }
+    if (d.recitalNote) { lines.push('▸ 드리는 말씀'); lines.push(d.recitalNote); lines.push(''); }
+    lines.push('— ' + (d.studio || d.teacher || '스튜디오'));
     return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
   }
 
@@ -3486,7 +5321,7 @@
 
   function copyShare() {
     var text = buildShareText();
-    var studentName = els.student.value.trim();
+    var studentName = state.mode === 'lesson' ? els.student.value.trim() : '';
     var ok = function () {
       if (studentName) persistStudent(true);
       toast('카톡에 붙여넣을 텍스트를 복사했어요' + (studentName ? ' · ' + studentName + ' 기록도 저장됨' : ''));
@@ -3590,17 +5425,65 @@
      'tagTabs', 'notePresets',
      'tagCount', 'missionCount', 'noteCount', 'autosaveText',
      'studentChips', 'saveRecordBtn', 'logoPick', 'logoRemove', 'logoInput',
-     'logoThumb', 'logoInfoText', 'toastAction'].forEach(function (k) {
+     'logoThumb', 'logoInfoText', 'toastAction',
+     'guardian', 'billPeriod', 'billDue', 'billSpec', 'billDates', 'billTuition',
+     'billExtraLabel', 'billExtra', 'billTotalText', 'bankName', 'bankNo', 'bankHolder',
+     'billNote', 'billPresets', 'billDatesCount', 'billNoteCount',
+     'recitalTitle', 'recitalSub', 'recitalWhen', 'recitalWhere', 'recitalProgram',
+     'recitalNote', 'recitalPresets', 'programCount', 'recitalNoteCount',
+     'formTitle', 'formSub', 'studentHint', 'studentsHint'].forEach(function (k) {
       els[k] = document.getElementById(k);
     });
 
-    ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note'].forEach(function (k) {
+    ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note',
+     'guardian', 'billPeriod', 'billDue', 'billSpec', 'billDates', 'billNote',
+     'recitalTitle', 'recitalSub', 'recitalWhen', 'recitalWhere', 'recitalProgram', 'recitalNote'
+    ].forEach(function (k) {
+      if (!els[k]) return;
       els[k].addEventListener('input', function () {
         if (k === 'note') syncNotePresetState();
+        if (k === 'billNote' || k === 'recitalNote') syncPresetStates();
         syncCounters();
         scheduleRender();
         clearTimeout(els[k]._saveT);
         els[k]._saveT = setTimeout(saveDraft, 500);
+      });
+    });
+
+    // 금액 입력: 콤마 자동 + 합계 미리보기
+    ['billTuition', 'billExtra'].forEach(function (k) {
+      if (!els[k]) return;
+      els[k].addEventListener('input', function () {
+        formatMoneyField(els[k]);
+        updateBillTotal();
+        scheduleRender(true);
+        clearTimeout(els[k]._saveT);
+        els[k]._saveT = setTimeout(saveDraft, 500);
+      });
+    });
+
+    ['bankName', 'bankNo', 'bankHolder'].forEach(function (k) {
+      if (!els[k]) return;
+      els[k].addEventListener('input', function () {
+        saveAccountSoon();
+        scheduleRender(true);
+        clearTimeout(els[k]._saveT);
+        els[k]._saveT = setTimeout(saveDraft, 500);
+      });
+    });
+
+    // 카드 종류 탭
+    Array.prototype.forEach.call(document.querySelectorAll('.mode-tab'), function (btn) {
+      btn.addEventListener('click', function () { setMode(btn.getAttribute('data-mode')); });
+      btn.addEventListener('keydown', function (ev) {
+        var i = MODES.indexOf(btn.getAttribute('data-mode'));
+        if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
+          ev.preventDefault();
+          var next = MODES[(i + (ev.key === 'ArrowRight' ? 1 : MODES.length - 1)) % MODES.length];
+          setMode(next);
+          var nb = document.querySelector('.mode-tab[data-mode="' + next + '"]');
+          if (nb) nb.focus();
+        }
       });
     });
 
@@ -3634,7 +5517,7 @@
 
     els.exampleBtn.addEventListener('click', function () { fillExample(true); });
     els.resetBtn.addEventListener('click', function () {
-      applyData({ date: todayISO() });
+      applyData({ date: todayISO() }, { reset: true });
       els.autosaveText.textContent = '새 카드로 비웠어요';
       toast('입력을 비웠어요');
     });
@@ -3691,6 +5574,9 @@
       mission: null, note: null, customTag: null, addTagBtn: null, exampleBtn: null, resetBtn: null,
       chipWrap: null, tagTabs: null, notePresets: null,
       tagCount: null, missionCount: null, noteCount: null, autosaveText: null,
+      form: document.getElementById('lessonForm'),
+      heroTitle: document.querySelector('.hero h1'),
+      heroLede: document.querySelector('.hero h1 + p'),
       canvas: document.getElementById('cardCanvas'), downloadBtn: document.getElementById('downloadBtn'),
       mobileDownloadBtn: document.getElementById('mobileDownloadBtn'), copyBtn: document.getElementById('copyBtn'),
       copyIconBtn: document.getElementById('copyIconBtn'), mobileCopyBtn: document.getElementById('mobileCopyBtn'),
@@ -3738,6 +5624,12 @@
     if (subjectById(savedSubject)) state.subject = savedSubject;
     renderSubjectTabs();
     renderNotePresets();
+    renderBillPresets();
+    renderRecitalPresets();
+    restoreAccount();
+
+    var savedMode = safeGet(LS_MODE);
+    setMode(MODES.indexOf(savedMode) >= 0 ? savedMode : 'lesson', { silent: true, noExample: true });
 
     var usage = parseInt(safeGet(LS_USAGE) || '0', 10);
     state.usage = isNaN(usage) ? 0 : usage;
@@ -3759,6 +5651,7 @@
     setTheme(state.theme);
     syncCounters();
     updateDateHint();
+    setMode(state.mode, { silent: true, noExample: true });
     render();
 
     ensureFonts().then(function () { render(); });
@@ -3779,6 +5672,14 @@
       fillExample: function () { fillExample(false); },
       applyData: applyData,
       readData: readData,
+      setMode: setMode,
+      modes: MODES.slice(),
+      modeInfo: MODE_INFO,
+      parseMoney: parseMoney,
+      moneyText: moneyText,
+      splitProgram: splitProgram,
+      billingText: function () { return buildBillingText(readData()); },
+      recitalText: function () { return buildRecitalText(readData()); },
       download: downloadCard,
       copyText: buildShareText,
       state: state,
@@ -3792,7 +5693,7 @@
       saveStudentRecord: function () { return persistStudent(true); },
       bumpSession: bumpSession,
       removeLogo: removeLogo,
-      keys: { students: LS_STUDENTS, logo: LS_LOGO, subject: LS_SUBJECT, theme: LS_THEME, themeSet: LS_SET }
+      keys: { students: LS_STUDENTS, logo: LS_LOGO, subject: LS_SUBJECT, theme: LS_THEME, themeSet: LS_SET, mode: LS_MODE, account: LS_ACCOUNT, draft: LS_DRAFT }
     };
   }
 
