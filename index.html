@@ -1158,6 +1158,7 @@
       accent: '#101014', accentSoft: '#F1F1F3',
       chipBg: '#FFFFFF', chipLine: '#DADADE',
       panelBg: '#F7F7F8', panelLine: '#EDEDEF',
+      boxFill: '#F8F8FA', boxLine: '#DFDFE4', missionFill: '#EFEFF2', missionBar: '#101014',
       swatches: ['#FFFFFF', '#E7E7EA', '#101014']
     },
     linen: {
@@ -1166,6 +1167,7 @@
       accent: '#A6895B', accentSoft: '#F4ECDC',
       chipBg: '#FFFDF8', chipLine: '#E6D7BE',
       panelBg: '#F7F2E7', panelLine: '#E9DDC8',
+      boxFill: '#FFFDF8', boxLine: '#E4D5BC', missionFill: '#F5EDDD', missionBar: '#A6895B',
       swatches: ['#FCFAF4', '#A6895B', '#2B2420']
     },
     slate: {
@@ -1174,6 +1176,7 @@
       accent: '#25507F', accentSoft: '#E4EEFA',
       chipBg: '#FFFFFF', chipLine: '#CCDCEF',
       panelBg: '#E8F0FA', panelLine: '#D4E2F3',
+      boxFill: '#FFFFFF', boxLine: '#D8E3F1', missionFill: '#E4EEFA', missionBar: '#25507F',
       swatches: ['#F3F7FC', '#25507F', '#0F172A']
     },
 
@@ -1536,15 +1539,18 @@
   var CLEAN_CFG = {
     // 키는 테마 id가 아니라 렌더 모드(grid·airy·poster)
     // rail: 왼쪽 라벨 레일 / caption: 라벨을 내용 위 작은 캡션으로
-    grid:   { mx: 96,  top: 198, rail: 182, label: 'rail',    rule: true,
+    grid:   { mx: 96,  top: 198, rail: 0, label: 'rail',    rule: true,
              name: { size: 90, weight: 700, track: -2.2 }, chip: 'outline', chipR: 8,
-             panel: 'hair', gapName: 8, gapSec: 34, chipH: 50, chipPad: 20, chipFont: 23 },
+             panel: 'hair', gapName: 8, gapSec: 34, chipH: 50, chipPad: 20, chipFont: 23,
+             boxR: 12, boxPadX: 34, boxPadY: 26, boxHead: 26, boxGap: 14, gapBox: 22, missionBar: 7 },
     airy:   { mx: 186, top: 224, rail: 0,   label: 'caption', rule: false,
              name: { size: 74, weight: 600, track: -0.4 }, chip: 'soft', chipR: 999,
-             panel: 'soft', gapName: 10, gapSec: 40, chipH: 46, chipPad: 24, chipFont: 22 },
-    poster: { mx: 96,  top: 204, rail: 190, label: 'rail',    rule: true,
+             panel: 'soft', gapName: 10, gapSec: 40, chipH: 46, chipPad: 24, chipFont: 22,
+             boxR: 18, boxPadX: 34, boxPadY: 26, boxHead: 26, boxGap: 14, gapBox: 24, missionBar: 6, missionOut: 26 },
+    poster: { mx: 96,  top: 204, rail: 0, label: 'rail',    rule: true,
              name: { size: 94, weight: 800, track: -3.0 }, chip: 'filled', chipR: 7,
-             panel: 'fill', gapName: 6, gapSec: 30, chipH: 52, chipPad: 18, chipFont: 24 }
+             panel: 'fill', gapName: 6, gapSec: 30, chipH: 52, chipPad: 18, chipFont: 24,
+             boxR: 8, boxPadX: 34, boxPadY: 24, boxHead: 26, boxGap: 14, gapBox: 20, missionBar: 8 }
   };
 
   function cleanCfg(t) { return CLEAN_CFG[t.mode] || CLEAN_CFG.grid; }
@@ -1694,59 +1700,120 @@
     ctx.restore();
   }
 
+  /* 박스 블럭 · 연습 미션 강조 — Minimal 세트 공용 */
+  function cleanBox(ctx, t, cfg, x, y, w, h, mission, sc) {
+    var r = cfg.boxR * sc;
+    roundRect(ctx, x, y, w, h, r);
+    ctx.fillStyle = mission ? t.missionFill : t.boxFill;
+    ctx.fill();
+    ctx.save();
+    ctx.globalAlpha = mission ? 0.40 : 1;
+    ctx.strokeStyle = mission ? t.missionBar : t.boxLine;
+    ctx.lineWidth = (mission ? 1.5 : 1) * sc;
+    ctx.stroke();
+    ctx.restore();
+    if (mission) {
+      ctx.save();
+      roundRect(ctx, x, y, w, h, r);
+      ctx.clip();
+      ctx.fillStyle = t.missionBar;
+      ctx.fillRect(x, y, cfg.missionBar * sc, h);
+      ctx.restore();
+    }
+  }
+
+  function cleanBoxLabel(ctx, t, cfg, text, seq, x, y, sc, mission) {
+    ctx.save();
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
+    if (seq) {
+      ctx.font = '700 ' + Math.round(13 * sc) + 'px ' + SANS;
+      ctx.fillStyle = mission ? t.missionBar : t.soft;
+      ctx.globalAlpha = mission ? 1 : 0.82;
+      drawTracked(ctx, seq, x, y + 2 * sc, 1.5 * sc, 'left');
+      ctx.globalAlpha = 1;
+      x += 27 * sc;
+    }
+    ctx.font = (mission ? '800 ' : '700 ') + Math.round((mission ? 17 : 15) * sc) + 'px ' + SANS;
+    ctx.fillStyle = mission ? t.missionBar : (t.mode === 'poster' ? t.accent : t.ink);
+    drawTracked(ctx, text, x, y, (mission ? 2.6 : 3.0) * sc, 'left');
+    ctx.restore();
+  }
+
+  // 연습 미션 본문: 4줄 안에 들어오는 가장 큰 크기를 고른다 (짧으면 더 크게)
+  function missionType(ctx, text, maxW, sc, base) {
+    var lo = Math.round(26 * sc);
+    var size = Math.round(base * sc);
+    var wrap = null, guard = 0;
+    for (;;) {
+      ctx.font = '700 ' + size + 'px ' + SANS;
+      wrap = wrapText(ctx, text, maxW, 4);
+      if (!wrap.truncated || size <= lo || guard++ > 12) break;
+      size -= 2;
+    }
+    if (!wrap.truncated && wrap.lines.length <= 1) {
+      var bigger = Math.min(Math.round(40 * sc), size + 4);
+      ctx.font = '700 ' + bigger + 'px ' + SANS;
+      var w2 = wrapText(ctx, text, maxW, 4);
+      if (!w2.truncated && w2.lines.length <= 2) { size = bigger; wrap = w2; }
+    }
+    return { size: size, wrap: wrap };
+  }
+
   function cleanMeasure(ctx, t, d, sc) {
     var cfg = cleanCfg(t);
     var m = newModel(cfg.top, sc);
-    var rail = cfg.rail * sc;
-    var cx = cfg.mx + rail;
-    var cw = CARD_W - cfg.mx * 2 - rail;
-    var railMode = cfg.label === 'rail';
-    var labelH = railMode ? (58 * sc) : (26 * sc);
-    var seq = 1;
+    var bw = CARD_W - cfg.mx * 2;
+    var px = cfg.boxPadX * sc, py = cfg.boxPadY * sc;
+    var headH = cfg.boxHead * sc, headGap = cfg.boxGap * sc;
+    var inX, inW = bw - px * 2;
+    var bx = cfg.mx;
+    inX = bx + px;
+    var seqNo = 0;
+    function nextSeq() { seqNo += 1; return (seqNo < 10 ? '0' : '') + seqNo; }
 
-    function sectionRule(y) {
-      if (!cfg.rule) return;
-      ctx.fillStyle = t.mode === 'slate' ? t.accent : t.line;
-      ctx.globalAlpha = t.mode === 'slate' ? 0.28 : 1;
-      ctx.fillRect(cfg.mx, y + 0.5, CARD_W - cfg.mx * 2, 1);
-      ctx.globalAlpha = 1;
-    }
-
-    // ── 학생 이름 ──
+    // ── 학생 이름 (박스 밖 · 카드의 제목) ──
     var nameText = d.student || '학생 이름';
     var placeholder = !d.student;
-    var nameSize = fitText(ctx, nameText, cw - 110 * sc, cfg.name.size * sc, 44 * sc, String(cfg.name.weight), SANS);
+    var capH = 26 * sc;
+    var nameSize = fitText(ctx, nameText, bw - 130 * sc, cfg.name.size * sc, 44 * sc, String(cfg.name.weight), SANS);
     var nm = ctx.measureText(nameText);
     var asc = Math.min(nm.fontBoundingBoxAscent || nameSize * 0.78, nameSize * 1.02);
     var desc = Math.min(nm.fontBoundingBoxDescent || nameSize * 0.2, nameSize * 0.3);
     var nameH = asc + desc;
 
     m.gap(cfg.gapName, 2);
-    m.block(labelH + nameH * 1.04, function (y) {
-      cleanSectionLabel(ctx, t, cfg, '학생', cfg.mx, y, sc, railMode ? '01' : null);
-      var ny = y + labelH;
+    m.block(capH + nameH * 1.04, function (y) {
+      ctx.save();
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.font = '700 ' + Math.round(15 * sc) + 'px ' + SANS;
+      ctx.fillStyle = t.mode === 'airy' ? t.accent : t.soft;
+      drawTracked(ctx, '학생', bx, y, 3.2 * sc, 'left');
+      if (t.mode === 'slate') {
+        ctx.fillStyle = t.accent;
+        ctx.fillRect(bx + trackedWidth(ctx, '학생', 3.2 * sc) + 12 * sc, y + 8 * sc, 22 * sc, 2 * sc);
+      }
+      ctx.restore();
+      var ny = y + capH;
       ctx.save();
       ctx.textBaseline = 'alphabetic';
       ctx.textAlign = 'left';
       ctx.fillStyle = placeholder ? t.soft : t.ink;
       ctx.font = String(cfg.name.weight) + ' ' + Math.round(nameSize) + 'px ' + SANS;
-      drawTracked(ctx, nameText, cx, ny + asc, cfg.name.track * sc, 'left');
+      drawTracked(ctx, nameText, bx, ny + asc, cfg.name.track * sc, 'left');
       var nw = trackedWidth(ctx, nameText, cfg.name.track * sc);
-      if (!placeholder && t.mode !== 'airy') {
-        if (t.mode === 'slate') {
+      if (!placeholder && t.mode === 'slate') {
+        if (true) {
           var tagW = 66 * sc, tagH = 32 * sc;
-          roundRect(ctx, cx + nw + 16 * sc, ny + asc - tagH * 0.94, tagW, tagH, 5 * sc);
+          roundRect(ctx, bx + nw + 16 * sc, ny + asc - tagH * 0.94, tagW, tagH, 5 * sc);
           ctx.fillStyle = t.accent;
           ctx.fill();
           ctx.fillStyle = '#FFFFFF';
           ctx.font = '700 ' + Math.round(17 * sc) + 'px ' + SANS;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText('학생', cx + nw + 16 * sc + tagW / 2, ny + asc - tagH * 0.94 + tagH / 2 + 1);
-        } else {
-          ctx.fillStyle = t.soft;
-          ctx.font = '500 ' + Math.round(22 * sc) + 'px ' + SANS;
-          ctx.fillText('학생', cx + nw + 16 * sc, ny + asc - 2 * sc);
+          ctx.fillText('학생', bx + nw + 16 * sc + tagW / 2, ny + asc - tagH * 0.94 + tagH / 2 + 1);
         }
       }
       ctx.restore();
@@ -1758,7 +1825,7 @@
       m.gap(46, 2);
       var hintSize = Math.round(27 * sc);
       ctx.font = '400 ' + hintSize + 'px ' + SANS;
-      var hint = wrapText(ctx, '오늘의 곡과 잘한 점을 적으면\n카드가 완성됩니다.', cw, 2);
+      var hint = wrapText(ctx, '오늘의 곡과 잘한 점을 적으면\n카드가 완성됩니다.', inW, 2);
       var hintLH = hintSize * 1.7;
       m.block(hint.lines.length * hintLH, function (y) {
         ctx.save();
@@ -1766,7 +1833,7 @@
         ctx.textAlign = 'left';
         ctx.fillStyle = t.soft;
         ctx.font = '400 ' + hintSize + 'px ' + SANS;
-        hint.lines.forEach(function (line, i) { ctx.fillText(line, cx, y + i * hintLH); });
+        hint.lines.forEach(function (line, i) { ctx.fillText(line, inX, y + i * hintLH); });
         ctx.restore();
       });
       return m.done();
@@ -1774,62 +1841,65 @@
 
     // ── 오늘의 곡 ──
     if (d.piece) {
-      m.gap(cfg.gapSec, 1);
-      m.block(1, sectionRule);
-      m.gap(22, 0);
-      var pSize = Math.round((t.mode === 'slate' ? 38 : t.mode === 'airy' ? 33 : 36) * sc);
+      m.gap(cfg.gapBox, 1);
+      var pSeq = nextSeq();
+      var pSize = Math.round((t.mode === 'slate' ? 36 : t.mode === 'airy' ? 33 : 35) * sc);
       ctx.font = '600 ' + pSize + 'px ' + SANS;
-      var pw = wrapText(ctx, d.piece, cw, 2);
-      var plh = pSize * 1.36;
-      m.block(labelH + 10 * sc + pw.lines.length * plh, function (y) {
-        cleanSectionLabel(ctx, t, cfg, '오늘의 곡', cfg.mx, y, sc, railMode ? '02' : null);
+      var pw = wrapText(ctx, d.piece, inW, 2);
+      if (pw.truncated) m.clip = true;
+      var plh = pSize * 1.4;
+      var pH = py * 2 + headH + headGap + pw.lines.length * plh;
+      m.block(pH, function (y) {
+        cleanBox(ctx, t, cfg, bx, y, bw, pH, false, sc);
+        cleanBoxLabel(ctx, t, cfg, '오늘의 곡', pSeq, inX, y + py, sc, false);
         ctx.save();
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = t.ink;
         ctx.font = '600 ' + pSize + 'px ' + SANS;
         pw.lines.forEach(function (line, i) {
-          ctx.fillText(line, cx, y + labelH + 10 * sc + i * plh);
+          ctx.fillText(line, inX, y + py + headH + headGap + i * plh);
         });
         ctx.restore();
       });
     }
 
-    // ── 잘한 점 ──
+    // ── 02 잘한 점 ──
     var tags = (d.tags || []).slice(0, 4);
     if (tags.length) {
-      m.gap(cfg.gapSec, 1);
-      m.block(1, sectionRule);
-      m.gap(22, 0);
+      m.gap(cfg.gapBox, 1);
+      var gSeq = nextSeq();
       var chipFont = (t.mode === 'slate' ? '600 ' : '500 ') + Math.round(cfg.chipFont * sc) + 'px ' + SANS;
       ctx.font = chipFont;
       var padX = cfg.chipPad * sc, pillH = cfg.chipH * sc, gapX = 10 * sc, gapY = 10 * sc;
       var rows = [[]];
       tags.forEach(function (tag) {
-        var w = Math.min(ctx.measureText(tag).width, cw - padX * 2) + padX * 2 + (cfg.chip === 'soft' ? 8 * sc : 0);
+        var w = Math.min(ctx.measureText(tag).width, inW - padX * 2) + padX * 2 + (cfg.chip === 'soft' ? 8 * sc : 0);
         var row = rows[rows.length - 1];
         var used = row.reduce(function (a, b) { return a + b.w + gapX; }, 0);
-        if (row.length && used + w > cw) rows.push([{ tag: tag, w: w }]);
+        if (row.length && used + w > inW) rows.push([{ tag: tag, w: w }]);
         else row.push({ tag: tag, w: w });
       });
       if (cfg.chip === 'soft') {
         rows.forEach(function (row) {
-          row.forEach(function (it) { it.w = Math.min(it.w, cw); });
+          row.forEach(function (it) { it.w = Math.min(it.w, inW); });
         });
       }
       var visible = rows.slice(0, 2);
       var blockH = visible.length * pillH + (visible.length - 1) * gapY;
-      m.block(labelH + 12 * sc + blockH, function (y) {
-        cleanSectionLabel(ctx, t, cfg, '잘한 점', cfg.mx, y, sc, railMode ? '03' : null);
-        var py = y + labelH + 12 * sc;
+      var tH = py * 2 + headH + headGap + blockH;
+      m.block(tH, function (y) {
+        cleanBox(ctx, t, cfg, bx, y, bw, tH, false, sc);
+        cleanBoxLabel(ctx, t, cfg, '잘한 점', gSeq, inX, y + py, sc, false);
+        var pyy = y + py + headH + headGap;
         ctx.save();
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'left';
         visible.forEach(function (row, ri) {
-          var px = cx;
+          var cxp = inX;
           row.forEach(function (item) {
-            var ry = py + ri * (pillH + gapY);
-            roundRect(ctx, px, ry, item.w, pillH, Math.min(cfg.chipR * sc, pillH / 2));
+            var ry = pyy + ri * (pillH + gapY);
+            roundRect(ctx, cxp, ry, item.w, pillH, Math.min(cfg.chipR * sc, pillH / 2));
             if (cfg.chip === 'outline') {
               ctx.fillStyle = t.chipBg;
               ctx.fill();
@@ -1837,7 +1907,7 @@
               ctx.lineWidth = 1;
               ctx.stroke();
             } else if (cfg.chip === 'soft') {
-              ctx.fillStyle = t.chipBg;
+              ctx.fillStyle = t.mode === 'airy' ? t.accentSoft : t.chipBg;
               ctx.fill();
             } else {
               ctx.fillStyle = t.accentSoft;
@@ -1848,93 +1918,82 @@
             var label = item.tag;
             while (ctx.measureText(label).width > item.w - padX * 2 && label.length > 2) label = label.slice(0, -1);
             if (label !== item.tag) label = label.slice(0, -1) + '…';
-            ctx.fillText(label, px + padX, ry + pillH / 2 + 1);
-            px += item.w + gapX;
+            ctx.fillText(label, cxp + padX, ry + pillH / 2 + 1);
+            cxp += item.w + gapX;
           });
         });
         ctx.restore();
       });
     }
 
-    // ── 이번 주 연습 미션 ──
+    // ── 03 연습 미션 (카드의 주인공) ──
     if (d.mission) {
-      m.gap(cfg.gapSec, 1);
-      m.block(1, sectionRule);
-      m.gap(22, 0);
-      var mSize = Math.round((t.mode === 'slate' ? 28 : 27) * sc);
-      ctx.font = '400 ' + mSize + 'px ' + SANS;
-      var mWrap = wrapText(ctx, d.mission, cw - 64 * sc, 4);
-      var mLH = mSize * 1.62;
-      var padY = 26 * sc;
-      var textH = mWrap.lines.length * mLH;
-      var boxH = padY * 2 + textH;
-      m.block(labelH + 12 * sc + boxH, function (y) {
-        cleanSectionLabel(ctx, t, cfg, '연습 미션', cfg.mx, y, sc, railMode ? '04' : null);
-        var by = y + labelH + 12 * sc;
-        if (cfg.panel !== 'none') {
-          roundRect(ctx, cx, by, cw, boxH, cfg.panel === 'soft' ? 3 : cfg.panel === 'fill' ? 8 : 2);
-          ctx.fillStyle = cfg.panel === 'fill' ? t.panelBg : (cfg.panel === 'soft' ? '#FFFFFF' : 'rgba(0,0,0,0)');
-          if (cfg.panel === 'soft' || cfg.panel === 'fill') ctx.fill();
-          if (cfg.panel === 'hair' || cfg.panel === 'soft') {
-            ctx.strokeStyle = t.panelLine;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-          if (cfg.panel === 'fill') {
-            ctx.save();
-            roundRect(ctx, cx, by, cw, boxH, 8);
-            ctx.clip();
-            ctx.fillStyle = t.accent;
-            ctx.fillRect(cx, by, 4 * sc, boxH);
-            ctx.restore();
-          }
-        }
+      m.gap(cfg.gapBox, 1);
+      var mSeq = nextSeq();
+      var barW = cfg.missionBar * sc;
+      var out = (cfg.missionOut || 0) * sc;
+      var mBoxX = bx - out, mBoxW = bw + out * 2;
+      var mInX = mBoxX + px + barW + 10 * sc;
+      var mInW = mBoxW - px * 2 - barW - 10 * sc;
+      var mBase = t.mode === 'slate' ? 38 : t.mode === 'airy' ? 36 : 38;
+      var mt = missionType(ctx, d.mission, mInW, sc, mBase);
+      if (mt.wrap.truncated) m.clip = true;
+      var mSize = mt.size, mWrap = mt.wrap;
+      var mLH = mSize * 1.6;
+      var mPadY = py + 4 * sc;
+      var mBoxH = mPadY * 2 + headH + headGap + mWrap.lines.length * mLH;
+      m.block(mBoxH, function (y) {
+        cleanBox(ctx, t, cfg, mBoxX, y, mBoxW, mBoxH, true, sc);
+        cleanBoxLabel(ctx, t, cfg, '연습 미션', mSeq, mInX, y + mPadY, sc, true);
         ctx.save();
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = t.ink;
-        ctx.font = '400 ' + mSize + 'px ' + SANS;
+        ctx.font = '700 ' + mSize + 'px ' + SANS;
         mWrap.lines.forEach(function (line, i) {
-          ctx.fillText(line, cx + 30 * sc, by + padY + i * mLH);
+          ctx.fillText(line, mInX, y + mPadY + headH + headGap + i * mLH);
         });
         ctx.restore();
       });
     }
 
-    // ── 한마디 ──
+    // ── 04 한마디 ──
     if (d.note) {
-      m.gap(cfg.gapSec, 1);
-      m.block(1, sectionRule);
-      m.gap(22, 0);
-      var nSize = Math.round((t.mode === 'slate' ? 29 : 28) * sc);
+      m.gap(cfg.gapBox, 1);
+      var nSeq = nextSeq();
+      var nSize = Math.round((t.mode === 'slate' ? 27 : 26) * sc);
       ctx.font = '400 ' + nSize + 'px ' + SANS;
-      var nWrap = wrapText(ctx, d.note, cw - 26 * sc, 3);
-      var nLH = nSize * 1.62;
+      var nWrap = wrapText(ctx, d.note, inW - 22 * sc, 3);
+      if (nWrap.truncated) m.clip = true;
+      var nLH = nSize * 1.64;
       var signName = d.teacher || d.studio || '';
-      var signH = signName ? 34 * sc : 0;
-      m.block(labelH + 12 * sc + nWrap.lines.length * nLH + signH, function (y) {
-        cleanSectionLabel(ctx, t, cfg, '한마디', cfg.mx, y, sc, railMode ? '05' : null);
-        var qy = y + labelH + 12 * sc;
+      var signH = signName ? 32 * sc : 0;
+      var nBoxH = py * 2 + headH + headGap + nWrap.lines.length * nLH + signH;
+      m.block(nBoxH, function (y) {
+        cleanBox(ctx, t, cfg, bx, y, bw, nBoxH, false, sc);
+        cleanBoxLabel(ctx, t, cfg, '한마디', nSeq, inX, y + py, sc, false);
+        var qy = y + py + headH + headGap;
         ctx.save();
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = t.mode === 'poster' ? t.accent : t.line;
-        ctx.fillRect(cx, qy + 3 * sc, 2 * sc, nWrap.lines.length * nLH - 10 * sc);
+        ctx.fillRect(inX, qy + 3 * sc, 2 * sc, nWrap.lines.length * nLH - 10 * sc);
         ctx.fillStyle = t.ink;
         ctx.font = '400 ' + nSize + 'px ' + SANS;
         nWrap.lines.forEach(function (line, i) {
-          ctx.fillText(line, cx + 26 * sc, qy + i * nLH);
+          ctx.fillText(line, inX + 22 * sc, qy + i * nLH);
         });
         if (signName) {
           ctx.textAlign = 'right';
           ctx.font = '600 ' + Math.round(20 * sc) + 'px ' + SANS;
           ctx.fillStyle = t.soft;
-          ctx.fillText('— ' + signName, CARD_W - cfg.mx, qy + nWrap.lines.length * nLH + 10 * sc);
+          ctx.fillText('— ' + signName, CARD_W - cfg.mx - px, qy + nWrap.lines.length * nLH + 8 * sc);
         }
         ctx.restore();
       });
     }
 
+    m.flexMax = (m.total < m.avail * 0.82) ? 42 * sc : 30 * sc;
     return m.done();
   }
 
@@ -2133,14 +2192,47 @@
     }
   }
 
+  // 귀여운 세트의 네모칸 블럭 — 흰 종이 위 점선 카드
+  function cuteBox(ctx, t, x, y, w, h, sc, fill, lineW, lineColor) {
+    ctx.save();
+    roundRect(ctx, x, y, w, h, 26 * sc);
+    ctx.fillStyle = fill || '#FFFFFF';
+    ctx.fill();
+    ctx.setLineDash([10 * sc, 8 * sc]);
+    ctx.lineWidth = (lineW || 2.4) * sc;
+    ctx.strokeStyle = lineColor || t.frame;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function cuteBoxPill(ctx, t, text, x, y, sc, bg, fg) {
+    cutePill(ctx, x, y, text, 21 * sc, 20 * sc, 38 * sc, bg || t.accentSoft, fg || t.accent, 0, true);
+  }
+
+  function cuteMissionType(ctx, text, maxW, sc) {
+    var lo = Math.round(26 * sc), size = Math.round(32 * sc), wrap = null, guard = 0;
+    for (;;) {
+      ctx.font = '400 ' + size + 'px ' + DODUM;
+      wrap = wrapText(ctx, text, maxW, 5);
+      if (!wrap.truncated || size <= lo || guard++ > 10) break;
+      size -= 2;
+    }
+    if (!wrap.truncated && wrap.lines.length <= 1) {
+      var bigger = Math.min(Math.round(40 * sc), size + 5);
+      ctx.font = '400 ' + bigger + 'px ' + DODUM;
+      var w2 = wrapText(ctx, text, maxW, 5);
+      if (!w2.truncated && w2.lines.length <= 2) { size = bigger; wrap = w2; }
+    }
+    return { size: size, wrap: wrap };
+  }
+
   function cuteMeasure(ctx, t, d, sc) {
     var m = newModel(CUTE_TOP, sc);
     var cw = CARD_W - CUTE_M * 2;
-    var labelH = 40 * sc;
-
-    function label(text, y, star) {
-      cutePill(ctx, CUTE_M, y, text, 21 * sc, 20 * sc, 38 * sc, t.accentSoft, t.accent, 0, star !== false);
-    }
+    var bx = CUTE_M;
+    var padX = 28 * sc, padY = 26 * sc, tabY = 19 * sc;
+    var inX = bx + 24 * sc;
+    var inW = cw - 48 * sc;
 
     // ── 학생 이름 ──
     var nameText = d.student || '학생 이름';
@@ -2176,7 +2268,7 @@
       m.gap(30, 2);
       var hSize = Math.round(28 * sc);
       ctx.font = '400 ' + hSize + 'px ' + DODUM;
-      var hint = wrapText(ctx, '오늘의 곡과 잘한 점을 적으면\n카드가 완성됩니다.', cw - 40 * sc, 2);
+      var hint = wrapText(ctx, '오늘의 곡과 잘한 점을 적으면\n카드가 완성됩니다.', inW, 2);
       var hLH = hSize * 1.7;
       m.block(hint.lines.length * hLH, function (y) {
         ctx.save();
@@ -2184,65 +2276,66 @@
         ctx.textAlign = 'left';
         ctx.fillStyle = t.soft;
         ctx.font = '400 ' + hSize + 'px ' + DODUM;
-        hint.lines.forEach(function (line, i) { ctx.fillText(line, CUTE_M + 20 * sc, y + i * hLH); });
+        hint.lines.forEach(function (line, i) { ctx.fillText(line, inX, y + i * hLH); });
         ctx.restore();
       });
       return m.done();
     }
 
-    // ── 오늘의 곡 ──
+    // ── 오늘의 곡 (점선 블럭) ──
     if (d.piece) {
-      m.gap(28, 1);
-      m.block(1, function (y) { cuteDashes(ctx, y, t.frame, sc); });
-      m.gap(24, 0);
+      m.gap(34, 1);
       var pSize = Math.round(34 * sc);
       ctx.font = '400 ' + pSize + 'px ' + JUA;
-      var pw = wrapText(ctx, d.piece, cw, 2);
+      var pw = wrapText(ctx, d.piece, inW, 2);
+      if (pw.truncated) m.clip = true;
       var plh = pSize * 1.5;
-      m.block(labelH + 14 * sc + pw.lines.length * plh, function (y) {
-        label('오늘의 곡', y);
+      var pH = padY * 2 + pw.lines.length * plh;
+      m.block(pH, function (y) {
+        cuteBox(ctx, t, bx, y, cw, pH, sc, '#FFFFFF', 2.4, t.frame);
+        cuteBoxPill(ctx, t, '오늘의 곡', inX, y - tabY, sc, t.accentSoft, t.accent);
         ctx.save();
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = t.ink;
         ctx.font = '400 ' + pSize + 'px ' + JUA;
         pw.lines.forEach(function (line, i) {
-          ctx.fillText(line, CUTE_M, y + labelH + 14 * sc + i * plh);
+          ctx.fillText(line, inX, y + padY + i * plh);
         });
         ctx.restore();
       });
     }
 
-    // ── 잘한 점 (스티커 태그) ──
+    // ── 잘한 점 (점선 블럭 안 스티커 태그) ──
     var tags = (d.tags || []).slice(0, 4);
     if (tags.length) {
-      m.gap(30, 1);
-      m.block(1, function (y) { cuteDashes(ctx, y, t.frame, sc); });
-      m.gap(24, 0);
+      m.gap(22, 1);
       var chipFont = '400 ' + Math.round(23 * sc) + 'px ' + JUA;
       ctx.font = chipFont;
-      var padX = 20 * sc, pillH = 52 * sc, gapX = 10 * sc, gapY = 14 * sc;
+      var chipPad = 20 * sc, pillH = 52 * sc, gapX = 10 * sc, gapY = 12 * sc;
       var rows = [[]];
       tags.forEach(function (tag) {
-        var w = Math.min(ctx.measureText(tag).width, cw - padX * 2 - 26 * sc) + padX * 2 + 26 * sc;
+        var w = Math.min(ctx.measureText(tag).width, inW - chipPad * 2 - 26 * sc) + chipPad * 2 + 26 * sc;
         var row = rows[rows.length - 1];
         var used = row.reduce(function (a, b) { return a + b.w + gapX; }, 0);
-        if (row.length && used + w > cw) rows.push([{ tag: tag, w: w }]);
+        if (row.length && used + w > inW) rows.push([{ tag: tag, w: w }]);
         else row.push({ tag: tag, w: w });
       });
       var visible = rows.slice(0, 2);
       var blockH = visible.length * pillH + (visible.length - 1) * gapY;
-      m.block(labelH + 14 * sc + blockH, function (y) {
-        label('잘한 점', y);
-        var py = y + labelH + 14 * sc;
+      var tH = padY * 2 + blockH;
+      m.block(tH, function (y) {
+        cuteBox(ctx, t, bx, y, cw, tH, sc, '#FFFFFF', 2.4, t.frame);
+        cuteBoxPill(ctx, t, '잘한 점', inX, y - tabY, sc, t.accentSoft, t.accent);
+        var pyy = y + padY;
         ctx.save();
         visible.forEach(function (row, ri) {
-          var px = CUTE_M;
+          var cxp = inX;
           row.forEach(function (item, ci) {
-            var ry = py + ri * (pillH + gapY);
+            var ry = pyy + ri * (pillH + gapY);
             var rot = ((ri + ci) % 2 ? 1 : -1) * 0.022;
             ctx.save();
-            ctx.translate(px + item.w / 2, ry + pillH / 2);
+            ctx.translate(cxp + item.w / 2, ry + pillH / 2);
             ctx.rotate(rot);
             roundRect(ctx, -item.w / 2, -pillH / 2, item.w, pillH, pillH / 2);
             ctx.fillStyle = t.pastel;
@@ -2255,28 +2348,25 @@
             ctx.font = chipFont;
             ctx.textBaseline = 'middle';
             ctx.textAlign = 'left';
-            var labelText = item.tag;
-            ctx.fillText(labelText, -item.w / 2 + 40 * sc, 1);
+            ctx.fillText(item.tag, -item.w / 2 + 40 * sc, 1);
             ctx.restore();
-            px += item.w + gapX;
+            cxp += item.w + gapX;
           });
         });
         ctx.restore();
       });
     }
 
-    // ── 이번 주 미션 ──
+    // ── 이번 주 미션 (카드의 주인공) ──
     if (d.mission) {
-      m.gap(30, 1);
-      m.block(1, function (y) { cuteDashes(ctx, y, t.frame, sc); });
-      m.gap(24, 0);
-      var mSize = Math.round(27 * sc);
-      var padX = 34 * sc, padY = 32 * sc;
-      ctx.font = '400 ' + mSize + 'px ' + DODUM;
-      var mWrap = wrapText(ctx, d.mission, cw - padX * 2, 4);
-      var mLH = mSize * 1.68;
+      m.gap(26, 1);
+      var mt = cuteMissionType(ctx, d.mission, cw - 68 * sc, sc);
+      if (mt.wrap.truncated) m.clip = true;
+      var mSize = mt.size, mWrap = mt.wrap;
+      var mPadY = 34 * sc;
+      var mLH = mSize * 1.58;
       var tabH = 34 * sc;
-      var boxH = padY * 2 + mWrap.lines.length * mLH;
+      var boxH = mPadY * 2 + mWrap.lines.length * mLH;
       var extra = t.mode === 'ribbon' ? tabH * 0.9 : tabH * 0.65;
       m.block(8 * sc + boxH + extra + (t.mode === 'cloud' ? 30 * sc : 0), function (y) {
         var by = y + 8 * sc + extra;
@@ -2298,10 +2388,10 @@
           ctx.lineTo(CUTE_M, by + br);
           ctx.quadraticCurveTo(CUTE_M, by, CUTE_M + br, by);
           ctx.closePath();
-          ctx.fillStyle = '#FFFFFF';
+          ctx.fillStyle = t.accent2;
           ctx.fill();
           ctx.lineWidth = 3.4 * sc;
-          ctx.strokeStyle = t.frame;
+          ctx.strokeStyle = t.accent;
           ctx.stroke();
         } else if (t.mode === 'memo') {
           // 메모지 + 마스킹 테이프
@@ -2310,10 +2400,10 @@
           ctx.shadowBlur = 14 * sc;
           ctx.shadowOffsetY = 5 * sc;
           roundRect(ctx, CUTE_M, by, cw, boxH, 12 * sc);
-          ctx.fillStyle = t.pastel;
+          ctx.fillStyle = t.accent2;
           ctx.fill();
           ctx.restore();
-          ctx.strokeStyle = t.frame;
+          ctx.strokeStyle = t.accent;
           ctx.lineWidth = 2.4 * sc;
           roundRect(ctx, CUTE_M, by, cw, boxH, 12 * sc);
           ctx.stroke();
@@ -2321,14 +2411,21 @@
         } else {
           // 리본 탭이 달린 카드
           roundRect(ctx, CUTE_M, by, cw, boxH, 30 * sc);
-          ctx.fillStyle = t.pastel;
+          ctx.fillStyle = t.accent2;
           ctx.fill();
           ctx.setLineDash([12, 10]);
-          ctx.lineWidth = 2.6 * sc;
-          ctx.strokeStyle = t.frame2;
+          ctx.lineWidth = 2.8 * sc;
+          ctx.strokeStyle = t.accent;
           ctx.stroke();
           ctx.setLineDash([]);
         }
+        // 왼쪽 포인트 바
+        ctx.save();
+        roundRect(ctx, CUTE_M, by, cw, boxH, t.mode === 'memo' ? 12 * sc : 30 * sc);
+        ctx.clip();
+        ctx.fillStyle = t.accent;
+        ctx.fillRect(CUTE_M, by, 7 * sc, boxH);
+        ctx.restore();
 
         // 미션 라벨
         var tabText = '이번 주 미션';
@@ -2357,49 +2454,41 @@
         ctx.fillStyle = t.ink;
         ctx.font = '400 ' + mSize + 'px ' + DODUM;
         mWrap.lines.forEach(function (line, i) {
-          ctx.fillText(line, CUTE_M + padX, by + padY + i * mLH);
+          ctx.fillText(line, CUTE_M + 40 * sc, by + mPadY + i * mLH);
         });
         ctx.restore();
       });
     }
 
-    // ── 한마디 ──
+    // ── 한마디 (점선 블럭) ──
     if (d.note) {
-      m.gap(30, 1);
-      m.block(1, function (y) { cuteDashes(ctx, y, t.frame, sc); });
-      m.gap(24, 0);
-      var nSize = Math.round(27 * sc);
-      var nPadX = 32 * sc, nPadY = 28 * sc;
+      m.gap(22, 1);
+      var nSize = Math.round(26 * sc);
+      var nPadY = 28 * sc;
       ctx.font = '400 ' + nSize + 'px ' + DODUM;
-      var nWrap = wrapText(ctx, d.note, cw - nPadX * 2 - 30 * sc, 3);
+      var nWrap = wrapText(ctx, d.note, inW - 22 * sc, 3);
+      if (nWrap.truncated) m.clip = true;
       var nLH = nSize * 1.66;
       var signName = d.teacher || d.studio || '';
       var nBoxH = nPadY * 2 + nWrap.lines.length * nLH + (signName ? 34 * sc : 0);
-      m.block(labelH + 14 * sc + nBoxH, function (y) {
-        label('선생님 한마디', y);
-        var by = y + labelH + 14 * sc;
+      m.block(nBoxH, function (y) {
+        cuteBox(ctx, t, bx, y, cw, nBoxH, sc, t.pastel, 2.4, t.frame);
+        cuteBoxPill(ctx, t, '선생님 한마디', inX, y - 19 * sc, sc, t.accentSoft, t.accent);
+        var ty = y + nPadY;
         ctx.save();
-        roundRect(ctx, CUTE_M, by, cw, nBoxH, 26 * sc);
-        ctx.fillStyle = t.pastel;
-        ctx.fill();
-        ctx.setLineDash([10, 9]);
-        ctx.lineWidth = 2.4 * sc;
-        ctx.strokeStyle = t.frame;
-        ctx.stroke();
-        ctx.setLineDash([]);
-        drawHeart(ctx, CUTE_M + 24 * sc, by + nPadY + 8 * sc, 9 * sc, t.frame2);
+        drawHeart(ctx, inX, ty + 6 * sc, 9 * sc, t.frame2);
         ctx.textBaseline = 'top';
         ctx.textAlign = 'left';
         ctx.fillStyle = t.ink;
         ctx.font = '400 ' + nSize + 'px ' + DODUM;
         nWrap.lines.forEach(function (line, i) {
-          ctx.fillText(line, CUTE_M + nPadX + 18 * sc, by + nPadY + i * nLH);
+          ctx.fillText(line, inX + 22 * sc, ty + i * nLH);
         });
         if (signName) {
           ctx.textAlign = 'right';
           ctx.font = '400 ' + Math.round(23 * sc) + 'px ' + JUA;
           ctx.fillStyle = t.accent;
-          ctx.fillText(signName, CARD_W - CUTE_M - nPadX, by + nPadY + nWrap.lines.length * nLH + 4 * sc);
+          ctx.fillText(signName, CARD_W - CUTE_M - 24 * sc, ty + nWrap.lines.length * nLH + 6 * sc);
         }
         ctx.restore();
       });
@@ -2603,11 +2692,47 @@
     ctx.restore();
   }
 
+  // Classic 세트의 네모칸 블럭 — 금빛 헤어라인 + 옅은 판
+  function luxBlock(ctx, t, x, y, w, h, sc, strong) {
+    ctx.save();
+    ctx.strokeStyle = t.line;
+    ctx.lineWidth = 1 * sc;
+    roundRect(ctx, x, y, w, h, 1);
+    ctx.stroke();
+    if (strong) {
+      ctx.globalAlpha = 0.55;
+      roundRect(ctx, x + 7 * sc, y + 7 * sc, w - 14 * sc, h - 14 * sc, 1);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = t.panel;
+      roundRect(ctx, x + 7 * sc, y + 7 * sc, w - 14 * sc, h - 14 * sc, 1);
+      ctx.fill();
+    } else {
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = t.panel;
+      roundRect(ctx, x, y, w, h, 1);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function luxMissionType(ctx, text, maxW, sc) {
+    var lo = Math.round(26 * sc), size = Math.round(34 * sc), wrap = null, guard = 0;
+    for (;;) {
+      ctx.font = '600 ' + size + 'px ' + SERIF;
+      wrap = wrapText(ctx, text, maxW, 5);
+      if (!wrap.truncated || size <= lo || guard++ > 10) break;
+      size -= 2;
+    }
+    return { size: size, wrap: wrap };
+  }
+
   function luxMeasure(ctx, t, d, sc) {
     var h = luxHeaderMetrics(d);
     var m = newModel(h.top, sc, CARD_H - 172);
     var cw = CARD_W - LUX_M * 2;
-    var labelH = 30 * sc;
+    var labelH = 26 * sc;
+    var boxPadX = 42 * sc, boxPadY = 22 * sc;
 
     // ── 학생 이름 (중앙) ──
     var nameText = d.student || '학생 이름';
@@ -2655,31 +2780,37 @@
       return m.done();
     }
 
-    // ── 오늘의 곡 ──
+    // ── 오늘의 곡 (금빛 블럭) ──
     if (d.piece) {
-      m.gap(42, 1);
+      m.gap(24, 1);
       var pSize = Math.round(36 * sc);
       ctx.font = '600 ' + pSize + 'px ' + SERIF;
-      var pw = wrapText(ctx, d.piece, cw - 40 * sc, 2);
+      var pw = wrapText(ctx, d.piece, cw - boxPadX * 2, 2);
+      if (pw.truncated) m.clip = true;
       var plh = pSize * 1.5;
-      m.block(labelH + 12 * sc + pw.lines.length * plh, function (y) {
+      var pH = boxPadY * 2 + pw.lines.length * plh;
+      m.block(labelH + 8 * sc + pH, function (y) {
         luxLabel(ctx, t, '오늘의 곡', y, sc);
+        var by = y + labelH + 8 * sc;
+        luxBlock(ctx, t, LUX_M, by, cw, pH, sc, false);
+        drawDiamond(ctx, CARD_W / 2, by, 3.6 * sc, t.gold);
+        drawDiamond(ctx, CARD_W / 2, by + pH, 3.6 * sc, t.gold);
         ctx.save();
         ctx.textBaseline = 'top';
         ctx.textAlign = 'center';
         ctx.fillStyle = t.ink;
         ctx.font = '600 ' + pSize + 'px ' + SERIF;
         pw.lines.forEach(function (line, i) {
-          ctx.fillText(line, CARD_W / 2, y + labelH + 12 * sc + i * plh);
+          ctx.fillText(line, CARD_W / 2, by + boxPadY + i * plh);
         });
         ctx.restore();
       });
     }
 
-    // ── 잘한 점 (중앙 정렬 헤어라인 칩) ──
+    // ── 잘한 점 (블럭 안 헤어라인 칩) ──
     var tags = (d.tags || []).slice(0, 4);
     if (tags.length) {
-      m.gap(40, 1);
+      m.gap(22, 1);
       var chipFontBase = function (size) { return '500 ' + Math.round(size) + 'px ' + SERIF; };
       var padX = 22 * sc, pillH = 46 * sc, gapX = 12 * sc, gapY = 12 * sc;
       var rows = [[]];
@@ -2690,23 +2821,26 @@
         for (;;) {
           ctx.font = chipFontBase(size);
           tw = trackedWidth(ctx, tag, 0.8 * sc);
-          if (tw + padX * 2 <= cw || size <= Math.round(15 * sc)) break;
+          if (tw + padX * 2 <= cw - boxPadX * 2 || size <= Math.round(15 * sc)) break;
           size -= 1;
         }
-        var item = { tag: tag, w: Math.min(tw + padX * 2, cw), tw: tw, size: size };
-        if (tw + padX * 2 > cw + 0.5) m.clip = true;
+        var item = { tag: tag, w: Math.min(tw + padX * 2, cw - boxPadX * 2), tw: tw, size: size };
+        if (tw + padX * 2 > cw - boxPadX * 2 + 0.5) m.clip = true;
         m.chips = m.chips || [];
         m.chips.push({ text: tag, need: Math.round(tw + padX * 2), have: Math.round(item.w), size: size });
         var row = rows[rows.length - 1];
         var used = row.reduce(function (a, b) { return a + b.w + gapX; }, 0);
-        if (row.length && used + item.w > cw) rows.push([item]);
+        if (row.length && used + item.w > cw - boxPadX * 2) rows.push([item]);
         else row.push(item);
       });
       var visible = rows.slice(0, 2);
       var blockH = visible.length * pillH + (visible.length - 1) * gapY;
-      m.block(labelH + 12 * sc + blockH, function (y) {
+      var tBoxH = 18 * sc * 2 + blockH;
+      m.block(labelH + 8 * sc + tBoxH, function (y) {
         luxLabel(ctx, t, '잘한 점', y, sc);
-        var py = y + labelH + 12 * sc;
+        var by = y + labelH + 8 * sc;
+        luxBlock(ctx, t, LUX_M, by, cw, tBoxH, sc, false);
+        var py = by + 18 * sc;
         ctx.save();
         ctx.textBaseline = 'middle';
         visible.forEach(function (row, ri) {
@@ -2730,78 +2864,79 @@
       });
     }
 
-    // ── 이번 주 연습 미션 ──
+    // ── 이번 주 연습 미션 (카드의 주인공) ──
     if (d.mission) {
-      m.gap(40, 1);
-      var mSize = Math.round(27 * sc);
-      var padX = 44 * sc, padY = 34 * sc;
-      ctx.font = '400 ' + mSize + 'px ' + SERIF;
-      var mWrap = wrapText(ctx, d.mission, cw - padX * 2, 4);
-      var mLH = mSize * 1.72;
-      var boxH = padY * 2 + mWrap.lines.length * mLH;
-      m.block(labelH + 12 * sc + boxH, function (y) {
+      m.gap(26, 1);
+      // 연습 미션은 카드 폭을 넓게 쓰는 '주인공' 블럭 — 바깥 프레임 안쪽까지 뻗는다
+      var mBoxX = 78, mBoxW = CARD_W - 156;
+      var mPadX = 52 * sc, mPadY = 34 * sc;
+      var mt = luxMissionType(ctx, d.mission, mBoxW - mPadX * 2, sc);
+      if (mt.wrap.truncated) m.clip = true;
+      var mSize = mt.size, mWrap = mt.wrap;
+      var mLH = mSize * 1.66;
+      var mBoxH = mPadY * 2 + mWrap.lines.length * mLH;
+      m.block(labelH + 10 * sc + mBoxH, function (y) {
         luxLabel(ctx, t, '이번 주 연습 미션', y, sc);
-        var by = y + labelH + 12 * sc;
-        ctx.save();
-        ctx.strokeStyle = t.line;
-        ctx.lineWidth = 1 * sc;
-        roundRect(ctx, LUX_M, by, cw, boxH, 1);
-        ctx.stroke();
-        ctx.globalAlpha = 0.55;
-        roundRect(ctx, LUX_M + 7 * sc, by + 7 * sc, cw - 14 * sc, boxH - 14 * sc, 1);
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = t.panel;
-        roundRect(ctx, LUX_M + 7 * sc, by + 7 * sc, cw - 14 * sc, boxH - 14 * sc, 1);
-        ctx.fill();
+        var by = y + labelH + 10 * sc;
+        luxBlock(ctx, t, mBoxX, by, mBoxW, mBoxH, sc, true);
         drawDiamond(ctx, CARD_W / 2, by, 4.5 * sc, t.gold);
-        drawDiamond(ctx, CARD_W / 2, by + boxH, 4.5 * sc, t.gold);
+        drawDiamond(ctx, CARD_W / 2, by + mBoxH, 4.5 * sc, t.gold);
+        // 좌우 골드 포인트 바
+        ctx.save();
+        ctx.fillStyle = t.gold;
+        ctx.globalAlpha = 0.85;
+        ctx.fillRect(mBoxX + 7 * sc, by + 7 * sc, 2.6 * sc, mBoxH - 14 * sc);
+        ctx.fillRect(mBoxX + mBoxW - 9.6 * sc, by + 7 * sc, 2.6 * sc, mBoxH - 14 * sc);
+        ctx.restore();
 
+        ctx.save();
         ctx.textBaseline = 'top';
         ctx.textAlign = 'center';
         ctx.fillStyle = t.ink;
-        ctx.font = '400 ' + mSize + 'px ' + SERIF;
+        ctx.font = '600 ' + mSize + 'px ' + SERIF;
         mWrap.lines.forEach(function (line, i) {
-          ctx.fillText(line, CARD_W / 2, by + padY + i * mLH);
+          ctx.fillText(line, CARD_W / 2, by + mPadY + i * mLH);
         });
         ctx.restore();
       });
     }
 
-    // ── 한마디 ──
+    // ── 한마디 (블럭) ──
     if (d.note) {
-      m.gap(42, 1);
+      m.gap(22, 1);
       var nSize = Math.round(28 * sc);
+      var nPadY = 26 * sc;
       ctx.font = '400 ' + nSize + 'px ' + SERIF;
-      var nWrap = wrapText(ctx, d.note, cw - 80 * sc, 3);
+      var nWrap = wrapText(ctx, d.note, cw - boxPadX * 2, 3);
+      if (nWrap.truncated) m.clip = true;
       var nLH = nSize * 1.72;
       var signName = d.teacher || d.studio || '';
-      var quoteH = 58 * sc;
-      m.block(labelH + quoteH + nWrap.lines.length * nLH + (signName ? 46 * sc : 0), function (y) {
+      var quoteH = 30 * sc;
+      var nBoxH = nPadY * 2 + quoteH + nWrap.lines.length * nLH + (signName ? 36 * sc : 0);
+      m.block(labelH + 8 * sc + nBoxH, function (y) {
         luxLabel(ctx, t, '한마디', y, sc);
-        var qy = y + labelH + 10 * sc;
+        var by = y + labelH + 8 * sc;
+        luxBlock(ctx, t, LUX_M, by, cw, nBoxH, sc, false);
         ctx.save();
         ctx.textBaseline = 'top';
         ctx.textAlign = 'center';
-        ctx.font = '600 ' + Math.round(86 * sc) + 'px ' + LATIN;
+        ctx.font = '600 ' + Math.round(52 * sc) + 'px ' + LATIN;
         ctx.fillStyle = t.gold;
         ctx.globalAlpha = 0.35;
-        ctx.fillText('“', CARD_W / 2, qy - 18 * sc);
+        ctx.fillText('“', CARD_W / 2, by + nPadY - 14 * sc);
         ctx.globalAlpha = 1;
 
-        var ty = qy + quoteH * 0.55;
+        var ty = by + nPadY + quoteH;
         ctx.fillStyle = t.ink;
         ctx.font = '400 ' + nSize + 'px ' + SERIF;
         nWrap.lines.forEach(function (line, i) {
           ctx.fillText(line, CARD_W / 2, ty + i * nLH);
         });
         if (signName) {
-          var sy = ty + nWrap.lines.length * nLH + 12 * sc;
-          luxOrnament(ctx, CARD_W / 2, sy + 8 * sc, 60, t, sc, 4);
+          var sy = ty + nWrap.lines.length * nLH + 8 * sc;
           ctx.font = 'italic 500 ' + Math.round(26 * sc) + 'px ' + LATIN;
           ctx.fillStyle = t.gold;
-          ctx.textBaseline = 'top';
-          ctx.fillText(signName, CARD_W / 2, sy + 24 * sc);
+          ctx.fillText(signName, CARD_W / 2, sy);
         }
         ctx.restore();
       });
