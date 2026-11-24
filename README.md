@@ -436,7 +436,7 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 검증 | `tests/test-v14.py` — 데스크톱 1280 / 모바일 390에서 ① 모달 문구·취소선 정가 2개·오픈 특가 기한·이용권 2종·결제 버튼 → 준비 안내 ② 잘못된 코드 거부 → `lesson-vip` 적용 → Pro 전환·localStorage·새로고침 유지 → `?vip=` 링크 ③ 약관 3종 열기/닫기(버튼·Esc·배경)·문구 확인 ④ 푸터 11개 항목·tel/mailto ⑤ 베타 기본값(9테마·4탭 사용 가능) ⑥ Free: 월 3장 사용량 기록·2장 남음·Cute/정산 잠금·3장 소진 시 저장 차단·월 바뀌면 초기화 ⑦ 4탭·녹음 피드백 진입·예시 4곳·9테마 넘침 0·극단값(20곳·긴 곡명·94자 메모) 넘침 0·PNG 파일명 `녹음피드백_…`·카톡 문구 ⑧ 한마디 내 문구 추가/이어 붙이기/새로고침 유지/삭제·되돌리기/중복·110자 차단 ⑨ 4모드×9테마 36회 렌더 — 전 항목 통과, 콘솔 에러 **0** |
 | 회귀 | `tests/test-v11.py`(9테마 미션 강조·정산·팜플렛) · `tests/test-v12.py`(녹음 UI 조작·타임스탬프 3곳/5곳·v11 대비 카드 동일) · `tests/test-v13.py`(`? 사용법`·미션 문구·공유 인수) 모두 실패 0 |
 | 미리보기 | `tests/shots/v14-desktop-pricing.png`·`v14-desktop-pricing-notice.png`·`v14-desktop-vip-applied.png`·`v14-desktop-record.png`·`v14-desktop-record-extreme.png`·`v14-desktop-note-tags.png`·`v14-desktop-footer.png`·`v14-desktop-refund.png`·`v14-mobile-pricing.png`·`v14-mobile-vip.png`·`v14-mobile-footer.png`·`v14-mobile-privacy.png` |
-| 배포 | 커밋 `PENDING` push · `https://lessoncard.kr/index.html` HTTP **200**, 배포본 MD5 `PENDING` 저장소와 일치 · `CNAME`(`lessoncard.kr`) 유지 |
+| 배포 | 커밋 `1c15873` push · `https://lessoncard.kr/index.html` HTTP **200**, 배포본 MD5 `bdc7c91cb1514112d105ec458b9e40e6` 저장소와 일치 · `CNAME`(`lessoncard.kr`) 유지 · 배포본에서 4탭·오픈 특가 모달·VIP 코드·약관 3종·푸터·녹음 피드백 9테마(넘침 0)·한마디 내 문구 확인, 데스크톱·모바일 콘솔 에러 **0** · `tests/verify-live-v14.py` · 결과 `tests/shots/v14-live-report.json` |
 
 ---
 
