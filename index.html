@@ -7548,10 +7548,12 @@
       try { file = new File([blob], fileName(), { type: 'image/png' }); }
       catch (e) { downloadCard(); return; }
       if (!navigator.canShare({ files: [file] })) { downloadCard(); return; }
-      navigator.share({ files: [file], text: buildShareText() })
+      // 안드로이드 카카오톡은 files + text 를 함께 넣은 공유 인텐트를 '지원하지 않는 형식'으로 거부한다.
+      // canShare 검사와 동일하게 이미지 파일만 넘기고, 안내 문구는 '카톡용 텍스트 복사'로 따로 보낸다.
+      navigator.share({ files: [file] })
         .then(function () {
           bumpUsage();
-          toast('공유 시트를 열었어요 · 카카오톡을 선택하세요');
+          toast('공유 시트를 열었어요 · 카카오톡을 선택하세요 (안내 문구는 문자 복사로 보낼 수 있어요)');
         })
         .catch(function (err) {
           if (err && err.name === 'AbortError') return;   // 사용자가 취소한 경우

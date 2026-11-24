@@ -409,9 +409,10 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 자주 쓰는 문구 — 직접 추가·저장 | `+ 문구 추가`(토글) → 입력칸(40자) + `추가`(Enter도 가능, `Esc`로 닫기). 추가하면 목록 끝에 붙고 **localStorage `lessoncard.missionPhrases.v1`** 에 저장되어 새로고침·재방문 후에도 유지되며, 추가한 문구는 바로 미션에도 이어 붙음 |
 | 자주 쓰는 문구 — 삭제 | 각 칩 오른쪽 `×`로 삭제(기본 5개도 삭제 가능) → localStorage 즉시 갱신 + `되돌리기` 토스트. 전부 지우면 `저장된 문구가 없어요 · + 문구 추가로 만들어 보세요` 안내가 나오고, 이 빈 상태도 새로고침 후 그대로 유지 |
 | 안전장치 | 미션 120자 상한(넘으면 `연습 미션은 120자까지라 '…'는 넣을 수 없어요` 토스트, 내용은 그대로) · 같은 문구 중복 등록 막음(`이미 있는 문구예요`) · 문구는 최대 20개 · 빈 입력은 저장하지 않고 입력칸으로 포커스 |
-| 검증 | `tests/test-v13.py` — 데스크톱·모바일 각각 ① `? 사용법` 접힘→열림(3단계 문구 포함 여부)→닫힘→Esc, 제목·버튼 한 줄·넘침 0, 안내 박스 폭 ② 칩 기본 5개·빈 미션 입력·`, ` 이어 붙이기·켜짐 표시·카드 `fillText` 훅으로 미션에 그려지는지 ③ `+ 문구 추가`·Enter·localStorage 값 일치·새로고침 유지 ④ 중복 거부·120자 차단 토스트 ⑤ `×` 삭제·되돌리기·전부 지운 빈 상태·빈 목록 새로고침 유지 — 전 항목 통과, 콘솔 에러 **0건** |
+| 카톡 공유 버그 수정 | 안드로이드에서 `카톡으로 바로 보내기`가 **"지원하지 않는 형식"**으로 거부되던 문제. 원인은 `shareCard()`가 `navigator.share({ files: [file], text: buildShareText() })`처럼 이미지와 텍스트를 함께 넘긴 것 — 안드로이드 카카오톡은 이 조합의 공유 인텐트를 받지 않음. `files`만 넘기도록 고쳐 `navigator.canShare({ files: [file] })` 검사와 일치시켰고, 안내 문구는 `카톡용 텍스트 복사` 버튼으로 따로 보내도록 토스트에서 안내(`공유 시트를 열었어요 · 카카오톡을 선택하세요 (안내 문구는 문자 복사로 보낼 수 있어요)`) |
+| 검증 | `tests/test-v13.py` — 데스크톱·모바일 각각 ① `? 사용법` 접힘→열림(3단계 문구 포함 여부)→닫힘→Esc, 제목·버튼 한 줄·넘침 0, 안내 박스 폭 ② 칩 기본 5개·빈 미션 입력·`, ` 이어 붙이기·켜짐 표시·카드 `fillText` 훅으로 미션에 그려지는지 ③ `+ 문구 추가`·Enter·localStorage 값 일치·새로고침 유지 ④ 중복 거부·120자 차단 토스트 ⑤ `×` 삭제·되돌리기·전부 지운 빈 상태·빈 목록 새로고침 유지 ⑥ `navigator.share` 가로채기로 인수 확인 — 데스크톱 `shareBtn`·모바일 `mobileShareBtn` 모두 `{files: [PNG 1장]}`만 넘기고 `text` 없음, 토스트에 `문자 복사` 안내 — 전 항목 통과, 콘솔 에러 **0건** |
 | 회귀 | `tests/test-v11.py` 실패 0(9테마 미션 강조·정산·발표회·콘솔 에러 0) · `tests/test-v12.py` 실패 0(녹음 UI 전 조작, 타임스탬프 0곳일 때 v11 배포본과 카드 PNG **18/18 바이트 동일**, 9테마 3곳·5곳 넘침/잘림 0, 모바일 390 동작) |
-| 미리보기 | 화면 `tests/shots/v13-desktop-help-open.png`·`v13-desktop-mission.png`·`v13-mobile-help-open.png`·`v13-mobile-mission(-add).png` · 결과 `tests/shots/v13-report.json` |
+| 미리보기 | 화면 `tests/shots/v13-desktop-help-open.png`·`v13-desktop-mission.png`·`v13-mobile-help-open.png`·`v13-mobile-mission(-add).png`·`v13-desktop-share.png` · 결과 `tests/shots/v13-report.json` |
 
 ---
 
