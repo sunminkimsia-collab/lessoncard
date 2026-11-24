@@ -6717,8 +6717,12 @@
       txt.type = 'button';
       txt.className = 'rec-item-txt' + (st.text ? '' : ' is-empty');
       txt.textContent = st.text || '메모 추가';
-      txt.setAttribute('aria-label', fmtStamp(st.sec) + ' 타임스탬프 수정');
-      txt.addEventListener('click', function () { startStampEdit(i); });
+      txt.setAttribute('aria-label', st.text ? fmtStamp(st.sec) + '로 이동해 재생' : fmtStamp(st.sec) + ' 메모 추가');
+      // 항목을 누르면 그 시간으로 점프해 재생 — 메모가 없을 때는 메모부터 적게 한다
+      txt.addEventListener('click', function () {
+        if (st.text) jumpTo(st.sec);
+        else startStampEdit(i);
+      });
 
       var edit = document.createElement('button');
       edit.type = 'button';
