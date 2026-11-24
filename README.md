@@ -413,6 +413,7 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 검증 | `tests/test-v13.py` — 데스크톱·모바일 각각 ① `? 사용법` 접힘→열림(3단계 문구 포함 여부)→닫힘→Esc, 제목·버튼 한 줄·넘침 0, 안내 박스 폭 ② 칩 기본 5개·빈 미션 입력·`, ` 이어 붙이기·켜짐 표시·카드 `fillText` 훅으로 미션에 그려지는지 ③ `+ 문구 추가`·Enter·localStorage 값 일치·새로고침 유지 ④ 중복 거부·120자 차단 토스트 ⑤ `×` 삭제·되돌리기·전부 지운 빈 상태·빈 목록 새로고침 유지 ⑥ `navigator.share` 가로채기로 인수 확인 — 데스크톱 `shareBtn`·모바일 `mobileShareBtn` 모두 `{files: [PNG 1장]}`만 넘기고 `text` 없음, 토스트에 `문자 복사` 안내 — 전 항목 통과, 콘솔 에러 **0건** |
 | 회귀 | `tests/test-v11.py` 실패 0(9테마 미션 강조·정산·발표회·콘솔 에러 0) · `tests/test-v12.py` 실패 0(녹음 UI 전 조작, 타임스탬프 0곳일 때 v11 배포본과 카드 PNG **18/18 바이트 동일**, 9테마 3곳·5곳 넘침/잘림 0, 모바일 390 동작) |
 | 미리보기 | 화면 `tests/shots/v13-desktop-help-open.png`·`v13-desktop-mission.png`·`v13-mobile-help-open.png`·`v13-mobile-mission(-add).png`·`v13-desktop-share.png` · 결과 `tests/shots/v13-report.json` |
+| 배포 | 커밋 `2a83c2b`(v13)·`39d96bc`(공유 버그 수정) push · `https://lessoncard.kr/index.html` HTTP **200**, 배포본 `index.html` MD5(`e8b5d53a…`) 저장소와 일치 · 배포본에서 `? 사용법` 열기/닫기(3단계)·미션 문구 칩 5개·직접 추가 후 새로고침 유지·`×` 삭제·공유 인수 `{files:[PNG]}` 확인(데스크톱·모바일 390) · 콘솔 에러 **0** · `tests/verify-live-v13.py` · 결과 `tests/shots/v13-live-report.json` |
 
 ---
 
