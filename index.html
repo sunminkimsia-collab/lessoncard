@@ -297,6 +297,51 @@
   .note-chip.is-on{border-style:solid;border-color:var(--gold-line);background:var(--gold-soft);color:var(--gold-deep);font-weight:700}
   .note-chip:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
 
+  /* ── 연습 미션 · 자주 쓰는 문구 ──────────────────────── */
+  .mission-presets{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+  .mp-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .mp-title{font-size:11.4px;font-weight:600;color:var(--ink-2);letter-spacing:.005em;min-width:0}
+  .mp-title em{font-style:normal;font-weight:400;color:var(--muted);margin-left:4px;font-size:10.8px}
+  .mp-add-toggle{
+    display:inline-flex;align-items:center;gap:3px;flex:none;
+    height:22px;padding:0 9px;border-radius:999px;
+    border:1px dashed var(--line-2);background:#fff;color:var(--muted);
+    font-family:inherit;font-size:10.9px;font-weight:600;letter-spacing:.01em;
+    cursor:pointer;transition:.15s ease;white-space:nowrap;
+  }
+  .mp-add-toggle:hover{border-color:var(--gold);color:var(--gold-deep);background:#FFFCF7}
+  .mp-add-toggle[aria-expanded="true"]{border-style:solid;border-color:var(--gold-line);background:var(--gold-soft);color:var(--gold-deep)}
+  .mp-add-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+  .mp-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .mp-chip{
+    display:inline-flex;align-items:stretch;
+    border:1px dashed var(--line-2);border-radius:999px;background:#fff;overflow:hidden;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .mp-chip:hover{border-color:var(--gold)}
+  .mp-chip.is-on{border-style:solid;border-color:var(--gold-line);background:var(--gold-soft)}
+  .mp-chip-btn{
+    display:inline-flex;align-items:center;
+    border:0;background:transparent;font-family:inherit;
+    font-size:11.7px;font-weight:500;color:var(--ink-2);line-height:1.45;
+    padding:5px 5px 5px 11px;cursor:pointer;white-space:nowrap;
+  }
+  .mp-chip.is-on .mp-chip-btn{color:var(--gold-deep);font-weight:700}
+  .mp-chip-btn:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+  .mp-chip-del{
+    display:grid;place-items:center;width:23px;flex:none;
+    border:0;border-left:1px solid var(--line);background:transparent;
+    color:#B0A79A;font-family:inherit;font-size:12.5px;line-height:1;cursor:pointer;padding:0;
+    transition:background .15s ease, color .15s ease;
+  }
+  .mp-chip-del:hover{background:rgba(29,26,22,.07);color:var(--ink)}
+  .mp-chip-del:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+  .mp-add{display:flex;align-items:center;gap:6px}
+  .mp-add[hidden]{display:none}
+  .mp-add .input{padding:8px 11px;font-size:12.4px}
+  .mp-add .btn{flex:none;height:34px}
+  .mp-empty{font-size:11.2px;color:var(--muted)}
+
   .custom-tag{display:flex;gap:7px}
   .custom-tag .input{flex:1;background:#fff;padding:8px 12px;font-size:13px}
   .custom-tag .btn{height:36px;padding:0 13px;font-size:12.5px;border-radius:10px;border:1px solid var(--line-2);background:#fff;color:var(--ink-2)}
@@ -388,6 +433,38 @@
   .rec-head .label{font-size:12.3px;font-weight:600;color:var(--ink-2);letter-spacing:.005em}
   .rec-head .label .opt{font-weight:400;color:var(--muted);font-size:11.4px;margin-left:2px}
   .rec-head .hint{font-size:11.2px;color:var(--muted);font-weight:400}
+  .rec-head .rec-title{display:flex;align-items:center;gap:7px;min-width:0;flex-wrap:nowrap;white-space:nowrap}
+  .rec-head .rec-title .label{min-width:0}
+  .rec-help-btn{
+    display:inline-flex;align-items:center;gap:3px;flex:none;
+    height:21px;padding:0 8px;border-radius:999px;
+    border:1px solid var(--line-2);background:#fff;color:var(--muted);
+    font-family:inherit;font-size:10.6px;font-weight:600;letter-spacing:.01em;
+    cursor:pointer;transition:.15s ease;white-space:nowrap;
+  }
+  .rec-help-btn .q{font-family:var(--font-latin);font-weight:700;font-size:11.2px;line-height:1;color:var(--gold-deep)}
+  .rec-help-btn:hover{border-color:var(--gold-line);color:var(--gold-deep);background:#FFFCF7}
+  .rec-help-btn[aria-expanded="true"]{border-color:var(--gold-line);background:var(--gold-soft);color:var(--gold-deep)}
+  .rec-help-btn:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
+  .rec-help{
+    position:relative;padding:10px 11px;border:1px solid var(--gold-line);border-radius:var(--r-sm);
+    background:var(--gold-soft);color:var(--ink-2);
+  }
+  .rec-help[hidden]{display:none}
+  .rec-help-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .rec-help-steps li{display:flex;gap:7px;font-size:11.3px;line-height:1.55;letter-spacing:-.005em}
+  .rec-help-steps .n{
+    flex:none;width:15px;height:15px;margin-top:1.5px;border-radius:50%;
+    display:grid;place-items:center;background:#fff;border:1px solid var(--gold-line);
+    color:var(--gold-deep);font-family:var(--font-latin);font-size:9.6px;font-weight:700;line-height:1;
+  }
+  .rec-help-steps b{color:var(--ink);font-weight:600}
+  .rec-help-steps em{font-style:normal;color:var(--gold-deep);font-weight:600}
+  .rec-help-steps .k{
+    display:inline-block;padding:0 4px;border-radius:4px;background:#fff;border:1px solid var(--gold-line);
+    font-size:10.7px;font-weight:600;color:var(--gold-deep);white-space:nowrap;
+  }
   .rec-panel{display:flex;flex-direction:column;gap:9px}
 
   .rec-drop{
@@ -803,6 +880,13 @@
     .logo-info p{font-size:11.1px}
     .rec-block{padding:11px;gap:9px}
     .rec-head .hint{display:none}
+    .rec-head{gap:6px;flex-wrap:nowrap}
+    .rec-head .rec-title{gap:6px;min-width:0}
+    .rec-head .label{font-size:11.9px}
+    .rec-help-btn{height:19px;padding:0 7px;font-size:10.1px}
+    .rec-help{padding:9px 10px}
+    .rec-help-steps li{font-size:10.9px;line-height:1.5}
+    .rec-help-steps .k{font-size:10.2px}
     .rec-drop{padding:9px 10px;gap:8px;flex-wrap:wrap;row-gap:8px}
     .rec-drop .rec-drop-ico{display:none}
     .rec-drop .rec-drop-txt{flex:1 1 100%}
@@ -990,8 +1074,18 @@
         <!-- ── 녹음 들으며 시간 찍기 (연습 체크) ─────────────── -->
         <div class="field rec-block" data-modes="lesson" id="recBlock">
           <div class="rec-head">
-            <span class="label" id="recLabel">🎧 녹음 들으며 시간 찍기 <span class="opt">(선택)</span></span>
+            <span class="rec-title">
+              <span class="label" id="recLabel">🎧 녹음 들으며 시간 찍기 <span class="opt">(선택)</span></span>
+              <button class="rec-help-btn" id="recHelpBtn" type="button" aria-expanded="false" aria-controls="recHelp"><span class="q" aria-hidden="true">?</span> 사용법</button>
+            </span>
             <span class="hint">카톡으로 받은 녹음·연주 영상을 바로 재생</span>
+          </div>
+          <div class="rec-help" id="recHelp" hidden>
+            <ol class="rec-help-steps">
+              <li><span class="n" aria-hidden="true">1</span><span>카톡에서 받은 <b>학생 녹음·영상 파일</b>을 고르거나 끌어다 놓아요 — <em>서버에 저장되지 않고 내 기기에서만 재생돼요</em></span></li>
+              <li><span class="n" aria-hidden="true">2</span><span>들으면서 틀린 순간에 <b>태그</b>를 누르고 <span class="k">📍 지금 시간 찍기</span> — 시간을 직접 적어도 돼요</span></li>
+              <li><span class="n" aria-hidden="true">3</span><span>아래 목록을 누르면 <b>그 초로 바로 점프!</b> 카드에는 최대 5곳까지 보여요</span></li>
+            </ol>
           </div>
           <div class="rec-panel">
             <div class="rec-drop" id="recDrop" role="button" tabindex="0" aria-label="녹음 파일 올리기 — 클릭하거나 파일을 끌어다 놓으세요">
@@ -1052,6 +1146,17 @@
         <div class="field" data-modes="lesson">
           <div class="label-row"><label for="mission">집에서 연습할 미션</label><span class="hint" id="missionCount">0 / 120</span></div>
           <textarea class="textarea" id="mission" name="mission" rows="2" maxlength="120" placeholder="매일 15분, 오른손 8마디씩 메트로놈 60에 맞춰 연습하기"></textarea>
+          <div class="mission-presets">
+            <div class="mp-head">
+              <span class="mp-title">자주 쓰는 문구 <em>누르면 바로 입력</em></span>
+              <button class="mp-add-toggle" id="missionAddToggle" type="button" aria-expanded="false" aria-controls="missionAddRow"><span aria-hidden="true">+</span> 문구 추가</button>
+            </div>
+            <div class="mp-chips" id="missionPresets" role="group" aria-label="자주 쓰는 연습 미션 문구"></div>
+            <div class="mp-add" id="missionAddRow" hidden>
+              <input class="input" id="missionNewPhrase" type="text" maxlength="40" placeholder="예: 왼손 스타카토 10번" aria-label="추가할 연습 미션 문구">
+              <button class="btn btn-sm" id="missionAddBtn" type="button">추가</button>
+            </div>
+          </div>
         </div>
 
         <div class="field" data-modes="lesson">
@@ -5665,6 +5770,16 @@
   var MAX_TAGS = 4;
   var FREE_LIMIT = 3;
   var LS_DRAFT = 'lessoncard.draft.v1';
+  var LS_MISSION_PHRASES = 'lessoncard.missionPhrases.v1';
+  var MISSION_MAX_CHARS = 120;
+  var MISSION_MAX_PHRASES = 20;
+  var DEFAULT_MISSION_PHRASES = [
+    '매일 15분 연습하기',
+    '느린 템포로 한 손씩 따로',
+    '메트로놈에 맞춰 연습하기',
+    '페달 떼고 소리 확인하기',
+    '어려운 마디 5번 반복'
+  ];
   var LS_USAGE = 'lessoncard.usage.v1';
   var LS_THEME = 'lessoncard.theme.v1';
   var LS_SET = 'lessoncard.themeset.v1';
@@ -6049,6 +6164,161 @@
     syncCounters();
     scheduleRender(true);
     saveDraft();
+  }
+
+  /* ── 연습 미션 · 자주 쓰는 문구 (직접 추가·삭제 · localStorage) ── */
+  var missionPhrases = null;
+
+  function missionPhraseList() {
+    if (!missionPhrases) missionPhrases = savedMissionPhrases();
+    return missionPhrases;
+  }
+
+  function savedMissionPhrases() {
+    var raw = safeGet(LS_MISSION_PHRASES);
+    if (raw == null) return DEFAULT_MISSION_PHRASES.slice();
+    try {
+      var arr = JSON.parse(raw);
+      if (!Array.isArray(arr)) return DEFAULT_MISSION_PHRASES.slice();
+      var out = [];
+      arr.forEach(function (t) {
+        var s = String(t == null ? '' : t).replace(/\s+/g, ' ').trim().slice(0, 40);
+        if (s && out.indexOf(s) === -1) out.push(s);
+      });
+      return out.slice(0, MISSION_MAX_PHRASES);   // 전부 지운 빈 목록도 그대로 존중
+    } catch (e) {
+      return DEFAULT_MISSION_PHRASES.slice();
+    }
+  }
+
+  function storeMissionPhrases(list) {
+    missionPhrases = list.slice(0, MISSION_MAX_PHRASES);
+    safeSet(LS_MISSION_PHRASES, JSON.stringify(missionPhrases));
+  }
+
+  function renderMissionPresets() {
+    var wrap = els.missionPresets;
+    if (!wrap) return;
+    var list = missionPhraseList();
+    wrap.innerHTML = '';
+    if (!list.length) {
+      var empty = document.createElement('span');
+      empty.className = 'mp-empty';
+      empty.textContent = '저장된 문구가 없어요 · + 문구 추가로 만들어 보세요';
+      wrap.appendChild(empty);
+      return;
+    }
+    list.forEach(function (text) {
+      var chip = document.createElement('span');
+      chip.className = 'mp-chip';
+      chip.setAttribute('data-phrase', text);
+
+      var pick = document.createElement('button');
+      pick.type = 'button';
+      pick.className = 'mp-chip-btn';
+      pick.setAttribute('aria-pressed', 'false');
+      pick.setAttribute('title', text + ' — 미션에 넣기');
+      pick.textContent = text;
+      pick.addEventListener('click', function () { appendMissionPhrase(text); });
+
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'mp-chip-del';
+      del.setAttribute('aria-label', text + ' 문구 삭제');
+      del.setAttribute('title', '삭제');
+      del.textContent = '×';
+      del.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        removeMissionPhrase(text);
+      });
+
+      chip.appendChild(pick);
+      chip.appendChild(del);
+      wrap.appendChild(chip);
+    });
+    syncMissionPresetState();
+  }
+
+  // 지금 미션에 들어 있는 문구는 칩을 켜 둔다
+  function syncMissionPresetState() {
+    var wrap = els.missionPresets;
+    if (!wrap || !els.mission) return;
+    var val = String(els.mission.value || '');
+    Array.prototype.forEach.call(wrap.querySelectorAll('.mp-chip'), function (chip) {
+      var on = val.indexOf(chip.getAttribute('data-phrase') || '\u0000') >= 0;
+      chip.classList.toggle('is-on', on);
+      var btn = chip.querySelector('.mp-chip-btn');
+      if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  // 문구를 미션 끝에 자연스럽게 이어 붙인다 (비어 있으면 그대로 입력)
+  function appendMissionPhrase(text) {
+    if (!els.mission) return;
+    var t = String(text == null ? '' : text).replace(/\s+/g, ' ').trim();
+    if (!t) return;
+    var cur = String(els.mission.value || '').replace(/\s+$/, '');
+    var sep = !cur ? '' : (/[.!?~]$/.test(cur) ? ' ' : ', ');
+    var next = cur + sep + t;
+    if (next.length > MISSION_MAX_CHARS) {
+      toast('연습 미션은 ' + MISSION_MAX_CHARS + '자까지라 \'' + t + '\'는 넣을 수 없어요');
+      return;
+    }
+    els.mission.value = next;
+    syncMissionPresetState();
+    syncCounters();
+    scheduleRender(true);
+    saveDraft();
+  }
+
+  function addMissionPhrase() {
+    if (!els.missionNewPhrase) return;
+    var t = String(els.missionNewPhrase.value || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+    if (!t) {
+      toast('추가할 문구를 먼저 적어 주세요');
+      els.missionNewPhrase.focus();
+      return;
+    }
+    var list = missionPhraseList();
+    if (list.indexOf(t) >= 0) {
+      toast('이미 있는 문구예요');
+      els.missionNewPhrase.select();
+      return;
+    }
+    if (list.length >= MISSION_MAX_PHRASES) {
+      toast('문구는 ' + MISSION_MAX_PHRASES + '개까지 저장할 수 있어요');
+      return;
+    }
+    list.push(t);
+    storeMissionPhrases(list);
+    els.missionNewPhrase.value = '';
+    renderMissionPresets();
+    toast('\'' + t + '\' 문구를 저장했어요 · 다음에도 쓸 수 있어요');
+    appendMissionPhrase(t);
+  }
+
+  function removeMissionPhrase(text) {
+    var list = missionPhraseList();
+    var i = list.indexOf(text);
+    if (i < 0) return;
+    var backup = list.slice();
+    list.splice(i, 1);
+    storeMissionPhrases(list);
+    renderMissionPresets();
+    toast('\'' + text + '\' 문구를 지웠어요', {
+      label: '되돌리기',
+      run: function () {
+        storeMissionPhrases(backup);
+        renderMissionPresets();
+      }
+    });
+  }
+
+  function setMissionAddRow(open) {
+    if (!els.missionAddRow || !els.missionAddToggle) return;
+    els.missionAddRow.hidden = !open;
+    els.missionAddToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open && els.missionNewPhrase) els.missionNewPhrase.focus();
   }
 
   /* ── 레슨비 정산 · 발표회 문구 칩 ─────────────────────── */
@@ -6903,6 +7173,18 @@
   function setupRecorder() {
     if (!els.recDrop) return;
 
+    // 제목 옆 '? 사용법' — 눌렀을 때만 3단계 안내를 컴팩트하게 펼친다
+    if (els.recHelpBtn && els.recHelp) {
+      var setHelp = function (open) {
+        els.recHelp.hidden = !open;
+        els.recHelpBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+      els.recHelpBtn.addEventListener('click', function () { setHelp(els.recHelp.hidden); });
+      els.recHelpBtn.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' && !els.recHelp.hidden) setHelp(false);
+      });
+    }
+
     REC_TAGS.forEach(function (tag) {
       var b = document.createElement('button');
       b.type = 'button';
@@ -7482,7 +7764,7 @@
   function bind() {
     ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note',
      'customTag', 'addTagBtn', 'exampleBtn', 'resetBtn', 'chipWrap',
-     'tagTabs', 'notePresets',
+     'tagTabs', 'notePresets', 'missionPresets', 'missionAddToggle', 'missionAddRow', 'missionNewPhrase', 'missionAddBtn',
      'tagCount', 'missionCount', 'noteCount', 'autosaveText',
      'studentChips', 'saveRecordBtn', 'logoPick', 'logoRemove', 'logoInput',
      'logoThumb', 'logoInfoText', 'toastAction',
@@ -7495,7 +7777,8 @@
      'recBlock', 'recDrop', 'recInput', 'recPick', 'recRemove', 'recFileName', 'recDropHint',
      'recPlayer', 'recMedia', 'recMediaWrap', 'recNow', 'recDur', 'recSeek', 'recPlay', 'recPlayLabel',
      'recBack5', 'recFwd5', 'stampBtn', 'stampBtnLabel', 'stampBtnTime', 'stampTags',
-     'stampTime', 'stampMemo', 'stampAddBtn', 'stampList', 'stampCount', 'stampEmpty'].forEach(function (k) {
+     'stampTime', 'stampMemo', 'stampAddBtn', 'stampList', 'stampCount', 'stampEmpty',
+     'recHelpBtn', 'recHelp'].forEach(function (k) {
       els[k] = document.getElementById(k);
     });
 
@@ -7506,6 +7789,7 @@
       if (!els[k]) return;
       els[k].addEventListener('input', function () {
         if (k === 'note') syncNotePresetState();
+        if (k === 'mission') syncMissionPresetState();
         if (k === 'billNote' || k === 'recitalNote') syncPresetStates();
         syncCounters();
         scheduleRender();
@@ -7580,6 +7864,20 @@
     els.addTagBtn.addEventListener('click', addCustomTag);
 
     els.exampleBtn.addEventListener('click', function () { fillExample(true); });
+
+    // 연습 미션 · 자주 쓰는 문구 (추가·삭제·입력)
+    if (els.missionAddToggle) {
+      els.missionAddToggle.addEventListener('click', function () {
+        setMissionAddRow(els.missionAddRow.hidden);
+      });
+    }
+    if (els.missionAddBtn) els.missionAddBtn.addEventListener('click', addMissionPhrase);
+    if (els.missionNewPhrase) {
+      els.missionNewPhrase.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') { ev.preventDefault(); addMissionPhrase(); }
+        if (ev.key === 'Escape') { setMissionAddRow(false); els.missionAddToggle.focus(); }
+      });
+    }
     els.resetBtn.addEventListener('click', function () {
       if (rec.hasMedia) clearRecFile(true);
       applyData({ date: todayISO() }, { reset: true });
@@ -7697,6 +7995,7 @@
     if (subjectById(savedSubject)) state.subject = savedSubject;
     renderSubjectTabs();
     renderNotePresets();
+    renderMissionPresets();
     renderBillPresets();
     renderRecitalPresets();
     restoreAccount();
