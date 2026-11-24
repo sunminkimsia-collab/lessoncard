@@ -187,29 +187,29 @@
   /* ── 카드 종류 전환 (레슨 노트 · 레슨비 정산 · 발표회 팜플렛) ── */
   .mode-bar{
     grid-column:1 / -1;
-    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;
-    padding:8px;border:1px solid var(--line);border-radius:18px;
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;
+    padding:7px;border:1px solid var(--line);border-radius:18px;
     background:linear-gradient(180deg,#FFFDF9 0%,#F6F1E8 100%);
     box-shadow:var(--shadow-sm);
   }
   .mode-tab{
-    display:flex;align-items:center;gap:11px;min-width:0;
-    padding:10px 13px;border-radius:13px;border:1px solid transparent;background:transparent;
+    display:flex;align-items:center;gap:9px;min-width:0;
+    padding:9px 11px;border-radius:13px;border:1px solid transparent;background:transparent;
     font-family:inherit;text-align:left;cursor:pointer;
     transition:background .16s ease,border-color .16s ease,box-shadow .16s ease;
   }
   .mode-tab .mt-ico{
-    width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;
+    width:31px;height:31px;flex:none;border-radius:9px;display:grid;place-items:center;
     background:#fff;border:1px solid var(--line);color:var(--gold-deep);
     transition:background .18s ease,color .18s ease,border-color .18s ease;
   }
   .mode-tab .mt-txt{display:flex;flex-direction:column;gap:2px;min-width:0;line-height:1.22}
-  .mode-tab .mt-txt b{font-size:13.4px;font-weight:700;letter-spacing:-.015em;color:var(--ink-2);white-space:nowrap}
-  .mode-tab .mt-txt small{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mode-tab .mt-txt b{font-size:12.7px;font-weight:700;letter-spacing:-.015em;color:var(--ink-2);white-space:nowrap}
+  .mode-tab .mt-txt small{font-size:10.4px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .mode-tab .mt-new{
-    margin-left:auto;flex:none;font-family:var(--font-latin);font-size:9.6px;font-weight:700;letter-spacing:.12em;
+    margin-left:auto;flex:none;font-family:var(--font-latin);font-size:8.8px;font-weight:700;letter-spacing:.1em;
     color:var(--gold-deep);background:var(--gold-soft);border:1px solid var(--gold-line);
-    border-radius:999px;padding:2px 7px;
+    border-radius:999px;padding:2px 5px;
   }
   .mode-tab:hover{background:#FFFDF8;border-color:var(--line-2)}
   .mode-tab.is-on{
@@ -725,17 +725,117 @@
   .pro-tag::before{content:"";width:18px;height:1px;background:var(--gold);opacity:.7}
   .modal-card h3{font-family:var(--font-display);font-size:23px;line-height:1.3;margin:0 0 6px;letter-spacing:-.02em}
   .modal-card .lede{margin:0 0 18px;font-size:13.2px;color:var(--muted);line-height:1.6}
-  .price-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:4px}
-  .price-row .price{font-family:var(--font-display);font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1}
-  .price-row .unit{font-size:12.5px;color:var(--muted);padding-bottom:3px}
-  .price-sub{font-size:11.8px;color:var(--muted);margin:0 0 16px}
-  .pro-list{list-style:none;margin:0 0 20px;padding:16px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:11px}
-  .pro-list li{display:flex;gap:9px;align-items:flex-start;font-size:13.2px;color:var(--ink-2);line-height:1.5}
-  .pro-list li svg{flex:none;margin-top:2px;color:var(--gold-deep)}
-  .pro-list li b{font-weight:600;color:var(--ink)}
-  .modal-actions{display:flex;flex-direction:column;gap:8px}
-  .modal-actions .btn{height:46px;width:100%}
   .modal-foot{margin:12px 0 0;text-align:center;font-size:11.2px;color:var(--muted)}
+
+  /* ── 요금제 모달 (Free · Pro 얼리버드) ────────────────────── */
+  .modal-card.pro-card{max-width:474px;padding:26px 22px 18px}
+  .pro-status{
+    display:block;margin:-8px 0 14px;padding:8px 11px;border-radius:10px;
+    background:var(--gold-soft);border:1px solid var(--gold-line);
+    font-size:11.8px;line-height:1.55;color:var(--gold-deep);
+  }
+  .plan-box{
+    border:1px solid var(--line);border-radius:16px;padding:13px 15px;
+    background:var(--surface-2);
+  }
+  .plan-box + .plan-box{margin-top:10px}
+  .plan-box.is-pro{
+    border-color:var(--gold-line);
+    background:linear-gradient(180deg,#FFFDF8 0%,#FAF2E4 100%);
+    box-shadow:0 14px 30px -24px rgba(169,131,90,.75);
+  }
+  .plan-head{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+  .plan-name{font-family:var(--font-latin);font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .plan-box.is-pro .plan-name{color:var(--gold-deep)}
+  .plan-note{font-size:11.2px;color:var(--muted)}
+  .plan-flag{font-size:10.2px;font-weight:700;line-height:1.5;color:#fff;background:var(--gold);border-radius:999px;padding:2px 8px}
+  .plan-amount{font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:-.02em}
+  .plan-feats{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+  .plan-feats li{position:relative;padding-left:13px;font-size:12.3px;line-height:1.5;color:var(--ink-2)}
+  .plan-feats li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--line-2)}
+  .plan-box.is-pro .plan-feats li::before{background:var(--gold)}
+  .plan-feats li b{font-weight:700;color:var(--ink)}
+  .pro-feats{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
+  .buy-list{display:flex;flex-direction:column;gap:7px;margin-top:12px}
+  .buy-btn{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    width:100%;min-height:44px;padding:8px 14px;border-radius:12px;
+    border:1px solid var(--line-2);background:#fff;font:inherit;color:var(--ink);
+    cursor:pointer;text-align:left;transition:.16s ease;
+  }
+  .buy-btn:hover{border-color:var(--gold);box-shadow:0 0 0 3px rgba(169,131,90,.12)}
+  .buy-btn .buy-term{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12.6px;font-weight:600}
+  .buy-btn .buy-term em{font-style:normal;font-size:10.4px;font-weight:700;color:var(--gold-deep);background:#fff;border:1px solid var(--gold-line);border-radius:999px;padding:1px 6px}
+  .buy-btn .buy-price{font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+  .buy-btn .buy-price s{font-weight:500;font-size:11.6px;color:var(--muted);text-decoration-thickness:1px;margin-right:3px}
+  .buy-btn.is-primary .buy-price s{color:rgba(251,244,231,.66)}
+  .sale-line{margin:0 0 9px;font-size:11.2px;line-height:1.5;color:var(--gold-deep)}
+  .sale-line b{font-weight:700}
+  .buy-btn .buy-price small{font-family:var(--font-ui);font-size:10.4px;font-weight:500;letter-spacing:0;color:var(--muted)}
+  .buy-btn.is-primary{background:var(--ink);border-color:var(--ink);color:#FBF4E7}
+  .buy-btn.is-primary:hover{border-color:var(--ink);box-shadow:0 0 0 3px rgba(169,131,90,.2)}
+  .buy-btn.is-primary .buy-term em{background:rgba(251,244,231,.14);border-color:rgba(251,244,231,.34);color:#F4E3C8}
+  .buy-btn.is-primary .buy-price small{color:rgba(251,244,231,.66)}
+  .buy-note{margin:9px 0 0;font-size:10.9px;color:var(--muted);text-align:center}
+  .pay-notice{margin-top:11px;padding:11px 13px;border-radius:12px;background:#FFF6E8;border:1px solid rgba(169,131,90,.34)}
+  .pay-notice b{display:block;margin-bottom:3px;font-size:12.4px;color:var(--gold-deep)}
+  .pay-notice p{margin:0;font-size:11.6px;line-height:1.6;color:var(--ink-2)}
+  .pay-notice .pay-picked{margin-top:5px;font-weight:600;color:var(--gold-deep)}
+  .vip-block{margin-top:12px;border-top:1px solid var(--line);padding-top:4px}
+  .vip-toggle{
+    display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+    padding:8px;background:none;border:0;font:inherit;font-size:12px;color:var(--muted);cursor:pointer;
+  }
+  .vip-toggle:hover{color:var(--gold-deep)}
+  .vip-toggle svg{transition:transform .18s ease}
+  .vip-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+  .vip-panel{padding:2px 0}
+  .vip-row{display:flex;gap:8px}
+  .vip-input{flex:1 1 auto;min-width:0;height:42px;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  .vip-row .btn{height:42px;padding:0 16px;flex:none}
+  .vip-msg{margin:6px 0 0;min-height:15px;font-size:11.6px;color:var(--muted)}
+  .vip-msg.is-ok{color:#2C6A45;font-weight:600}
+  .vip-msg.is-err{color:#A8452F;font-weight:600}
+  .free-continue{
+    display:block;width:100%;margin-top:8px;padding:9px;border:0;background:none;
+    font:inherit;font-size:12px;color:var(--muted);text-decoration:underline;
+    text-underline-offset:3px;cursor:pointer;
+  }
+  .free-continue:hover{color:var(--ink-2)}
+  .plan-badge.is-pro{background:var(--gold-soft);border-color:var(--gold-line);color:var(--gold-deep)}
+  .plan-badge.is-pro .dot{background:var(--gold-deep)}
+
+  /* ── 약관 모달 ───────────────────────────────────────────── */
+  .modal-card.legal-card{max-width:620px;padding:26px 26px 20px;overflow:hidden;display:flex;flex-direction:column}
+  .legal-card h3{font-size:21px;margin-bottom:4px}
+  .legal-meta{margin:0 0 12px;font-size:11.6px;color:var(--muted)}
+  .legal-body{overflow:auto;padding-right:6px;margin-bottom:4px;-webkit-overflow-scrolling:touch}
+  .legal-body h4{margin:15px 0 5px;font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .legal-body h4:first-child{margin-top:0}
+  .legal-body p{margin:0 0 6px;font-size:12.4px;line-height:1.75;color:var(--ink-2);word-break:keep-all}
+  .legal-body ul{margin:0 0 8px;padding-left:15px}
+  .legal-body li{margin:0 0 4px;font-size:12.4px;line-height:1.7;color:var(--ink-2);word-break:keep-all}
+  .legal-body b{color:var(--ink);font-weight:700}
+  .legal-foot{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:10.8px;line-height:1.6;color:var(--muted)}
+
+  /* ── 푸터 (사업자 정보 상시 노출) ─────────────────────────── */
+  .site-footer{margin-top:30px;border-top:1px solid var(--line);background:rgba(255,253,249,.72)}
+  .footer-inner{max-width:1120px;margin:0 auto;padding:26px clamp(16px,4vw,40px) 30px;display:flex;flex-direction:column;gap:13px}
+  .footer-brand{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .footer-brand .footer-name{font-family:var(--font-display);font-size:14.5px;font-weight:700;letter-spacing:.02em}
+  .footer-brand .footer-tag{font-family:var(--font-latin);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .footer-biz p{margin:0;font-size:11.9px;line-height:1.8;color:var(--muted)}
+  .footer-biz b{font-weight:600;color:var(--ink-2)}
+  .footer-biz a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2)}
+  .footer-biz a:hover{color:var(--gold-deep);border-color:var(--gold-line)}
+  .footer-links{display:flex;flex-wrap:wrap;align-items:center;gap:4px 0}
+  .footer-links button{
+    background:none;border:0;padding:2px 0;margin-right:14px;font:inherit;font-size:12px;
+    color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+  }
+  .footer-links button:hover{color:var(--gold-deep)}
+  .footer-links button.is-strong{font-weight:700;color:var(--ink)}
+  .footer-copy{margin:0;font-size:11.2px;color:var(--muted)}
 
   /* ── 사용 안내 모달 ─────────────────────────────────────── */
   .modal-card.guide-card{max-width:520px;padding:26px 24px 22px}
@@ -809,7 +909,7 @@
 
   /* ── 반응형 ────────────────────────────────────────────── */
   @media (max-width:1000px){
-    .workspace{grid-template-columns:1fr}
+    .workspace{grid-template-columns:minmax(0,1fr)}
     .mode-bar{order:-3}
     .preview-col{position:static;order:-1}
     .canvas-wrap{max-width:300px;margin:0 auto;border-radius:10px}
@@ -826,14 +926,15 @@
   @media (max-width:600px){
     .shell{padding:18px 14px 92px}
     .mode-bar{gap:5px;padding:6px;border-radius:15px}
-    .mode-tab{gap:6px;padding:8px 6px;border-radius:11px}
-    .mode-tab .mt-ico{width:26px;height:26px;border-radius:7px}
-    .mode-tab .mt-ico svg{width:14px;height:14px}
-    .mode-tab .mt-txt b{font-size:11px}
+    .mode-tab{gap:6px;padding:8px 6px;border-radius:11px;justify-content:center}
+    .mode-tab .mt-ico{display:none}
+    .mode-tab .mt-txt{align-items:center;text-align:center;width:100%}
+    .mode-tab .mt-txt b{font-size:10.6px;letter-spacing:-.03em}
     .mode-tab .mt-txt small{display:none}
     .mode-tab .mt-new{display:none}
     .form-col{padding:16px 14px}
-    .panel-head{margin-bottom:16px}
+    .panel-head{margin-bottom:16px;flex-wrap:wrap;row-gap:8px}
+    .panel-head h2{font-size:16.5px}
     .grid-2{grid-template-columns:1fr 1fr}
     .topbar{padding:12px 14px}
     .brand-sub{display:none}
@@ -843,6 +944,23 @@
     .btn-guide{height:32px;padding:0 11px;font-size:11.8px;gap:0}
     .btn-guide svg{display:none}
     .modal-card.guide-card{padding:22px 16px 18px;border-radius:20px}
+    .modal-card.pro-card{padding:22px 15px 16px;border-radius:20px}
+    .pro-card h3{font-size:19.5px}
+    .pro-card .lede{font-size:12.4px;margin-bottom:14px}
+    .pro-feats{grid-template-columns:1fr}
+    .plan-feats li{font-size:11.9px}
+    .buy-btn{min-height:42px;padding:7px 11px}
+    .buy-btn .buy-price{font-size:15px}
+    .buy-btn{flex-direction:column;align-items:stretch;gap:3px;min-height:0;padding:10px 12px}
+    .buy-btn .buy-term{justify-content:space-between}
+    .buy-btn .buy-term em{white-space:nowrap;font-size:9.8px}
+    .buy-btn .buy-price{text-align:right}
+    .modal-card.legal-card{padding:22px 16px 16px;border-radius:20px}
+    .legal-card h3{font-size:18.5px}
+    .legal-body p,.legal-body li{font-size:12px;line-height:1.72}
+    .footer-inner{padding:22px 16px 92px;gap:11px}
+    .footer-biz p{font-size:11.4px}
+    .footer-links button{font-size:11.6px;margin-right:12px}
     .guide-card h3{font-size:20px}
     .guide-card .lede{font-size:12.6px;margin-bottom:14px}
     .guide-step{padding:11px 12px;gap:9px}
@@ -932,11 +1050,11 @@
       <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 5.6C8.6 4.5 6.6 4.1 4 4.1v10.3c2.6 0 4.6.4 6 1.5 1.4-1.1 3.4-1.5 6-1.5V4.1c-2.6 0-4.6.4-6 1.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 5.6v10.3" stroke="currentColor" stroke-width="1.4"/></svg>
       <span>사용법</span>
     </button>
-    <button class="plan-badge" id="planBadge" type="button" aria-haspopup="dialog">
+    <button class="plan-badge" id="planBadge" type="button" aria-haspopup="dialog" aria-controls="upgradeModal">
       <span class="dot" aria-hidden="true"></span>
-      <span id="planText">무료 · 3회 남음</span>
+      <span id="planText">베타 · Pro 무료</span>
     </button>
-    <button class="btn btn-upgrade" id="upgradeBtn" type="button">Pro 업그레이드</button>
+    <button class="btn btn-upgrade" id="upgradeBtn" type="button" aria-haspopup="dialog" aria-controls="upgradeModal">Pro 요금제</button>
   </div>
 </header>
 
@@ -970,6 +1088,13 @@
         <span class="mt-txt"><b>발표회 팜플렛</b><small>프로그램·초대장</small></span>
         <span class="mt-new" aria-hidden="true">NEW</span>
       </button>
+      <button class="mode-tab" type="button" role="tab" data-mode="record" aria-selected="false" aria-controls="lessonForm">
+        <span class="mt-ico" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 12.4v-1.8a6 6 0 0 1 12 0v1.8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/><rect x="2.6" y="11.6" width="3.4" height="5.4" rx="1.5" stroke="currentColor" stroke-width="1.35"/><rect x="14" y="11.6" width="3.4" height="5.4" rx="1.5" stroke="currentColor" stroke-width="1.35"/><path d="M6.4 19c2.2 1.2 5 1.2 7.2 0" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+        </span>
+        <span class="mt-txt"><b>녹음 피드백</b><small>타임스탬프 코칭</small></span>
+        <span class="mt-new" aria-hidden="true">NEW</span>
+      </button>
     </div>
 
     <!-- ── 입력 폼 ──────────────────────────────────────── -->
@@ -986,7 +1111,7 @@
       </div>
 
       <form class="form-body" id="lessonForm" autocomplete="off" novalidate>
-        <div class="students-block" id="studentsBlock" data-modes="lesson billing" aria-label="내 학생">
+        <div class="students-block" id="studentsBlock" data-modes="lesson billing record" aria-label="내 학생">
           <div class="students-head">
             <div class="students-title">
               <span class="label" id="studentsLabel">내 학생</span>
@@ -1026,12 +1151,12 @@
           <input type="file" id="logoInput" accept="image/png,image/jpeg" hidden>
         </div>
 
-        <div class="field" data-modes="lesson billing">
+        <div class="field" data-modes="lesson billing record">
           <div class="label-row"><label for="student">학생 이름<span class="req" aria-hidden="true">*</span></label><span class="hint" id="studentHint">카드에 가장 크게 들어가요</span></div>
           <input class="input" id="student" name="student" type="text" maxlength="14" placeholder="박하은">
         </div>
 
-        <div class="grid-2" data-modes="lesson">
+        <div class="grid-2" data-modes="lesson record">
           <div class="field">
             <div class="label-row"><label for="date">레슨 날짜</label><span class="hint" id="dateHint">2026. 11. 21</span></div>
             <input class="input" id="date" name="date" type="date">
@@ -1042,7 +1167,7 @@
           </div>
         </div>
 
-        <div class="field" data-modes="lesson">
+        <div class="field" data-modes="lesson record">
           <div class="label-row"><label for="piece">오늘의 곡 / 진도</label><span class="hint">곡 이름 + 오늘 다룬 부분</span></div>
           <input class="input" id="piece" name="piece" type="text" maxlength="70" list="pieceList" placeholder="쇼팽 왈츠 Op.64 No.2 — 오른손 프레이즈">
           <datalist id="pieceList">
@@ -1072,7 +1197,7 @@
         </div>
 
         <!-- ── 녹음 들으며 시간 찍기 (연습 체크) ─────────────── -->
-        <div class="field rec-block" data-modes="lesson" id="recBlock">
+        <div class="field rec-block" data-modes="lesson record" id="recBlock">
           <div class="rec-head">
             <span class="rec-title">
               <span class="label" id="recLabel">🎧 녹음 들으며 시간 찍기 <span class="opt">(선택)</span></span>
@@ -1163,6 +1288,24 @@
           <div class="label-row"><label for="note">다음 레슨 안내 · 한마디</label><span class="hint" id="noteCount">0 / 110</span></div>
           <div class="note-presets" id="notePresets" role="group" aria-label="상황별 한마디 문구"></div>
           <textarea class="textarea" id="note" name="note" rows="2" maxlength="110" placeholder="다음 주에는 처음부터 끝까지 천천히 이어서 들어볼게요."></textarea>
+          <div class="mission-presets">
+            <div class="mp-head">
+              <span class="mp-title">내 한마디 문구 <em>누르면 바로 입력</em></span>
+              <button class="mp-add-toggle" id="noteAddToggle" type="button" aria-expanded="false" aria-controls="noteAddRow"><span aria-hidden="true">+</span> 문구 추가</button>
+            </div>
+            <div class="mp-chips" id="noteCustomChips" role="group" aria-label="내가 저장한 한마디 문구"></div>
+            <div class="mp-add" id="noteAddRow" hidden>
+              <input class="input" id="noteNewPhrase" type="text" maxlength="40" placeholder="예: 이번 주도 즐거운 연주 되세요!" aria-label="추가할 한마디 문구">
+              <button class="btn btn-sm" id="noteAddBtn" type="button">추가</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 녹음 피드백 입력 (성인 레슨·전공생) ────────────── -->
+        <div class="field" data-modes="record">
+          <div class="label-row"><label for="coachNote">총평 · 핵심 메모</label><span class="hint" id="coachNoteCount">0 / 160</span></div>
+          <textarea class="textarea" id="coachNote" name="coachNote" rows="3" maxlength="160" placeholder="템포는 안정적입니다. 24마디 전환부만 왼손을 조금 더 낮게. 다음 주엔 앞부분을 무반주로 확인해 봅시다."></textarea>
+          <p class="mini-note">녹음 파일을 들으며 위에서 <b>📍 지금 시간 찍기</b>로 짚은 곳이 카드의 피드백 목록이 됩니다.</p>
         </div>
 
         <!-- ── 레슨비 정산 입력 ───────────────────────────── -->
@@ -1329,6 +1472,29 @@
   </div>
 </main>
 
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-name">레슨카드</span>
+      <span class="footer-tag">LessonCard</span>
+    </div>
+    <div class="footer-biz">
+      <p><b>프리레버리</b> · 대표 김선민</p>
+      <p>사업자등록번호 607-63-18835</p>
+      <p>통신판매업 신고 제2026-서울서초-3793호</p>
+      <p>사업장 주소 서울특별시 서초구 매헌로 16, 13층 1312호 B06-B (양재동, 하이브랜드)</p>
+      <p>고객센터 <a href="tel:01093926086">010-9392-6086</a> · <a href="mailto:stagefit.official@gmail.com">stagefit.official@gmail.com</a></p>
+    </div>
+    <nav class="footer-links" aria-label="약관 및 정책">
+      <button type="button" data-legal="terms">이용약관</button>
+      <button type="button" data-legal="privacy" class="is-strong">개인정보처리방침</button>
+      <button type="button" data-legal="refund">환불규정</button>
+    </nav>
+    <p class="footer-copy">© 2026 프리레버리 · 레슨카드(LessonCard) · 입력한 레슨 내용은 서버로 전송되지 않고 내 브라우저에만 저장됩니다.</p>
+  </div>
+</footer>
+
+
 <div class="zoom" id="zoom" role="dialog" aria-modal="true" aria-label="카드 크게 보기" aria-hidden="true">
   <canvas id="zoomCanvas" width="1080" height="1350"></canvas>
   <span class="zoom-hint">화면을 누르면 닫혀요 · ESC</span>
@@ -1347,30 +1513,76 @@
   </button>
 </div>
 
-<!-- ── Pro 모달 ───────────────────────────────────────────── -->
+<!-- ── 요금제 모달 (Free · Pro 얼리버드) ───────────────────── -->
 <div class="modal" id="upgradeModal" role="dialog" aria-modal="true" aria-labelledby="proTitle" aria-hidden="true">
   <div class="modal-backdrop" data-close></div>
-  <div class="modal-card" role="document">
+  <div class="modal-card pro-card" role="document">
     <button class="modal-close" type="button" data-close aria-label="닫기">
       <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5.4 5.4 9.2 9.2M14.6 5.4l-9.2 9.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
     </button>
     <span class="pro-tag">LessonCard Pro</span>
-    <h3 id="proTitle">매주 반복되는 레슨 리포트,<br>이제 1분이면 끝나요</h3>
-    <p class="lede">무료로 3장을 만들어 보셨다면, Pro에서는 횟수 제한 없이 바로 저장하고 보낼 수 있어요.</p>
-    <div class="price-row"><span class="price">월 5,900원</span><span class="unit">부가세 포함</span></div>
-    <p class="price-sub">연간 결제 시 59,000원 · 두 달 무료</p>
-    <ul class="pro-list">
-      <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>카드 저장 무제한</b> — 학생 수와 상관없이</span></li>
-      <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>브랜드 워터마크 제거</b> — 내 스튜디오 이름만</span></li>
-      <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>테마 9종 전체</b> — 콘서트홀·시즌 한정 디자인 추가</span></li>
-      <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>레슨비 정산 · 발표회 팜플렛</b> — Pro 전용 카드 2종</span></li>
-      <li><svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m3.8 9.3 3.3 3.3 7.1-7.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>학생별 레슨 기록</b> — 지난 카드 복제·수정</span></li>
-    </ul>
-    <div class="modal-actions">
-      <button class="btn btn-primary" id="proStartBtn" type="button">Pro 시작하기</button>
-      <button class="btn btn-ghost" type="button" data-close>무료로 계속 쓰기</button>
+    <h3 id="proTitle">매주 반복되는 레슨 카드,<br>Pro에서는 횟수 제한 없이</h3>
+    <p class="lede">무료로 3장을 만들어 보셨다면, Pro에서는 이용 기간 내내 무제한으로 저장하고 보낼 수 있어요.</p>
+    <p class="pro-status" id="proStatus"></p>
+
+    <div class="plan-box" id="planFreeBox">
+      <div class="plan-head"><span class="plan-name">Free</span><span class="plan-note">계속 무료</span></div>
+      <div class="plan-line"><span class="plan-amount">0원</span></div>
+      <ul class="plan-feats">
+        <li>월 3장 카드 저장·공유</li>
+        <li>Minimal 테마</li>
+        <li>기본 레슨 노트 · 칭찬 태그</li>
+      </ul>
     </div>
-    <p class="modal-foot">언제든 해지 가능 · 카카오페이 · 카드 결제</p>
+
+    <div class="plan-box is-pro" id="planProBox">
+      <div class="plan-head"><span class="plan-name">Pro</span><span class="plan-flag">오픈 특가</span></div>
+      <p class="sale-line"><b>2026년 12월 31일까지 오픈 특가</b> · 이후에는 정가(월 6,900원)가 적용됩니다</p>
+      <ul class="plan-feats pro-feats">
+        <li>카드 생성 <b>무제한</b></li>
+        <li>녹음·녹화 타임스탬프</li>
+        <li>Cute · Classic 전체 테마</li>
+        <li>레슨비 정산 · 발표회 팜플렛</li>
+        <li>학원 로고 업로드</li>
+        <li>학생 기록 · 자주 쓰는 문구 저장</li>
+      </ul>
+      <!-- 결제 연결 지점: 토스페이먼츠 SDK 연동 시 아래 두 버튼의 click 핸들러를
+           requestPayment({ amount, orderId, orderName }) 호출로 교체하면 됩니다. -->
+      <div class="buy-list">
+        <button class="buy-btn" type="button" data-checkout="monthly" data-toss-plan="lessoncard-pro-monthly" data-toss-amount="4900">
+          <span class="buy-term">1개월 이용권</span>
+          <span class="buy-price"><s>6,900원</s> 4,900원</span>
+        </button>
+        <button class="buy-btn is-primary" type="button" data-checkout="yearly" data-toss-plan="lessoncard-pro-yearly" data-toss-amount="49000">
+          <span class="buy-term">1년 이용권 <em>약 17% 추가 할인</em></span>
+          <span class="buy-price"><s>69,000원</s> 49,000원 <small>월 4,083원꼴</small></span>
+        </button>
+      </div>
+      <p class="buy-note">부가세 포함 · 카드 · 카카오페이 · 토스페이 (토스페이먼츠)</p>
+    </div>
+
+    <div class="pay-notice" id="payNotice" role="status" hidden>
+      <b>결제 연결을 준비하고 있어요</b>
+      <p>토스페이먼츠 카드·카카오페이 결제를 붙이는 중이라 아직 결제창이 열리지 않아요. 준비가 끝나면 위 버튼에서 바로 결제할 수 있습니다.</p>
+      <p class="pay-picked" id="payPicked"></p>
+    </div>
+
+    <div class="vip-block">
+      <button class="vip-toggle" id="vipToggle" type="button" aria-expanded="false" aria-controls="vipPanel">
+        <span>VIP 초대 코드가 있으신가요?</span>
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.8 6.2 4.2 4.2 4.2-4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="vip-panel" id="vipPanel" hidden>
+        <div class="vip-row">
+          <input class="input vip-input" id="vipInput" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="초대 코드 입력" aria-label="VIP 초대 코드">
+          <button class="btn btn-primary" id="vipApply" type="button">적용</button>
+        </div>
+        <p class="vip-msg" id="vipMsg" role="status"></p>
+      </div>
+    </div>
+
+    <button class="free-continue" type="button" data-close>무료 플랜으로 계속 쓰기</button>
+    <p class="modal-foot">1개월 · 1년 이용권 · 기간이 끝나면 자동 결제 없이 무료로 돌아갑니다</p>
   </div>
 </div>
 
@@ -1417,7 +1629,7 @@
       </li>
       <li>
         <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4.2 5.2h9.6M4.2 9h9.6M4.2 12.8h5.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        <span>위쪽 탭에서 <b>레슨 노트 · 레슨비 정산 · 발표회 팜플렛</b>을 골라 쓰세요. 레슨 노트·레슨비는 9종 테마, 발표회 팜플렛은 연주회 전용 4종 스타일을 쓰고 로고·저장 방식은 같아요.</span>
+        <span>위쪽 탭에서 <b>레슨 노트 · 레슨비 정산 · 발표회 팜플렛 · 녹음 피드백</b>을 골라 쓰세요. 레슨 노트·레슨비·녹음 피드백은 9종 테마, 발표회 팜플렛은 연주회 전용 4종 스타일을 쓰고 로고·저장 방식은 같아요.</span>
       </li>
       <li>
         <svg width="13" height="13" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4.2 5.2h9.6M4.2 9h9.6M4.2 12.8h5.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -1432,6 +1644,158 @@
     <div class="guide-actions">
       <button class="btn btn-primary" type="button" data-guide-close>알겠어요, 시작할게요</button>
     </div>
+  </div>
+</div>
+
+<!-- ── 약관 모달 3종 ────────────────────────────────────── -->
+<div class="modal legal-modal" id="legal-terms" role="dialog" aria-modal="true" aria-labelledby="legalTermsTitle" aria-hidden="true">
+  <div class="modal-backdrop" data-legal-close></div>
+  <div class="modal-card legal-card" role="document">
+    <button class="modal-close" type="button" data-legal-close aria-label="닫기">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5.4 5.4 9.2 9.2M14.6 5.4l-9.2 9.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+    <span class="pro-tag">Terms of service</span>
+    <h3 id="legalTermsTitle">이용약관</h3>
+    <p class="legal-meta">시행일 2026년 11월 24일 · 운영자 프리레버리</p>
+    <div class="legal-body">
+      <h4>제1조 (목적)</h4>
+      <p>이 약관은 프리레버리(이하 "회사")가 제공하는 레슨카드(lessoncard.kr, 이하 "서비스")의 이용 조건과 절차, 회사와 이용자의 권리·의무를 정하는 것을 목적으로 합니다.</p>
+
+      <h4>제2조 (서비스의 내용)</h4>
+      <p>서비스는 음악 강사가 레슨 피드백 카드, 레슨비 정산 카드, 발표회 팜플렛 이미지를 브라우저에서 직접 만들어 저장·공유할 수 있도록 돕는 도구입니다. 회원가입이나 앱 설치 없이 이용할 수 있습니다.</p>
+
+      <h4>제3조 (데이터의 저장)</h4>
+      <p>이용자가 입력한 내용(스튜디오·학생 이름, 레슨 내용, 학원 로고, 계좌 정보 등)과 만들어진 카드는 회사의 서버로 전송되지 않고 이용자의 브라우저 저장소(localStorage)에만 보관됩니다. 따라서 같은 주소라도 다른 기기나 다른 브라우저에서는 보이지 않으며, 브라우저 데이터를 삭제하면 함께 사라집니다.</p>
+
+      <h4>제4조 (요금제와 결제)</h4>
+      <ul>
+        <li><b>무료(Free)</b>: 월 3장 카드 저장·공유, Minimal 테마, 기본 레슨 노트.</li>
+        <li><b>Pro(오픈 특가)</b>: 1개월 이용권 4,900원 / 1년 이용권 49,000원(부가세 포함). 정가는 월 6,900원·연 69,000원이며, <b>2026년 12월 31일까지</b> 오픈 특가가 적용됩니다. 무제한 카드 생성, 녹음·녹화 타임스탬프, Cute·Classic 전체 테마, 레슨비 정산·발표회 팜플렛, 학원 로고 업로드, 학생 기록·자주 쓰는 문구 저장을 제공합니다.</li>
+        <li>결제는 토스페이먼츠를 통해 카드·카카오페이·토스페이로 이루어집니다. 결제 연결이 준비 중인 기간에는 결제가 시작되지 않으며, 이 경우 Pro 기능은 무료로 개방됩니다.</li>
+        <li>이용권은 선택한 기간 동안 유효하며 자동으로 갱신되지 않습니다. 기간이 끝나면 별도 결제 없이 무료 요금제로 전환됩니다.</li>
+        <li>회사는 얼리버드 가격을 사전에 고지한 뒤 조정할 수 있습니다. 이미 결제한 이용 기간의 금액은 바뀌지 않습니다.</li>
+      </ul>
+
+      <h4>제5조 (이용자의 의무)</h4>
+      <ul>
+        <li>학생·학부모의 이름 등 개인정보를 입력할 때는 카드 발송이라는 목적에 필요한 최소한만 적고, 관련 동의를 받은 범위에서 사용해 주세요.</li>
+        <li>서비스로 만든 카드의 내용과 발송에 대한 책임은 이용자에게 있습니다.</li>
+        <li>서비스를 복제·역설계하거나, 자동화된 방법으로 과도한 부하를 주거나, 타인의 권리를 침해하는 행위는 할 수 없습니다.</li>
+      </ul>
+
+      <h4>제6조 (지식재산권)</h4>
+      <p>서비스의 화면·디자인·코드·상표에 대한 권리는 회사에 있습니다. 이용자가 입력한 내용과 그것으로 만든 카드 이미지에 대한 권리는 이용자에게 있으며, 회사는 이를 서비스 운영 목적 외로 사용하지 않습니다.</p>
+
+      <h4>제7조 (서비스의 변경·중단)</h4>
+      <p>회사는 기능 개선을 위해 서비스를 변경할 수 있고, 점검·장애·그 밖에 불가피한 사정이 있으면 서비스의 일부 또는 전부를 일시 중단할 수 있습니다. 유료 이용 기간 중 중단이 길어지면 이용 기간 연장 또는 환불로 보상합니다.</p>
+
+      <h4>제8조 (책임의 범위)</h4>
+      <p>무료로 제공되는 부분에 대해서는 관련 법령이 허용하는 범위에서 책임을 지지 않습니다. 브라우저 저장 데이터의 삭제나 기기 분실로 인한 기록 소실은 복구할 수 없으므로, 필요한 카드는 PNG로 저장해 두시길 권합니다. 회사의 고의 또는 중대한 과실로 인한 손해에는 이 조항이 적용되지 않습니다.</p>
+
+      <h4>제9조 (약관의 변경)</h4>
+      <p>약관을 변경하는 경우 시행 7일 전에(이용자에게 불리한 변경은 30일 전에) 서비스 화면에 알립니다.</p>
+
+      <h4>제10조 (준거법 및 분쟁)</h4>
+      <p>이 약관은 대한민국 법률에 따르며, 서비스와 관련한 분쟁은 관련 법령이 정한 관할 법원에 제기합니다.</p>
+    </div>
+    <p class="legal-foot">프리레버리 · 대표 김선민 · 사업자등록번호 607-63-18835 · 통신판매업 신고 제2026-서울서초-3793호<br>서울특별시 서초구 매헌로 16, 13층 1312호 B06-B · 010-9392-6086 · stagefit.official@gmail.com</p>
+  </div>
+</div>
+
+<div class="modal legal-modal" id="legal-privacy" role="dialog" aria-modal="true" aria-labelledby="legalPrivacyTitle" aria-hidden="true">
+  <div class="modal-backdrop" data-legal-close></div>
+  <div class="modal-card legal-card" role="document">
+    <button class="modal-close" type="button" data-legal-close aria-label="닫기">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5.4 5.4 9.2 9.2M14.6 5.4l-9.2 9.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+    <span class="pro-tag">Privacy policy</span>
+    <h3 id="legalPrivacyTitle">개인정보처리방침</h3>
+    <p class="legal-meta">시행일 2026년 11월 24일 · 운영자 프리레버리</p>
+    <div class="legal-body">
+      <p><b>레슨카드는 회원가입도, 서버도, 광고·추적 쿠키도 쓰지 않습니다.</b> 입력한 레슨 내용과 학생 이름은 이용자의 브라우저 안에서만 쓰이고 회사로 전송되지 않습니다.</p>
+
+      <h4>1. 회사가 수집하는 개인정보</h4>
+      <p>없습니다. 서비스는 서버에 이용자의 정보를 저장하지 않으며, 회원가입·로그인·결제 정보 입력 없이 사용할 수 있습니다. 접속 기록을 남기는 분석 도구나 광고 스크립트도 넣지 않았습니다.</p>
+
+      <h4>2. 이용자 기기에 저장되는 정보</h4>
+      <p>아래 정보는 이용자의 브라우저 저장소(localStorage)에만 저장되며 외부로 전송되지 않습니다.</p>
+      <ul>
+        <li>스튜디오·선생님·학생 이름, 레슨 날짜·회차·곡·잘한 점·연습 미션·한마디</li>
+        <li>레슨비 정산 정보(수강료, 입금 계좌 은행·번호·예금주)</li>
+        <li>학원 로고 이미지, 자주 쓰는 문구, 테마·요금제 설정</li>
+        <li>학생별 최근 레슨 기록(내 학생 기능)</li>
+      </ul>
+      <p>녹음·영상 파일은 재생만 하고 어디에도 저장하지 않습니다(브라우저 메모리에서만 처리).</p>
+
+      <h4>3. 보관 기간과 파기</h4>
+      <p>이용자가 화면에서 직접 삭제하거나 브라우저 데이터를 지울 때까지 보관됩니다. 서버에 사본이 없으므로 회사는 이 정보를 열람할 수 없고, 파기 요청을 받을 대상도 없습니다. 브라우저 데이터를 지우면 모든 기록이 즉시 사라집니다.</p>
+
+      <h4>4. 제3자 제공 및 처리 위탁</h4>
+      <p>제3자에게 제공하거나 처리를 위탁하지 않습니다. 유료 결제를 도입하면 결제에 필요한 정보는 결제대행사(토스페이먼츠)가 자체 개인정보처리방침에 따라 처리하며, 회사는 카드번호를 저장하지 않습니다.</p>
+
+      <h4>5. 외부로 나가는 요청</h4>
+      <p>화면 글꼴을 Google Fonts(Google LLC, 미국)에서 받아오므로, 접속할 때 IP 주소·브라우저 정보 같은 표준 웹 요청 정보가 구글에 전달될 수 있습니다. 입력한 레슨 내용·학생 정보·로고는 이 요청에 포함되지 않습니다. 그 밖의 외부 서비스 호출은 없습니다.</p>
+
+      <h4>6. 이용자의 권리</h4>
+      <p>저장된 정보는 언제든 브라우저 설정에서 직접 확인·삭제할 수 있고, 화면의 학생 칩 <b>×</b>, 로고 <b>삭제</b>, <b>비우기</b> 버튼으로 지울 수 있습니다. 다른 기기로 옮기려면 카드로 저장해 두시길 권합니다.</p>
+
+      <h4>7. 아동의 개인정보</h4>
+      <p>회사는 아동의 개인정보를 수집하지 않습니다. 학생 이름은 강사가 카드에 표시하려고 기기에 입력하는 것으로, 서버로 나가지 않습니다.</p>
+
+      <h4>8. 안전성 확보 조치</h4>
+      <p>서버에 개인정보를 보관하지 않고, 모든 접속은 HTTPS로 암호화되며, 외부로 데이터를 보내는 기능은 녹음 파일 재생을 포함해 모두 기기 안에서 처리됩니다.</p>
+
+      <h4>9. 문의처</h4>
+      <p>개인정보 관련 문의: stagefit.official@gmail.com · 010-9392-6086 (프리레버리)</p>
+
+      <h4>10. 방침의 변경</h4>
+      <p>이 방침을 바꾸면 시행일 최소 7일 전에 서비스 화면에 알립니다.</p>
+    </div>
+    <p class="legal-foot">프리레버리 · 대표 김선민 · 사업자등록번호 607-63-18835 · 통신판매업 신고 제2026-서울서초-3793호<br>서울특별시 서초구 매헌로 16, 13층 1312호 B06-B · 010-9392-6086 · stagefit.official@gmail.com</p>
+  </div>
+</div>
+
+<div class="modal legal-modal" id="legal-refund" role="dialog" aria-modal="true" aria-labelledby="legalRefundTitle" aria-hidden="true">
+  <div class="modal-backdrop" data-legal-close></div>
+  <div class="modal-card legal-card" role="document">
+    <button class="modal-close" type="button" data-legal-close aria-label="닫기">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5.4 5.4 9.2 9.2M14.6 5.4l-9.2 9.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+    <span class="pro-tag">Refund policy</span>
+    <h3 id="legalRefundTitle">환불규정</h3>
+    <p class="legal-meta">시행일 2026년 11월 24일 · 운영자 프리레버리</p>
+    <div class="legal-body">
+      <p>이 규정은 레슨카드 Pro 이용권(1개월·1년)에 적용됩니다. 무료 이용에는 결제가 발생하지 않으므로 환불 대상이 아닙니다.</p>
+
+      <h4>1. 결제 후 7일 이내 — 전액 환불</h4>
+      <p>결제일로부터 <b>7일 이내</b>에 Pro 기능을 사용하지 않았다면 전액 환불해 드립니다. 요청은 아래 이메일이나 고객센터로 하시면 됩니다.</p>
+
+      <h4>2. 7일이 지났거나 Pro를 사용한 뒤 — 남은 기간 환불</h4>
+      <p>결제일로부터 7일이 지났거나 Pro 기능을 사용한 경우에는 <b>남은 이용 기간을 일할 계산</b>해 환불합니다. 위약금은 없습니다.</p>
+      <ul>
+        <li>예: 1년 이용권 49,000원 결제 후 3개월 사용 → 남은 9개월분 <b>36,750원</b> 환불</li>
+        <li>예: 1개월 이용권 4,900원 결제 후 10일 사용 → 남은 20일분 <b>약 3,270원</b> 환불</li>
+        <li>이미 지난 기간의 이용 대금은 환불되지 않습니다.</li>
+      </ul>
+      <p>디지털 콘텐츠는 제공이 시작된 뒤 청약철회가 제한될 수 있으나, 회사는 결제 전에 <b>무료 3장</b>으로 카드·테마·기능을 먼저 확인할 수 있게 하고 이 사실을 요금제 화면에 안내합니다.</p>
+
+      <h4>3. 환불되지 않는 경우</h4>
+      <ul>
+        <li>부정 사용이나 약관 위반으로 이용이 제한된 경우</li>
+        <li>이미 지난 이용 기간의 대금</li>
+      </ul>
+
+      <h4>4. 오류·중복 결제</h4>
+      <p>서비스 오류로 Pro가 열리지 않거나 같은 결제가 두 번 청구된 경우, 결제 내역을 확인한 뒤 전액 환불하거나 이용 기간으로 보상합니다.</p>
+
+      <h4>5. 신청 방법과 처리 기한</h4>
+      <p>아래 이메일로 <b>결제일·결제 금액·결제 수단·환불 사유</b>를 보내 주세요. 확인 후 <b>3영업일 이내</b>에 원래 결제 수단으로 환불합니다. 카드사·결제대행사의 처리 일정에 따라 실제 표시 시점은 달라질 수 있습니다.</p>
+      <p>접수: <b>stagefit.official@gmail.com</b> · 고객센터 <b>010-9392-6086</b></p>
+
+      <h4>6. 적용 기준</h4>
+      <p>이 규정은 이용자의 법정 권리를 제한하지 않습니다. 규정에 없는 사항이나 법령과 다른 부분은 「전자상거래 등에서의 소비자보호에 관한 법률」 등 관련 법령을 따릅니다.</p>
+    </div>
+    <p class="legal-foot">프리레버리 · 대표 김선민 · 사업자등록번호 607-63-18835 · 통신판매업 신고 제2026-서울서초-3793호<br>서울특별시 서초구 매헌로 16, 13층 1312호 B06-B · 010-9392-6086 · stagefit.official@gmail.com</p>
   </div>
 </div>
 
@@ -3609,6 +3973,389 @@
     return Math.min(nm.fontBoundingBoxDescent || size * 0.2, size * 0.3);
   }
 
+  /* ══════════════════════════════════════════════════════════
+     녹음 피드백 카드 (성인 레슨 · 전공/입시 · 직장인 취미)
+       — 아이들 카드의 '잘한 점/칭찬' 없이 곡명 + 시간별 피드백 + 핵심 메모
+       — 세트(Minimal / Cute / Classic)의 색·질감은 그대로 쓰되
+         구조는 어른 레슨에 맞춰 정돈한다.
+     ══════════════════════════════════════════════════════════ */
+  var COACH_ROWS = 6;   // 카드에 담는 피드백 줄 수 (나머지는 '외 N곳')
+
+  function coachData(d) {
+    var set = stampSet(d);
+    var rows = set.rows.slice(0, COACH_ROWS);
+    var arr = (d && Array.isArray(d.stamps)) ? d.stamps : [];
+    return {
+      rows: rows,
+      more: Math.max(0, arr.length - rows.length),
+      student: String(d.student || '').trim(),
+      piece: String(d.piece || '').trim(),
+      note: String(d.coachNote || '').trim(),
+      studio: String(d.studio || '').trim(),
+      teacher: String(d.teacher || '').trim(),
+      date: formatDateDot(d.date)
+    };
+  }
+
+  function drawCoachCard(ctx, t, d, themeId) {
+    var set = t.set || 'clean';
+    var data = coachData(d || {});
+    var sc = 1;
+    var out = null;
+
+    // ① 들어갈 때까지 글자를 조금씩 줄인다
+    for (var i = 0; i < 16; i++) {
+      ctx.clearRect(0, 0, CARD_W, CARD_H);
+      out = coachPaint(ctx, t, set, data, sc, 0);
+      if (!out.overflow || sc <= 0.62) break;
+      sc -= 0.045;
+    }
+    // ② 내용이 짧으면 남는 높이를 줄 간격으로 고르게 나눠 카드를 꽉 채운다
+    if (!out.overflow && out.avail - out.total > 60) {
+      var gaps = 6 + data.rows.length + (data.note ? 1 : 0);
+      var extra = Math.min((out.avail - out.total) / Math.max(1, gaps), 30);
+      while (extra > 2) {
+        ctx.clearRect(0, 0, CARD_W, CARD_H);
+        var filled = coachPaint(ctx, t, set, data, sc, extra);
+        if (!filled.overflow) { out = filled; break; }
+        extra -= 3;   // 넘치면 간격을 줄여 다시
+      }
+    }
+    out.theme = themeId; out.set = set; out.mode = 'coach-' + (t.mode || 'grid'); out.card = 'record';
+    return out;
+  }
+
+  function coachPaint(ctx, t, set, d, sc, extraGap) {
+    var cute = set === 'cute', chic = set === 'chic';
+    var whole = Math.max(0.62, sc);
+    var gx = Math.max(0, extraGap || 0);
+    var mx = Math.round((cute ? 112 : chic ? 118 : 104) * whole);
+    var cw = CARD_W - mx * 2;
+    var body = SANS, display = SANS;
+    if (cute) { body = DODUM; display = JUA; }
+    if (chic) { body = SERIF; display = SERIF; }
+    // 세트마다 토큰 이름이 다르다 — chic은 gold/panel, cute은 frame/accent2를 쓴다
+    var accent = chic ? t.gold : t.accent;
+    var accentSoft = chic ? t.panel : (cute ? (t.accent2 || '#F1E3D8') : t.accentSoft);
+    var ruleCol = chic ? t.line : (cute ? (t.frame || t.accent2) : t.line);
+    var top = Math.round(78 * whole);
+    var floorY = CONTENT_BOTTOM;
+    var o = { overflow: false, total: 0, avail: floorY, top: top, scale: sc, clip: false, bottom: 0 };
+    function gap(n) { y += Math.round(n * whole) + gx; }
+
+    /* ── 배경 ── */
+    ctx.save();
+    ctx.fillStyle = t.bg;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+    if (cute) {
+      var pad = Math.round(34 * whole);
+      roundRect(ctx, pad, pad, CARD_W - pad * 2, CARD_H - pad * 2, Math.round(34 * whole));
+      ctx.fillStyle = t.card || '#FFFFFF';
+      ctx.fill();
+      ctx.setLineDash([12 * whole, 9 * whole]);
+      ctx.lineWidth = 2.6 * whole;
+      ctx.strokeStyle = t.frame || t.line;
+      ctx.stroke();
+      ctx.setLineDash([]);
+    } else if (chic) {
+      ctx.strokeStyle = t.accent;
+      ctx.globalAlpha = 0.5;
+      ctx.lineWidth = 1.4;
+      ctx.strokeRect(56.5, 56.5, CARD_W - 113, CARD_H - 113);
+      ctx.globalAlpha = 0.9;
+      ctx.lineWidth = 2.2;
+      ctx.strokeRect(66.5, 66.5, CARD_W - 133, CARD_H - 133);
+      ctx.globalAlpha = 1;
+    } else if (t.mode === 'airy') {
+      ctx.strokeStyle = t.line;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(54.5, 54.5, CARD_W - 109, CARD_H - 109);
+    } else {
+      var g = ctx.createLinearGradient(0, 0, 0, 460);
+      g.addColorStop(0, 'rgba(16,16,20,0.035)');
+      g.addColorStop(1, 'rgba(16,16,20,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, CARD_W, 460);
+    }
+    ctx.restore();
+
+    var y = top;
+
+    /* ── 헤더: 스튜디오 · 날짜 ── */
+    ctx.save();
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ctx.font = '500 ' + Math.round(19 * whole) + 'px ' + SANS;
+    ctx.fillStyle = t.soft;
+    var studio = (d.studio || 'MUSIC STUDIO').toUpperCase();
+    var tr = 5.2;
+    while (trackedWidth(ctx, studio, tr) > cw - 240 * whole && tr > 1.2) tr -= 0.2;
+    drawTracked(ctx, studio, mx, y + 10 * whole, tr, 'left');
+    ctx.textAlign = 'right';
+    ctx.font = '400 ' + Math.round(20 * whole) + 'px ' + SANS;
+    ctx.fillStyle = t.soft;
+    if (d.date) ctx.fillText(d.date, CARD_W - mx, y + 10 * whole);
+    ctx.restore();
+    gap(34);
+
+    ctx.save();
+    ctx.strokeStyle = ruleCol;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(mx, y);
+    ctx.lineTo(CARD_W - mx, y);
+    ctx.stroke();
+    ctx.restore();
+    gap(44);
+
+    /* ── 라벨 ── */
+    ctx.save();
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = accent;
+    if (cute) {
+      cutePill(ctx, mx, y, 'RECORDING FEEDBACK', Math.round(15 * whole), Math.round(13 * whole),
+               Math.round(34 * whole), t.accentSoft, t.accent, 0, true);
+      y += Math.round(52 * whole);
+    } else {
+      ctx.font = '600 ' + Math.round(15 * whole) + 'px ' + SANS;
+      drawTracked(ctx, 'RECORDING FEEDBACK', mx, y + 9 * whole, 4.6, 'left');
+      y += Math.round(30 * whole);
+    }
+    ctx.restore();
+
+    /* ── 수강생 ── */
+    var nameText = d.student || '녹음 피드백';
+    var nameSize = fitText(ctx, nameText, cw - 40 * whole, 78 * whole, 40 * whole,
+                           chic ? '500' : '700', display);
+    ctx.save();
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = d.student ? t.ink : t.soft;
+    ctx.font = (chic ? '500 ' : '700 ') + Math.round(nameSize) + 'px ' + display;
+    var asc = textAscent(ctx, nameText, nameSize);
+    ctx.fillText(nameText, mx, y + asc);
+    var nameW = Math.min(ctx.measureText(nameText).width, cw);
+    ctx.restore();
+    y += Math.round(asc + 12 * whole);
+
+    if (cute) {
+      drawSquiggle(ctx, mx + 2, y, Math.min(nameW, cw - 40 * whole), t.accent2, 5 * whole);
+      y += Math.round(8 * whole);
+    } else if (chic) {
+      ctx.save();
+      ctx.fillStyle = accent;
+      ctx.fillRect(mx, y, 64 * whole, 1.4);
+      ctx.restore();
+      y += Math.round(6 * whole);
+    }
+    gap(24);
+
+    /* ── 곡 / 작품 ── */
+    if (d.piece) {
+      var pSize = Math.round((chic ? 33 : 30) * whole);
+      ctx.save();
+      ctx.font = (chic ? 'italic 400 ' : '500 ') + pSize + 'px ' + (chic ? SERIF : body);
+      ctx.fillStyle = t.ink;
+      ctx.textBaseline = 'top';
+      var pw = wrapText(ctx, d.piece, cw, 2);
+      var plh = pSize * 1.42;
+      for (var pi = 0; pi < pw.lines.length; pi++) {
+        ctx.fillText(pw.lines[pi], mx, y + pi * plh);
+      }
+      y += pw.lines.length * plh;
+      ctx.restore();
+      y += Math.round(12 * whole);
+      ctx.save();
+      ctx.fillStyle = accent;
+      ctx.globalAlpha = 0.85;
+      ctx.fillRect(mx, y, 40 * whole, 2 * whole);
+      ctx.restore();
+      gap(26);
+    }
+
+    /* ── 시간별 피드백 ── */
+    if (d.rows.length) {
+      y = coachRows(ctx, t, set, d, mx, cw, y, whole, gx, o);
+    } else {
+      ctx.save();
+      ctx.font = '400 ' + Math.round(24 * whole) + 'px ' + body;
+      ctx.fillStyle = t.soft;
+      ctx.textBaseline = 'top';
+      ctx.fillText('녹음을 들으며 시간을 찍으면 여기에 피드백이 정리됩니다.', mx, y);
+      ctx.restore();
+      y += Math.round(40 * whole);
+    }
+
+    /* ── 핵심 메모 ── */
+    if (d.note) {
+      gap(20);
+      var nSize = Math.round((cute ? 25 : 26) * whole);
+      ctx.save();
+      ctx.font = '400 ' + nSize + 'px ' + body;
+      var nPadX = Math.round((cute ? 26 : 24) * whole);
+      var nw = wrapText(ctx, d.note, cw - nPadX * 2, 5);
+      var nlh = nSize * 1.58;
+      var padY = Math.round(22 * whole);
+      var headH = Math.round(26 * whole);
+      var boxH = padY * 2 + headH + nw.lines.length * nlh;
+      if (cute) {
+        roundRect(ctx, mx, y, cw, boxH, Math.round(22 * whole));
+        ctx.fillStyle = t.pastel || t.accentSoft;
+        ctx.fill();
+        ctx.setLineDash([10 * whole, 8 * whole]);
+        ctx.lineWidth = 2.2 * whole;
+        ctx.strokeStyle = t.frame || t.line;
+        ctx.stroke();
+        ctx.setLineDash([]);
+      } else if (chic) {
+        roundRect(ctx, mx, y, cw, boxH, 5);
+        ctx.fillStyle = t.panel || 'rgba(203,162,85,0.07)';
+        ctx.fill();
+        ctx.strokeStyle = t.line;
+        ctx.lineWidth = 0.9;
+        ctx.stroke();
+      } else if (t.mode === 'poster') {
+        roundRect(ctx, mx, y, cw, boxH, Math.round(8 * whole));
+        ctx.fillStyle = t.accentSoft;
+        ctx.fill();
+      } else {
+        roundRect(ctx, mx, y, cw, boxH, Math.round(10 * whole));
+        ctx.fillStyle = t.boxFill || t.accentSoft;
+        ctx.fill();
+        ctx.strokeStyle = t.boxLine || t.line;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = accent;
+      ctx.font = '700 ' + Math.round(15 * whole) + 'px ' + SANS;
+      drawTracked(ctx, '핵심 메모', mx + nPadX, y + padY + headH / 2, 1.6, 'left');
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = t.ink;
+      ctx.font = '400 ' + nSize + 'px ' + body;
+      for (var ni = 0; ni < nw.lines.length; ni++) {
+        ctx.fillText(nw.lines[ni], mx + nPadX, y + padY + headH + ni * nlh);
+      }
+      ctx.restore();
+      y += boxH;
+    }
+
+    o.total = y - top;
+    o.overflow = y > floorY;
+    o.bottom = y;
+
+    /* ── 푸터 ── */
+    var fy = CONTENT_BOTTOM + Math.round(46 * whole);
+    ctx.save();
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = t.soft;
+    ctx.font = '400 ' + Math.round(18 * whole) + 'px ' + SANS;
+    var foot = [d.teacher, d.studio].filter(Boolean).join('  ·  ');
+    if (foot) ctx.fillText(foot, mx, fy);
+    ctx.textAlign = 'right';
+    ctx.font = '400 ' + Math.round(16 * whole) + 'px ' + SANS;
+    ctx.globalAlpha = 0.7;
+    ctx.fillText('lessoncard.kr', CARD_W - mx, fy);
+    ctx.restore();
+
+    return o;
+  }
+
+  /* 시간별 피드백 목록 — 세트별로 선·배지 질감만 다르게 */
+  function coachRows(ctx, t, set, d, mx, cw, startY, whole, gx, o) {
+    var cute = set === 'cute', chic = set === 'chic';
+    var accent = chic ? t.gold : t.accent;
+    var accentSoft = chic ? t.panel : (cute ? (t.accent2 || '#F1E3D8') : t.accentSoft);
+    var ruleCol = chic ? t.line : (cute ? (t.frame || t.accent2) : t.line);
+    var y = startY;
+    var badgeW = Math.round(84 * whole), badgeH = Math.round(38 * whole);
+    var tx = mx + badgeW + Math.round(22 * whole);
+    var tw = cw - badgeW - Math.round(22 * whole);
+    var tSize = Math.round((cute ? 25 : 26) * whole);
+
+    ctx.save();
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = accent;
+    ctx.font = '700 ' + Math.round(15 * whole) + 'px ' + SANS;
+    drawTracked(ctx, '시간별 피드백', mx, y + 8 * whole, 1.8, 'left');
+    ctx.textAlign = 'right';
+    ctx.fillStyle = t.soft;
+    ctx.font = '400 ' + Math.round(16 * whole) + 'px ' + SANS;
+    ctx.fillText(d.rows.length + (d.more ? '+' : '') + '곳', CARD_W - mx, y + 8 * whole);
+    ctx.restore();
+    y += Math.round(30 * whole);
+
+    d.rows.forEach(function (r) {
+      ctx.save();
+      ctx.textBaseline = 'top';
+      ctx.font = '400 ' + tSize + 'px ' + (cute ? DODUM : chic ? SERIF : SANS);
+      var tw2 = wrapText(ctx, r.text || '(메모 없음)', tw, 2);
+      var lh = tSize * 1.5;
+      var rowH = Math.max(badgeH, tw2.lines.length * lh);
+      var by = y + (rowH - badgeH) / 2;
+
+      // 시간 배지
+      roundRect(ctx, mx, by, badgeW, badgeH, cute ? badgeH / 2 : (chic ? 4 : Math.round(8 * whole)));
+      if (chic) {
+        ctx.fillStyle = t.bg;
+        ctx.fill();
+        ctx.strokeStyle = t.line;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = accentSoft;
+        ctx.fill();
+      }
+      ctx.fillStyle = cute ? (t.chipInk || accent) : accent;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = (cute ? '400 ' : '600 ') + Math.round(21 * whole) + 'px ' + (cute ? JUA : chic ? SERIF : SANS);
+      ctx.fillText(r.time, mx + badgeW / 2, by + badgeH / 2 + 1);
+
+      // 메모
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = r.text ? t.ink : t.soft;
+      ctx.font = '400 ' + tSize + 'px ' + (cute ? DODUM : chic ? SERIF : SANS);
+      var top = y + (rowH - tw2.lines.length * lh) / 2;
+      tw2.lines.forEach(function (line, li) {
+        ctx.fillText(line, tx, top + li * lh);
+      });
+
+      // 구분선
+      var ly = y + rowH + Math.round(11 * whole) + gx / 2;
+      ctx.strokeStyle = ruleCol;
+      ctx.lineWidth = 1;
+      if (cute) {
+        ctx.setLineDash([9 * whole, 7 * whole]);
+        ctx.lineWidth = 1.8 * whole;
+      }
+      ctx.beginPath();
+      ctx.moveTo(mx, ly);
+      ctx.lineTo(CARD_W - mx, ly);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      y += rowH + Math.round(22 * whole) + gx;
+    });
+
+    if (d.more) {
+      ctx.save();
+      ctx.fillStyle = t.soft;
+      ctx.font = '400 ' + Math.round(19 * whole) + 'px ' + SANS;
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
+      ctx.fillText('외 ' + d.more + '곳', CARD_W - mx, y - Math.round(10 * whole));
+      ctx.restore();
+    }
+    return y;
+  }
+
   /* ── 레슨비 정산 · Minimal 세트 ────────────────────────── */
   function billingCleanMeasure(ctx, t, d, sc, cfg) {
     var m = newModel(cfg.top, sc);
@@ -5706,7 +6453,8 @@
 
   var RENDERERS = {
     lesson: { clean: drawCleanCard, cute: drawCuteCard, chic: drawLuxCard },
-    billing: { clean: drawBillingClean, cute: drawBillingCute, chic: drawBillingChic }
+    billing: { clean: drawBillingClean, cute: drawBillingCute, chic: drawBillingChic },
+    record: { clean: drawCoachCard, cute: drawCoachCard, chic: drawCoachCard }
   };
 
   function drawCard(canvas, themeId, data, cardMode) {
@@ -5780,6 +6528,10 @@
     '페달 떼고 소리 확인하기',
     '어려운 마디 5번 반복'
   ];
+  var LS_NOTE_PHRASES = 'lessoncard.notePhrases.v1';
+  var NOTE_MAX_CHARS = 110;        // textarea maxlength와 같다
+  var NOTE_MAX_PHRASES = 20;
+  var NOTE_PHRASE_MAX = 40;        // 저장 문구 한 개 길이
   var LS_USAGE = 'lessoncard.usage.v1';
   var LS_THEME = 'lessoncard.theme.v1';
   var LS_SET = 'lessoncard.themeset.v1';
@@ -5789,10 +6541,16 @@
   var LS_MODE = 'lessoncard.mode.v1';
   var LS_RECITAL_STYLE = 'lessoncard.recitalStyle.v1';
   var LS_ACCOUNT = 'lessoncard.account.v1';
+  var LS_PLAN = 'lessoncard.plan.v1';
+  /* 요금제 — 유료 출시 전 베타 기간에는 Pro 기능을 모두 개방한다(기존 베타 사용자 보호).
+     유료를 열 때 BETA_OPEN = false 로 바꾸면 처음 온 사람은 Free(월 3장)로 시작한다. */
+  var BETA_OPEN = true;
+  var PLAN_BETA = 'beta', PLAN_PRO = 'pro', PLAN_FREE = 'free';
+  var VIP_CODES = ['LESSONVIP', 'FRIEND2026'];   // 지인 베타 테스터용 평생 Pro 코드
   var LOGO_MAX = 420;      // 로고는 긴 변 기준 420px까지만 보관 (1080px 카드에 충분)
 
   /* ── 카드 종류 3종 ─────────────────────────────────────── */
-  var MODES = ['lesson', 'billing', 'recital'];
+  var MODES = ['lesson', 'billing', 'recital', 'record'];
   var MODE_INFO = {
     lesson: {
       title: '레슨 정보', sub: '오늘 레슨에서 기억할 것만 적어 주세요.',
@@ -5817,6 +6575,14 @@
       preview: '발표회 팜플렛 미리보기',
       example: '겨울 발표회 예시를 채웠어요',
       hint: ''
+    },
+    record: {
+      title: '녹음 피드백', sub: '녹음을 들으며 짚은 지점만 카드 한 장으로 정리합니다.',
+      hero: '녹음 들으며 짚은 곳, <em>카드 한 장</em>으로',
+      heroP: '학생이 보내온 녹음·영상을 들으며 틀린 곳의 시간을 찍으면, 시간별 피드백이 정리된 카드가 만들어집니다.',
+      preview: '녹음 피드백 카드 미리보기',
+      example: '녹음 피드백 예시를 채웠어요',
+      hint: '수강생 이름은 선택이에요'
     }
   };
 
@@ -5842,6 +6608,20 @@
     tags: ['박자감이 좋아요', '페달링이 안정됐어요', '표현력이 자랐어요'],
     mission: '매일 15분, 오른손 8마디씩 메트로놈 60에 맞춰 연습하기. 왼손 페달은 한 박자 늦게 밟는 연습 3회.',
     note: '다음 주에는 처음부터 끝까지 천천히 이어서 들어볼게요. 이번 주 연습 정말 잘 해줬어요!'
+  };
+
+  var EXAMPLE_RECORD = {
+    studio: '하모니 피아노 스튜디오',
+    teacher: '이서연',
+    student: '김도현',
+    piece: '베토벤 소나타 Op.27 No.2 3악장',
+    coachNote: '템포는 안정적입니다. 24마디 전환부만 왼손을 조금 더 낮게. 다음 주엔 앞부분을 무반주로 확인해 봅시다.',
+    stamps: [
+      { sec: 12, text: '도입부 템포 조금 느리게' },
+      { sec: 38, text: '오른손 화음이 먼저 나옴' },
+      { sec: 64, text: '24마디 왼손 성부가 묻힘' },
+      { sec: 95, text: '페달을 바꿀 타이밍' }
+    ]
   };
 
   var EXAMPLE_BILLING = {
@@ -5899,6 +6679,7 @@
     tags: [],
     stamps: [],
     usage: 0,
+    plan: PLAN_BETA,
     lastLayout: null,
     fontReady: false,
     students: [],
@@ -5946,6 +6727,7 @@
       stamps: state.stamps.map(function (s) { return { sec: s.sec, text: s.text }; }),
       mission: v('mission'),
       note: v('note'),
+      coachNote: v('coachNote'),
       // ── 레슨비 정산 ──
       guardian: v('guardian'),
       period: v('billPeriod'),
@@ -5975,6 +6757,7 @@
   function cardBody(d) {
     if (state.mode === 'billing') return Object.assign({}, d, { note: d.billNote });
     if (state.mode === 'recital') return Object.assign({}, d, { note: d.recitalNote });
+    if (state.mode === 'record') return Object.assign({}, d, { coachNote: d.coachNote });
     return d;
   }
 
@@ -6076,6 +6859,7 @@
     els.tagCount.textContent = state.tags.length + ' / ' + MAX_TAGS + ' 선택';
     els.missionCount.textContent = els.mission.value.length + ' / 120';
     els.noteCount.textContent = els.note.value.length + ' / 110';
+    if (els.coachNoteCount && els.coachNote) els.coachNoteCount.textContent = els.coachNote.value.length + ' / 160';
     if (els.billDatesCount) els.billDatesCount.textContent = els.billDates.value.length + ' / 90';
     if (els.billNoteCount) els.billNoteCount.textContent = els.billNote.value.length + ' / 120';
     if (els.recitalNoteCount) els.recitalNoteCount.textContent = els.recitalNote.value.length + ' / 140';
@@ -6164,6 +6948,161 @@
     syncCounters();
     scheduleRender(true);
     saveDraft();
+  }
+
+  /* ── 다음 레슨 한마디 · 내 문구 (직접 추가·삭제 · localStorage) ── */
+  var notePhrases = null;
+
+  function notePhraseList() {
+    if (!notePhrases) notePhrases = savedNotePhrases();
+    return notePhrases;
+  }
+
+  function savedNotePhrases() {
+    var raw = safeGet(LS_NOTE_PHRASES);
+    if (raw == null) return [];
+    try {
+      var arr = JSON.parse(raw);
+      if (!Array.isArray(arr)) return [];
+      var out = [];
+      arr.forEach(function (t) {
+        var s = String(t == null ? '' : t).replace(/\s+/g, ' ').trim().slice(0, NOTE_PHRASE_MAX);
+        if (s && out.indexOf(s) === -1) out.push(s);
+      });
+      return out.slice(0, NOTE_MAX_PHRASES);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function storeNotePhrases(list) {
+    notePhrases = list.slice(0, NOTE_MAX_PHRASES);
+    safeSet(LS_NOTE_PHRASES, JSON.stringify(notePhrases));
+  }
+
+  function renderNoteCustomChips() {
+    var wrap = els.noteCustomChips;
+    if (!wrap) return;
+    var list = notePhraseList();
+    wrap.innerHTML = '';
+    if (!list.length) {
+      var empty = document.createElement('span');
+      empty.className = 'mp-empty';
+      empty.textContent = '저장된 문구가 없어요 · + 문구 추가로 만들어 보세요';
+      wrap.appendChild(empty);
+      return;
+    }
+    list.forEach(function (text) {
+      var chip = document.createElement('span');
+      chip.className = 'mp-chip';
+      chip.setAttribute('data-phrase', text);
+
+      var pick = document.createElement('button');
+      pick.type = 'button';
+      pick.className = 'mp-chip-btn';
+      pick.setAttribute('aria-pressed', 'false');
+      pick.setAttribute('title', text + ' — 한마디에 넣기');
+      pick.textContent = text;
+      pick.addEventListener('click', function () { appendNotePhrase(text); });
+
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'mp-chip-del';
+      del.setAttribute('aria-label', text + ' 문구 삭제');
+      del.setAttribute('title', '삭제');
+      del.textContent = '×';
+      del.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        removeNotePhrase(text);
+      });
+
+      chip.appendChild(pick);
+      chip.appendChild(del);
+      wrap.appendChild(chip);
+    });
+    syncNoteCustomState();
+  }
+
+  // 지금 한마디에 들어 있는 내 문구는 칩을 켜 둔다
+  function syncNoteCustomState() {
+    var wrap = els.noteCustomChips;
+    if (!wrap || !els.note) return;
+    var val = String(els.note.value || '');
+    Array.prototype.forEach.call(wrap.querySelectorAll('.mp-chip'), function (chip) {
+      var on = val.indexOf(chip.getAttribute('data-phrase') || '\u0000') >= 0;
+      chip.classList.toggle('is-on', on);
+      var btn = chip.querySelector('.mp-chip-btn');
+      if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  // 한마디 끝에 자연스럽게 이어 붙인다 (문장이라 공백으로 연결)
+  function appendNotePhrase(text) {
+    if (!els.note) return;
+    var t = String(text == null ? '' : text).replace(/\s+/g, ' ').trim();
+    if (!t) return;
+    var cur = String(els.note.value || '').replace(/\s+$/, '');
+    var next = cur ? (cur + ' ' + t) : t;
+    if (next.length > NOTE_MAX_CHARS) {
+      toast('한마디는 ' + NOTE_MAX_CHARS + '자까지라 \'' + t + '\'는 넣을 수 없어요');
+      return;
+    }
+    els.note.value = next;
+    syncNoteCustomState();
+    syncNotePresetState();
+    syncCounters();
+    scheduleRender(true);
+    saveDraft();
+  }
+
+  function addNotePhrase() {
+    if (!els.noteNewPhrase) return;
+    var t = String(els.noteNewPhrase.value || '').replace(/\s+/g, ' ').trim().slice(0, NOTE_PHRASE_MAX);
+    if (!t) {
+      toast('추가할 문구를 먼저 적어 주세요');
+      els.noteNewPhrase.focus();
+      return;
+    }
+    var list = notePhraseList();
+    if (list.indexOf(t) >= 0) {
+      toast('이미 있는 문구예요');
+      els.noteNewPhrase.select();
+      return;
+    }
+    if (list.length >= NOTE_MAX_PHRASES) {
+      toast('문구는 ' + NOTE_MAX_PHRASES + '개까지 저장할 수 있어요');
+      return;
+    }
+    list.push(t);
+    storeNotePhrases(list);
+    els.noteNewPhrase.value = '';
+    renderNoteCustomChips();
+    toast('\'' + t + '\' 문구를 저장했어요 · 다음에도 쓸 수 있어요');
+    appendNotePhrase(t);
+  }
+
+  function removeNotePhrase(text) {
+    var list = notePhraseList();
+    var i = list.indexOf(text);
+    if (i < 0) return;
+    var backup = list.slice();
+    list.splice(i, 1);
+    storeNotePhrases(list);
+    renderNoteCustomChips();
+    toast('\'' + text + '\' 문구를 지웠어요', {
+      label: '되돌리기',
+      run: function () {
+        storeNotePhrases(backup);
+        renderNoteCustomChips();
+      }
+    });
+  }
+
+  function setNoteAddRow(open) {
+    if (!els.noteAddRow || !els.noteAddToggle) return;
+    els.noteAddRow.hidden = !open;
+    els.noteAddToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open && els.noteNewPhrase) els.noteNewPhrase.focus();
   }
 
   /* ── 연습 미션 · 자주 쓰는 문구 (직접 추가·삭제 · localStorage) ── */
@@ -6474,6 +7413,7 @@
     set('piece', d.piece);
     set('mission', d.mission);
     set('note', d.note);
+    set('coachNote', d.coachNote);
     // 레슨비 정산
     set('guardian', d.guardian);
     set('billPeriod', d.period, 'period');
@@ -6523,6 +7463,8 @@
       applyData(bd);
     } else if (mode === 'recital') {
       applyData(Object.assign({}, EXAMPLE_RECITAL));
+    } else if (mode === 'record') {
+      applyData(Object.assign({}, EXAMPLE_RECORD, { date: els.date.value || todayISO() }));
     } else {
       applyData(Object.assign({}, EXAMPLE, { date: els.date.value || todayISO() }));
     }
@@ -7201,7 +8143,10 @@
       els.stampTags.appendChild(b);
     });
 
-    function openPicker() { els.recInput.click(); }
+    function openPicker() {
+      if (!isProActive()) { requirePro('녹음·녹화 타임스탬프'); return; }
+      els.recInput.click();
+    }
     els.recPick.addEventListener('click', function (ev) { ev.stopPropagation(); openPicker(); });
     els.recDrop.addEventListener('click', function (ev) {
       if (ev.target === els.recPick || ev.target === els.recRemove || els.recRemove.contains(ev.target) || els.recPick.contains(ev.target)) return;
@@ -7440,6 +8385,7 @@
 
   /* 세트 탭을 누르면 그 세트에서 마지막으로 쓰던 테마가 바로 적용된다 */
   function selectThemeSet(setId) {
+    if (!isProActive() && setId !== 'clean') { requirePro('Cute · Classic 테마'); return; }
     var set = null;
     THEME_SETS.forEach(function (s) { if (s.id === setId) set = s; });
     if (!set) return;
@@ -7465,15 +8411,78 @@
   }
 
   function updatePlan() {
+    if (!els.planBadge || !els.planText) return;
+    var pro = state.plan === PLAN_PRO, beta = state.plan === PLAN_BETA;
+    var free = state.plan === PLAN_FREE;
+    els.planText.textContent = planLabel();
+    els.planBadge.classList.toggle('is-pro', pro || beta);
+    els.planBadge.classList.toggle('is-out', free && state.usage >= FREE_LIMIT);
+    renderPlanStatus();
+  }
+
+  /* ── 요금제 상태 (Free · Pro · 베타 개방) ───────────────── */
+  function monthKey() {
+    var d = new Date();
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2);
+  }
+
+  function readUsage() {
+    var raw = safeGet(LS_USAGE);
+    if (!raw) return 0;
+    var obj = null;
+    try { obj = JSON.parse(raw); } catch (e) { obj = null; }
+    if (obj && obj.m === monthKey() && typeof obj.n === 'number') return obj.n;
+    return 0;   // 지난달 기록·예전 형식(숫자 하나)은 이번 달 0장부터
+  }
+
+  function readPlan() {
+    var saved = safeGet(LS_PLAN);
+    if (saved === PLAN_PRO || saved === PLAN_FREE) return saved;
+    return BETA_OPEN ? PLAN_BETA : PLAN_FREE;
+  }
+
+  function isProActive() { return state.plan === PLAN_PRO || state.plan === PLAN_BETA; }
+
+  function planLabel() {
+    if (state.plan === PLAN_PRO) return 'Pro · 평생 무료';
+    if (state.plan === PLAN_BETA) return '베타 · Pro 무료';
     var left = Math.max(0, FREE_LIMIT - state.usage);
-    els.planText.textContent = left > 0 ? ('무료 · ' + left + '회 남음') : 'Pro로 무제한';
-    els.planBadge.classList.toggle('is-out', left === 0);
+    return left > 0 ? ('무료 · ' + left + '장 남음') : '무료 · 3장 다 씀';
+  }
+
+  function renderPlanStatus() {
+    var el = document.getElementById('proStatus');
+    if (!el) return;
+    if (state.plan === PLAN_PRO) {
+      el.textContent = 'VIP 코드가 적용되어 있어요. Pro 기능을 평생 무료로 쓸 수 있습니다.';
+    } else if (state.plan === PLAN_BETA) {
+      el.textContent = '지금은 베타 기간이에요. Pro 기능을 모두 무료로 쓰고 있고, 무료 3장 제한도 아직 걸리지 않아요.';
+    } else {
+      var left = Math.max(0, FREE_LIMIT - state.usage);
+      el.textContent = left > 0
+        ? ('무료 플랜 · 이번 달 ' + state.usage + '장 사용, ' + left + '장 남았어요.')
+        : '이번 달 무료 3장을 모두 썼어요. Pro로 계속 만들 수 있어요.';
+    }
   }
 
   function bumpUsage() {
     state.usage = state.usage + 1;
-    safeSet(LS_USAGE, String(state.usage));
+    safeSet(LS_USAGE, JSON.stringify({ m: monthKey(), n: state.usage }));
     updatePlan();
+  }
+
+  /* Free 월 3장 제한 — 베타·Pro에서는 그대로 통과 */
+  function allowSave() {
+    if (isProActive()) return true;
+    if (state.usage < FREE_LIMIT) return true;
+    openModal();
+    toast('이번 달 무료 3장을 모두 썼어요 · Pro에서 계속 만들 수 있어요');
+    return false;
+  }
+
+  function requirePro(what) {
+    openModal();
+    toast(what + ' 기능은 Pro에서 쓸 수 있어요');
   }
 
   function fileName() {
@@ -7487,11 +8496,16 @@
       var t = (d.recitalTitle || '발표회').replace(/[\\/:*?"<>|\s]/g, '');
       return '발표회팜플렛_' + (t || 'card') + '.png';
     }
+    if (state.mode === 'record') {
+      var who2 = (d.student || '수강생').replace(/[\\/:*?"<>|]/g, '');
+      return '녹음피드백_' + who2 + '_' + (formatDateCompact(d.date) || 'card') + '.png';
+    }
     var name = (d.student || '학생').replace(/[\\/:*?"<>|]/g, '');
     return '레슨카드_' + name + '_' + (formatDateCompact(d.date) || 'card') + '.png';
   }
 
   function downloadCard() {
+    if (!allowSave()) return;
     render();
     var studentName = els.student.value.trim();
     if (studentName && state.mode === 'lesson') persistStudent(true);
@@ -7516,8 +8530,8 @@
       bumpUsage();
       window.__lastDownload = { name: a.download, size: blob.size };
       var left = Math.max(0, FREE_LIMIT - state.usage);
-      if (left > 0) toast('카드 PNG를 저장했어요 · 1080×1350' + (studentName ? ' · ' + studentName + ' 기록도 저장됨' : ''));
-      else toast('무료 3장을 모두 사용했어요 · 프로토타입에서는 계속 저장됩니다');
+      if (!isProActive() && left <= 0) toast('카드 PNG를 저장했어요 · 이번 달 무료 3장을 모두 썼어요');
+      else toast('카드 PNG를 저장했어요 · 1080×1350' + (studentName ? ' · ' + studentName + ' 기록도 저장됨' : ''));
     };
 
     if (out.toBlob) out.toBlob(done, 'image/png');
@@ -7537,6 +8551,7 @@
 
   // 모바일에서는 OS 공유 시트로 바로 카톡에 보낼 수 있게 한다
   function shareCard() {
+    if (!allowSave()) return;
     render();
     var studentName = els.student.value.trim();
     if (studentName && state.mode === 'lesson') persistStudent(true);
@@ -7566,6 +8581,7 @@
     var d = readData();
     if (state.mode === 'billing') return buildBillingText(d);
     if (state.mode === 'recital') return buildRecitalText(d);
+    if (state.mode === 'record') return buildRecordText(d);
     var lines = [];
     lines.push('🎹 ' + (d.student || '학생') + ' 레슨 노트');
     var meta = [formatDateDot(d.date), d.session].filter(Boolean).join(' · ');
@@ -7579,6 +8595,28 @@
     }
     if (d.mission) { lines.push('▸ 이번 주 연습 미션'); lines.push(d.mission); lines.push(''); }
     if (d.note) { lines.push('▸ 한마디'); lines.push(d.note); lines.push(''); }
+    lines.push('— ' + (d.teacher || d.studio || '선생님'));
+    if (d.teacher && d.studio) lines.push(d.studio);
+    return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  }
+
+  /* 녹음 피드백 — 시간별 피드백 목록 중심의 카톡 문구 */
+  function buildRecordText(d) {
+    var lines = [];
+    lines.push('🎧 ' + (d.student || '수강생') + ' 녹음 피드백');
+    var meta = [formatDateDot(d.date), d.piece].filter(Boolean).join(' · ');
+    if (meta) lines.push(meta);
+    lines.push('');
+    var set = stampSet(d);
+    if (set.rows.length) {
+      lines.push('▸ 시간별 피드백');
+      set.rows.forEach(function (r) {
+        lines.push('· ' + r.time + (r.text ? '  ' + r.text : ''));
+      });
+      if (set.more) lines.push('· 외 ' + set.more + '곳');
+      lines.push('');
+    }
+    if (d.coachNote) { lines.push('▸ 핵심 메모'); lines.push(d.coachNote); lines.push(''); }
     lines.push('— ' + (d.teacher || d.studio || '선생님'));
     if (d.teacher && d.studio) lines.push(d.studio);
     return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
@@ -7726,7 +8764,8 @@
     els.modal.classList.add('is-open');
     els.modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    var btn = els.modal.querySelector('#proStartBtn');
+    renderPlanStatus();
+    var btn = els.modal.querySelector('.buy-btn.is-primary') || els.modal.querySelector('.modal-close');
     if (btn) btn.focus();
   }
   function closeModal() {
@@ -7734,6 +8773,51 @@
     els.modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     if (lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  /* 약관 모달 3종 (이용약관 · 개인정보처리방침 · 환불규정) */
+  var legalLastFocused = null;
+  function openLegal(id) {
+    var m = document.getElementById('legal-' + id);
+    if (!m) return;
+    legalLastFocused = document.activeElement;
+    m.classList.add('is-open');
+    m.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    var c = m.querySelector('.modal-close');
+    if (c) c.focus();
+  }
+  function closeLegal(m) {
+    (m ? [m] : Array.prototype.slice.call(document.querySelectorAll('.legal-modal.is-open'))).forEach(function (el) {
+      el.classList.remove('is-open');
+      el.setAttribute('aria-hidden', 'true');
+    });
+    if (!els.modal.classList.contains('is-open') && !els.guideModal.classList.contains('is-open') && !els.zoom.classList.contains('is-open')) {
+      document.body.style.overflow = '';
+    }
+    if (legalLastFocused && legalLastFocused.focus) legalLastFocused.focus();
+  }
+
+  /* VIP 초대 코드 → 이 브라우저에서 Pro 해금 (localStorage 저장) */
+  function normCode(s) { return String(s || '').toUpperCase().replace(/[\s\-_]/g, ''); }
+  function setVipMsg(text, kind) {
+    var el = document.getElementById('vipMsg');
+    if (!el) return;
+    el.textContent = text || '';
+    el.classList.toggle('is-ok', kind === 'ok');
+    el.classList.toggle('is-err', kind === 'err');
+  }
+  function applyVipCode(raw, quiet) {
+    var code = normCode(raw);
+    if (!code) { setVipMsg('초대 코드를 입력해 주세요', 'err'); return false; }
+    var hit = VIP_CODES.some(function (c) { return normCode(c) === code; });
+    if (!hit) { setVipMsg('사용할 수 없는 코드예요. 코드를 다시 확인해 주세요', 'err'); return false; }
+    state.plan = PLAN_PRO;
+    safeSet(LS_PLAN, PLAN_PRO);
+    updatePlan();
+    setVipMsg('VIP 코드가 적용됐어요 · Pro 기능을 평생 무료로 쓸 수 있어요', 'ok');
+    if (!quiet) toast('VIP 코드가 적용됐어요 · Pro 기능이 열렸습니다');
+    return true;
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -7764,10 +8848,11 @@
   }
 
   function bind() {
-    ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note',
+    ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note', 'coachNote',
      'customTag', 'addTagBtn', 'exampleBtn', 'resetBtn', 'chipWrap',
-     'tagTabs', 'notePresets', 'missionPresets', 'missionAddToggle', 'missionAddRow', 'missionNewPhrase', 'missionAddBtn',
-     'tagCount', 'missionCount', 'noteCount', 'autosaveText',
+     'tagTabs', 'notePresets', 'noteCustomChips', 'noteAddToggle', 'noteAddRow', 'noteNewPhrase', 'noteAddBtn',
+     'missionPresets', 'missionAddToggle', 'missionAddRow', 'missionNewPhrase', 'missionAddBtn',
+     'tagCount', 'missionCount', 'noteCount', 'coachNoteCount', 'autosaveText',
      'studentChips', 'saveRecordBtn', 'logoPick', 'logoRemove', 'logoInput',
      'logoThumb', 'logoInfoText', 'toastAction',
      'guardian', 'billPeriod', 'billDue', 'billSpec', 'billDates', 'billTuition',
@@ -7784,13 +8869,13 @@
       els[k] = document.getElementById(k);
     });
 
-    ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note',
+    ['studio', 'teacher', 'student', 'date', 'session', 'piece', 'mission', 'note', 'coachNote',
      'guardian', 'billPeriod', 'billDue', 'billSpec', 'billDates', 'billNote',
      'recitalTitle', 'recitalSub', 'recitalWhen', 'recitalWhere', 'recitalProgram', 'recitalNote'
     ].forEach(function (k) {
       if (!els[k]) return;
       els[k].addEventListener('input', function () {
-        if (k === 'note') syncNotePresetState();
+        if (k === 'note') { syncNotePresetState(); syncNoteCustomState(); }
         if (k === 'mission') syncMissionPresetState();
         if (k === 'billNote' || k === 'recitalNote') syncPresetStates();
         syncCounters();
@@ -7824,7 +8909,11 @@
 
     // 카드 종류 탭
     Array.prototype.forEach.call(document.querySelectorAll('.mode-tab'), function (btn) {
-      btn.addEventListener('click', function () { setMode(btn.getAttribute('data-mode')); });
+      btn.addEventListener('click', function () {
+        var m = btn.getAttribute('data-mode');
+        if (m !== 'lesson' && !isProActive()) { requirePro('레슨비 정산 · 발표회 팜플렛'); return; }
+        setMode(m);
+      });
       btn.addEventListener('keydown', function (ev) {
         var i = MODES.indexOf(btn.getAttribute('data-mode'));
         if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
@@ -7852,7 +8941,10 @@
       persistStudent(false);
     });
 
-    els.logoPick.addEventListener('click', function () { els.logoInput.click(); });
+    els.logoPick.addEventListener('click', function () {
+      if (!isProActive()) { requirePro('학원 로고'); return; }
+      els.logoInput.click();
+    });
     els.logoInput.addEventListener('change', function () {
       var f = els.logoInput.files && els.logoInput.files[0];
       if (f) handleLogoFile(f);
@@ -7878,6 +8970,20 @@
       els.missionNewPhrase.addEventListener('keydown', function (ev) {
         if (ev.key === 'Enter') { ev.preventDefault(); addMissionPhrase(); }
         if (ev.key === 'Escape') { setMissionAddRow(false); els.missionAddToggle.focus(); }
+      });
+    }
+
+    // 다음 레슨 한마디 · 내 문구 (추가·삭제·입력)
+    if (els.noteAddToggle) {
+      els.noteAddToggle.addEventListener('click', function () {
+        setNoteAddRow(els.noteAddRow.hidden);
+      });
+    }
+    if (els.noteAddBtn) els.noteAddBtn.addEventListener('click', addNotePhrase);
+    if (els.noteNewPhrase) {
+      els.noteNewPhrase.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') { ev.preventDefault(); addNotePhrase(); }
+        if (ev.key === 'Escape') { setNoteAddRow(false); els.noteAddToggle.focus(); }
       });
     }
     els.resetBtn.addEventListener('click', function () {
@@ -7913,16 +9019,55 @@
 
     els.upgradeBtn.addEventListener('click', openModal);
     els.planBadge.addEventListener('click', openModal);
-    els.proStartBtn.addEventListener('click', function () {
-      closeModal();
-      toast('프로토타입이에요. 결제는 아직 연결되어 있지 않습니다');
-    });
     Array.prototype.forEach.call(document.querySelectorAll('[data-close]'), function (el) {
       el.addEventListener('click', closeModal);
+    });
+
+    // 요금제 결제 버튼 — 지금은 '결제 준비 중' 안내만 (토스페이먼츠 SDK 연결 지점)
+    Array.prototype.forEach.call(document.querySelectorAll('.buy-btn[data-checkout]'), function (btn) {
+      btn.addEventListener('click', function () {
+        var cycle = btn.getAttribute('data-checkout');
+        var picked = document.getElementById('payPicked');
+        var notice = document.getElementById('payNotice');
+        if (picked) picked.textContent = cycle === 'yearly'
+          ? '선택한 이용권: 1년 49,000원 (오픈 특가 · 부가세 포함)'
+          : '선택한 이용권: 1개월 4,900원 (오픈 특가 · 부가세 포함)';
+        if (notice) {
+          notice.hidden = false;
+          if (notice.scrollIntoView) notice.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+        toast('결제 연결을 준비하고 있어요 · 곧 이 버튼에서 바로 결제됩니다');
+      });
+    });
+
+    // VIP 초대 코드
+    if (els.vipToggle) {
+      els.vipToggle.addEventListener('click', function () {
+        var open = els.vipToggle.getAttribute('aria-expanded') === 'true';
+        els.vipToggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+        els.vipPanel.hidden = open;
+        if (!open) els.vipInput.focus();
+      });
+    }
+    if (els.vipApply) {
+      els.vipApply.addEventListener('click', function () { applyVipCode(els.vipInput.value); });
+      els.vipInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); applyVipCode(els.vipInput.value); }
+      });
+      els.vipInput.addEventListener('input', function () { setVipMsg(''); });
+    }
+
+    // 푸터 약관 링크
+    Array.prototype.forEach.call(document.querySelectorAll('[data-legal]'), function (el) {
+      el.addEventListener('click', function () { openLegal(el.getAttribute('data-legal')); });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-legal-close]'), function (el) {
+      el.addEventListener('click', function () { closeLegal(el.closest('.legal-modal')); });
     });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && els.guideModal.classList.contains('is-open')) closeGuide();
       if (e.key === 'Escape' && els.modal.classList.contains('is-open')) closeModal();
+      if (e.key === 'Escape' && document.querySelector('.legal-modal.is-open')) closeLegal(null);
       if (e.key === 'Escape' && els.zoom.classList.contains('is-open')) closeZoom();
       if ((e.metaKey || e.ctrlKey) && e.key === 's') { e.preventDefault(); downloadCard(); }
     });
@@ -7952,7 +9097,9 @@
       shareBtns: document.querySelectorAll('.share-btn'),
       guideBtn: document.getElementById('guideBtn'), guideModal: document.getElementById('guideModal'),
       guideExampleBtn: document.getElementById('guideExampleBtn'),
-      modal: document.getElementById('upgradeModal'), proStartBtn: document.getElementById('proStartBtn'),
+      modal: document.getElementById('upgradeModal'),
+      vipToggle: document.getElementById('vipToggle'), vipPanel: document.getElementById('vipPanel'),
+      vipInput: document.getElementById('vipInput'), vipApply: document.getElementById('vipApply'),
       themeRow: document.getElementById('themeRow'),
       themeSets: document.getElementById('themeSets'),
       recitalStyles: document.getElementById('recitalStyles'),
@@ -7997,6 +9144,7 @@
     if (subjectById(savedSubject)) state.subject = savedSubject;
     renderSubjectTabs();
     renderNotePresets();
+    renderNoteCustomChips();
     renderMissionPresets();
     renderBillPresets();
     renderRecitalPresets();
@@ -8005,8 +9153,13 @@
     var savedMode = safeGet(LS_MODE);
     setMode(MODES.indexOf(savedMode) >= 0 ? savedMode : 'lesson', { silent: true, noExample: true });
 
-    var usage = parseInt(safeGet(LS_USAGE) || '0', 10);
-    state.usage = isNaN(usage) ? 0 : usage;
+    state.plan = readPlan();
+    state.usage = readUsage();
+    // 초대 링크(?vip=CODE)로 들어오면 바로 Pro 해금
+    try {
+      var vm = /[?&]vip=([^&]+)/.exec(window.location.search);
+      if (vm) applyVipCode(decodeURIComponent(vm[1]), true);
+    } catch (e) { /* 잘못된 링크는 무시 */ }
     updatePlan();
 
     var hadDraft = loadDraft();
@@ -8072,7 +9225,9 @@
       saveStudentRecord: function () { return persistStudent(true); },
       bumpSession: bumpSession,
       removeLogo: removeLogo,
-      keys: { students: LS_STUDENTS, logo: LS_LOGO, subject: LS_SUBJECT, theme: LS_THEME, themeSet: LS_SET, mode: LS_MODE, account: LS_ACCOUNT, draft: LS_DRAFT, recitalStyle: LS_RECITAL_STYLE }
+      keys: { students: LS_STUDENTS, logo: LS_LOGO, subject: LS_SUBJECT, theme: LS_THEME, themeSet: LS_SET, mode: LS_MODE, account: LS_ACCOUNT, draft: LS_DRAFT, recitalStyle: LS_RECITAL_STYLE, plan: LS_PLAN },
+      plan: function () { return state.plan; },
+      applyVipCode: applyVipCode
     };
   }
 
