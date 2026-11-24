@@ -378,6 +378,133 @@
   .logo-actions{display:flex;gap:6px;flex-wrap:wrap}
   #logoRemove[hidden]{display:none}
 
+  /* ── 녹음 들으며 시간 찍기 (연습 체크) ─────────────────── */
+  .rec-block{
+    display:flex;flex-direction:column;gap:10px;
+    padding:13px 14px;border:1px solid var(--line);border-radius:var(--r-md);
+    background:linear-gradient(180deg,#FFFDF9 0%,var(--surface-2) 100%);
+  }
+  .rec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .rec-head .label{font-size:12.3px;font-weight:600;color:var(--ink-2);letter-spacing:.005em}
+  .rec-head .label .opt{font-weight:400;color:var(--muted);font-size:11.4px;margin-left:2px}
+  .rec-head .hint{font-size:11.2px;color:var(--muted);font-weight:400}
+  .rec-panel{display:flex;flex-direction:column;gap:9px}
+
+  .rec-drop{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 12px;border:1px dashed var(--line-2);border-radius:var(--r-sm);
+    background:#fff;cursor:pointer;transition:border-color .15s ease, background .15s ease;
+  }
+  .rec-drop:hover,.rec-drop.is-over{border-color:var(--gold);background:#FFFCF7}
+  .rec-drop .rec-drop-ico{
+    width:32px;height:32px;flex:none;border-radius:9px;display:grid;place-items:center;
+    background:var(--gold-soft);border:1px solid var(--gold-line);color:var(--gold-deep);
+  }
+  .rec-drop .rec-drop-txt{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .rec-drop .rec-file-name{font-size:12.4px;font-weight:600;color:var(--ink);line-height:1.4;word-break:break-all}
+  .rec-drop .rec-drop-hint{font-size:11.1px;color:var(--muted);line-height:1.5}
+  .rec-drop .btn{flex:none}
+
+  .rec-player{display:flex;flex-direction:column;gap:8px;padding:11px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:#fff}
+  .rec-media{display:none}
+  .rec-media.is-video{display:block}
+  .rec-media video{display:block;width:100%;max-height:220px;border-radius:9px;background:#111;object-fit:contain}
+  .rec-bar{display:flex;align-items:center;gap:8px}
+  .rec-time{font-size:11.4px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.01em;min-width:40px;text-align:center;flex:none}
+  .rec-seek{
+    -webkit-appearance:none;appearance:none;flex:1 1 auto;min-width:0;height:4px;border-radius:999px;
+    background:var(--line-2);outline:none;cursor:pointer;
+  }
+  .rec-seek::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;
+    background:var(--gold);border:2px solid #fff;box-shadow:0 1px 3px rgba(29,26,22,.30);cursor:pointer;
+  }
+  .rec-seek::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid #fff;box-shadow:0 1px 3px rgba(29,26,22,.30);cursor:pointer}
+  .rec-seek:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .rec-ctl{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .rec-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:4px;
+    height:34px;padding:0 11px;border-radius:9px;border:1px solid var(--line-2);background:#fff;
+    font-family:inherit;font-size:12px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:.15s ease;
+    white-space:nowrap;
+  }
+  .rec-btn:hover{border-color:var(--gold);color:var(--gold-deep);background:#FFFCF7}
+  .rec-btn:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+  .rec-btn .rec-btn-ico{font-size:11.5px;line-height:1}
+  .rec-speeds{display:flex;gap:2px;margin-left:auto;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--surface-2)}
+  .rec-speed{
+    height:28px;padding:0 8px;border:0;border-radius:999px;background:transparent;
+    font-family:inherit;font-size:11.2px;font-weight:600;color:var(--muted);cursor:pointer;
+    font-variant-numeric:tabular-nums;transition:.15s ease;white-space:nowrap;
+  }
+  .rec-speed:hover{color:var(--gold-deep)}
+  .rec-speed.is-on{background:#fff;color:var(--gold-deep);box-shadow:0 1px 2px rgba(29,26,22,.10)}
+  .rec-speed:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
+  .rec-stamp{
+    display:flex;align-items:center;justify-content:center;gap:7px;width:100%;height:42px;
+    border:1px solid var(--ink);border-radius:var(--r-sm);
+    background:linear-gradient(180deg,#2C2721 0%,#1B1814 100%);color:#FBF4E7;
+    font-family:inherit;font-size:13.6px;font-weight:700;letter-spacing:-.01em;cursor:pointer;
+    transition:.15s ease;
+  }
+  .rec-stamp:hover{background:linear-gradient(180deg,#3A332A 0%,#221E19 100%)}
+  .rec-stamp:active{transform:translateY(1px)}
+  .rec-stamp:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .rec-stamp .rec-stamp-time{font-variant-numeric:tabular-nums;opacity:.72;font-weight:600}
+
+  .rec-tags{display:flex;flex-wrap:wrap;gap:6px}
+  .rec-tag{
+    display:inline-flex;align-items:center;height:30px;padding:0 11px;border-radius:999px;
+    border:1px solid var(--line-2);background:#fff;color:var(--ink-2);
+    font-family:inherit;font-size:11.9px;font-weight:500;cursor:pointer;transition:.15s ease;white-space:nowrap;
+  }
+  .rec-tag:hover{border-color:var(--gold);color:var(--gold-deep);background:#FFFCF7}
+  .rec-tag.is-on{background:var(--gold-soft);border-color:var(--gold-line);color:var(--gold-deep);font-weight:700}
+  .rec-tag:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
+  .rec-manual{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .rec-manual .rec-time-input{
+    width:68px;flex:none;text-align:center;font-variant-numeric:tabular-nums;letter-spacing:.02em;
+    padding:9px 6px;font-size:13px;
+  }
+  .rec-manual .rec-memo{flex:1 1 150px;min-width:110px;padding:9px 12px;font-size:13px}
+  .rec-manual .rec-btn{height:38px}
+
+  .rec-list-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .rec-list-head .rec-count{font-size:11.4px;font-weight:700;color:var(--gold-deep);font-variant-numeric:tabular-nums}
+  .rec-list-head .rec-hint{font-size:11px;color:var(--muted)}
+  .rec-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .rec-empty{margin:0;font-size:11.6px;color:var(--muted)}
+  .rec-item{display:flex;align-items:center;gap:7px;padding:6px 7px 6px 6px;border:1px solid var(--line);border-radius:var(--r-sm);background:#fff}
+  .rec-item:hover{border-color:var(--line-2)}
+  .rec-jump{
+    display:inline-flex;align-items:center;gap:4px;flex:none;height:28px;padding:0 9px;border-radius:8px;
+    border:1px solid var(--gold-line);background:var(--gold-soft);color:var(--gold-deep);
+    font-family:inherit;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;cursor:pointer;
+  }
+  .rec-jump:hover{background:#F7EEDD}
+  .rec-jump:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+  .rec-jump .rec-jump-ico{font-size:8.5px;opacity:.8}
+  .rec-item-txt{
+    flex:1 1 auto;min-width:0;font-size:12.5px;line-height:1.45;color:var(--ink-2);
+    background:none;border:0;padding:0;text-align:left;font-family:inherit;cursor:text;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .rec-item-txt:hover{color:var(--ink)}
+  .rec-item-txt.is-empty{color:#B0A79A;font-style:italic}
+  .rec-item.edit{flex-wrap:wrap;gap:6px}
+  .rec-item.edit .rec-time-input{width:62px;flex:none;text-align:center;padding:7px 5px;font-size:12.4px;font-variant-numeric:tabular-nums}
+  .rec-item.edit .rec-memo{flex:1 1 120px;min-width:100px;padding:7px 10px;font-size:12.4px}
+  .rec-item.edit .rec-btn{height:32px;padding:0 9px;font-size:11.6px}
+  .rec-mini{
+    flex:none;width:26px;height:26px;display:grid;place-items:center;
+    border:0;border-radius:7px;background:transparent;color:var(--muted);
+    font-family:inherit;font-size:12px;line-height:1;cursor:pointer;transition:.15s ease;
+  }
+  .rec-mini:hover{background:var(--bg-2);color:var(--ink)}
+  .rec-mini:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
   .form-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line-2);flex-wrap:wrap}
   .autosave{display:inline-flex;align-items:center;gap:6px;font-size:11.6px;color:var(--muted)}
   .autosave .dot{width:5px;height:5px;border-radius:50%;background:#9AB58A}
@@ -674,6 +801,27 @@
     .logo-row{gap:10px}
     .logo-thumb{width:42px;height:42px}
     .logo-info p{font-size:11.1px}
+    .rec-block{padding:11px;gap:9px}
+    .rec-head .hint{display:none}
+    .rec-drop{padding:9px 10px;gap:8px;flex-wrap:wrap;row-gap:8px}
+    .rec-drop .rec-drop-ico{display:none}
+    .rec-drop .rec-drop-txt{flex:1 1 100%}
+    .rec-drop .btn{margin-left:0}
+    .rec-drop .btn:first-of-type{margin-left:auto}
+    .rec-drop .rec-file-name{font-size:12px}
+    .rec-drop .rec-drop-hint{font-size:10.8px}
+    .rec-player{padding:10px}
+    .rec-ctl{gap:5px}
+    .rec-btn{height:32px;padding:0 9px;font-size:11.5px}
+    .rec-speeds{margin-left:0}
+    .rec-stamp{height:44px;font-size:13px}
+    .rec-tag{height:29px;padding:0 10px;font-size:11.4px}
+    .rec-manual{flex-wrap:nowrap;gap:5px}
+    .rec-manual .rec-time-input{width:55px;padding:9px 3px;font-size:12.4px}
+    .rec-manual .rec-memo{flex:1 1 auto;min-width:0;padding:9px 9px;font-size:12.2px}
+    .rec-manual .rec-btn{height:36px;flex:none;padding:0 10px;font-size:11.6px}
+    .rec-item-txt{font-size:12px}
+    .rec-jump{height:27px;font-size:11.4px;padding:0 8px}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition-duration:.001ms !important;animation-duration:.001ms !important}
@@ -836,6 +984,68 @@
               <input class="input" id="customTag" type="text" maxlength="20" placeholder="직접 입력 (예: 왼손 스타카토 정확)">
               <button class="btn" id="addTagBtn" type="button">추가</button>
             </div>
+          </div>
+        </div>
+
+        <!-- ── 녹음 들으며 시간 찍기 (연습 체크) ─────────────── -->
+        <div class="field rec-block" data-modes="lesson" id="recBlock">
+          <div class="rec-head">
+            <span class="label" id="recLabel">🎧 녹음 들으며 시간 찍기 <span class="opt">(선택)</span></span>
+            <span class="hint">카톡으로 받은 녹음·연주 영상을 바로 재생</span>
+          </div>
+          <div class="rec-panel">
+            <div class="rec-drop" id="recDrop" role="button" tabindex="0" aria-label="녹음 파일 올리기 — 클릭하거나 파일을 끌어다 놓으세요">
+              <span class="rec-drop-ico" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M4 8.5v3M7 6v8M10 4v12M13 6v8M16 8.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <span class="rec-drop-txt">
+                <span class="rec-file-name" id="recFileName">녹음 파일 올리기</span>
+                <span class="rec-drop-hint" id="recDropHint">m4a · mp3 · wav · 영상(mp4·mov) — 끌어다 놓아도 돼요. 서버 업로드 없이 바로 재생</span>
+              </span>
+              <button class="btn btn-sm btn-outline" id="recPick" type="button">파일 선택</button>
+              <button class="btn btn-sm btn-ghost" id="recRemove" type="button" hidden>빼기</button>
+            </div>
+            <input type="file" id="recInput" accept="audio/*,video/*,.m4a,.mp3,.wav,.ogg,.mp4,.mov,.webm" hidden>
+
+            <div class="rec-player" id="recPlayer" hidden>
+              <div class="rec-media" id="recMediaWrap"><video id="recMedia" playsinline preload="metadata"></video></div>
+              <div class="rec-bar">
+                <span class="rec-time" id="recNow">0:00</span>
+                <input class="rec-seek" id="recSeek" type="range" min="0" max="100" step="0.1" value="0" aria-label="재생 위치">
+                <span class="rec-time" id="recDur">0:00</span>
+              </div>
+              <div class="rec-ctl">
+                <button class="rec-btn" id="recPlay" type="button" aria-pressed="false"><span class="rec-btn-ico" aria-hidden="true">▶</span><span id="recPlayLabel">재생</span></button>
+                <button class="rec-btn" id="recBack5" type="button" aria-label="5초 뒤로">-5초</button>
+                <button class="rec-btn" id="recFwd5" type="button" aria-label="5초 앞으로">+5초</button>
+                <div class="rec-speeds" role="group" aria-label="재생 속도">
+                  <button class="rec-speed" type="button" data-rate="0.75" aria-pressed="false">0.75x</button>
+                  <button class="rec-speed is-on" type="button" data-rate="1" aria-pressed="true">1.0x</button>
+                  <button class="rec-speed" type="button" data-rate="1.25" aria-pressed="false">1.25x</button>
+                </div>
+              </div>
+            </div>
+
+            <button class="rec-stamp" id="stampBtn" type="button">
+              <span aria-hidden="true">📍</span>
+              <span id="stampBtnLabel">지금 시간 찍기</span>
+              <span class="rec-stamp-time" id="stampBtnTime">0:00</span>
+            </button>
+
+            <div class="rec-tags" id="stampTags" role="group" aria-label="빠른 태그"></div>
+
+            <div class="rec-manual">
+              <input class="input rec-time-input" id="stampTime" type="text" inputmode="numeric" maxlength="7" placeholder="0:00" aria-label="시간 (분:초)">
+              <input class="input rec-memo" id="stampMemo" type="text" maxlength="30" placeholder="한 줄 메모 (예: 왼손 미→파)" aria-label="타임스탬프 메모 (예: 왼손 미→파)">
+              <button class="rec-btn" id="stampAddBtn" type="button">추가</button>
+            </div>
+
+            <div class="rec-list-head">
+              <span class="rec-count" id="stampCount">0곳</span>
+              <span class="rec-hint">누르면 그 시간으로 점프해요 · 카드에는 최대 5곳</span>
+            </div>
+            <p class="rec-empty" id="stampEmpty">아직 찍은 시간이 없어요. 녹음을 들으며 틀린 곳에서 📍를 눌러 보세요.</p>
+            <ol class="rec-list" id="stampList" aria-label="찍은 시간 목록"></ol>
           </div>
         </div>
 
@@ -1141,6 +1351,7 @@
      ══════════════════════════════════════════════════════════ */
   var CARD_W = 1080, CARD_H = 1350, SS = 2;
   var CONTENT_BOTTOM = CARD_H - 134;
+  var STAMP_ROWS = 5;      // 카드에 담는 타임스탬프 최대 줄 수 (나머지는 "외 N곳")
 
   var SANS  = '"Noto Sans KR","Noto Sans CJK KR",system-ui,sans-serif';
   var SERIF = '"Noto Serif KR","Noto Serif CJK KR",serif';
@@ -1342,6 +1553,56 @@
   function headMeta(d) {
     if (d && d.headMeta != null) return d.headMeta;
     return metaLine(d || {});
+  }
+
+  /* ── 녹음 타임스탬프 ─────────────────────────────────────── */
+  // 초 → 'M:SS' (0:07 · 1:24 · 12:05)
+  function fmtStamp(sec) {
+    var s = Math.max(0, Math.floor(Number(sec) || 0));
+    var m = Math.floor(s / 60), ss = s % 60;
+    return m + ':' + (ss < 10 ? '0' : '') + ss;
+  }
+
+  // 카드에 그릴 타임스탬프 목록 (최대 STAMP_ROWS줄 + 나머지 개수)
+  function stampSet(d) {
+    var arr = (d && Array.isArray(d.stamps)) ? d.stamps : [];
+    var rows = [];
+    for (var i = 0; i < arr.length; i++) {
+      var it = arr[i] || {};
+      var sec = Number(it.sec);
+      if (!isFinite(sec) || sec < 0) sec = 0;
+      var txt = String(it.text == null ? '' : it.text).replace(/\s+/g, ' ').trim();
+      if (rows.length < STAMP_ROWS) rows.push({ time: fmtStamp(sec), text: txt, sec: sec });
+    }
+    return { rows: rows, more: Math.max(0, arr.length - rows.length) };
+  }
+
+  // 🎧 헤드폰 글리프 — 이모지 대신 벡터로 그려 테마·PNG 어디서나 선명하게
+  function drawHeadphone(ctx, cx, cy, r, color, lw) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = Math.max(1, lw || r * 0.22);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(cx, cy + r * 0.18, r * 0.62, Math.PI * 1.06, Math.PI * 1.94);
+    ctx.stroke();
+    var pw = r * 0.40, ph = r * 0.86;
+    roundRect(ctx, cx - r * 0.80, cy - r * 0.12, pw, ph, pw * 0.42);
+    ctx.fill();
+    roundRect(ctx, cx + r * 0.80 - pw, cy - r * 0.12, pw, ph, pw * 0.42);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // '연습 체크' 라벨에 붙는 작은 헤드폰 아이콘의 오른쪽 끝 x
+  function stampBadgeGeo(ctx, rows, font, padX, minW) {
+    ctx.save();
+    ctx.font = font;
+    var w = 0;
+    for (var i = 0; i < rows.length; i++) w = Math.max(w, ctx.measureText(rows[i].time).width);
+    ctx.restore();
+    return Math.max(w + padX * 2, minW);
   }
 
   /* 헤더용 로고 박스 (비율 유지·최대 폭 제한) */
@@ -1926,7 +2187,66 @@
       });
     }
 
-    // ── 03 연습 미션 (카드의 주인공) ──
+    // ── 연습 체크 (녹음 타임스탬프) ──
+    var st = stampSet(d);
+    if (st.rows.length) {
+      m.gap(cfg.gapBox, 1);
+      var sSeq = nextSeq();
+      var sSize = Math.round((t.mode === 'slate' ? 25 : t.mode === 'airy' ? 23 : 24) * sc);
+      var sBadgeFont = '700 ' + Math.round(21 * sc) + 'px ' + SANS;
+      var sBadgeW = stampBadgeGeo(ctx, st.rows, sBadgeFont, 13 * sc, 62 * sc);
+      var sBadgeH = Math.round(32 * sc), sRowGap = 10 * sc;
+      ctx.font = '400 ' + sSize + 'px ' + SANS;
+      st.rows.forEach(function (r) {
+        var w = wrapText(ctx, r.text, inW - sBadgeW - 14 * sc, 1);
+        r.line = w.lines[0] || '';
+        if (w.truncated) m.clip = true;
+      });
+      var sRowsH = st.rows.length * sBadgeH + (st.rows.length - 1) * sRowGap;
+      var sH = py * 2 + headH + headGap + sRowsH;
+      m.block(sH, function (y) {
+        cleanBox(ctx, t, cfg, bx, y, bw, sH, false, sc);
+        cleanBoxLabel(ctx, t, cfg, '연습 체크', sSeq, inX, y + py, sc, false);
+        ctx.save();
+        ctx.font = '700 ' + Math.round(15 * sc) + 'px ' + SANS;
+        var lw = trackedWidth(ctx, '연습 체크', 3.0 * sc);
+        drawHeadphone(ctx, inX + 27 * sc + lw + 13 * sc, y + py + 8 * sc, 9.2 * sc, t.accent, 2 * sc);
+        if (st.more) {
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'top';
+          ctx.font = '600 ' + Math.round(15 * sc) + 'px ' + SANS;
+          ctx.fillStyle = t.mode === 'poster' ? t.accent : t.soft;
+          ctx.fillText('외 ' + st.more + '곳', CARD_W - cfg.mx - px, y + py + 1 * sc);
+        }
+        ctx.restore();
+        var sry = y + py + headH + headGap;
+        ctx.save();
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'left';
+        st.rows.forEach(function (r, i) {
+          var cy = sry + i * (sBadgeH + sRowGap);
+          roundRect(ctx, inX, cy, sBadgeW, sBadgeH, Math.min(8 * sc, sBadgeH / 2));
+          ctx.fillStyle = t.mode === 'slate' ? t.missionFill : t.accentSoft;
+          ctx.fill();
+          ctx.strokeStyle = t.chipLine;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.font = sBadgeFont;
+          ctx.fillStyle = t.mode === 'slate' ? t.accent : (t.mode === 'poster' ? t.accent : t.ink);
+          ctx.textAlign = 'center';
+          ctx.fillText(r.time, inX + sBadgeW / 2, cy + sBadgeH / 2 + 1);
+          ctx.textAlign = 'left';
+          if (r.line) {
+            ctx.fillStyle = t.ink;
+            ctx.font = '400 ' + sSize + 'px ' + SANS;
+            ctx.fillText(r.line, inX + sBadgeW + 14 * sc, cy + sBadgeH / 2 + 1);
+          }
+        });
+        ctx.restore();
+      });
+    }
+
+    // ── 연습 미션 (카드의 주인공) ──
     if (d.mission) {
       m.gap(cfg.gapBox, 1);
       var mSeq = nextSeq();
@@ -2357,6 +2677,56 @@
       });
     }
 
+    // ── 연습 체크 (녹음 타임스탬프) ──
+    var st = stampSet(d);
+    if (st.rows.length) {
+      m.gap(22, 1);
+      var sSize = Math.round(24 * sc);
+      var sBadgeFont = '400 ' + Math.round(21 * sc) + 'px ' + JUA;
+      var sBadgeW = stampBadgeGeo(ctx, st.rows, sBadgeFont, 14 * sc, 64 * sc);
+      var sBadgeH = Math.round(33 * sc), sRowGap = 9 * sc;
+      ctx.font = '400 ' + sSize + 'px ' + DODUM;
+      st.rows.forEach(function (r) {
+        var w = wrapText(ctx, r.text, inW - sBadgeW - 16 * sc, 1);
+        r.line = w.lines[0] || '';
+        if (w.truncated) m.clip = true;
+      });
+      var sRowsH = st.rows.length * sBadgeH + (st.rows.length - 1) * sRowGap;
+      var sH = padY * 2 + sRowsH + (st.more ? 24 * sc : 0);
+      m.block(sH, function (y) {
+        cuteBox(ctx, t, bx, y, cw, sH, sc, '#FFFFFF', 2.4, t.frame);
+        cuteBoxPill(ctx, t, '연습 체크', inX, y - 19 * sc, sc, t.accentSoft, t.accent);
+        var sry = y + padY;
+        ctx.save();
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'left';
+        st.rows.forEach(function (r, i) {
+          var cy = sry + i * (sBadgeH + sRowGap);
+          roundRect(ctx, inX, cy, sBadgeW, sBadgeH, sBadgeH / 2);
+          ctx.fillStyle = t.pastel;
+          ctx.fill();
+          ctx.font = sBadgeFont;
+          ctx.fillStyle = t.chipInk;
+          ctx.textAlign = 'center';
+          ctx.fillText(r.time, inX + sBadgeW / 2, cy + sBadgeH / 2 + 1);
+          ctx.textAlign = 'left';
+          if (r.line) {
+            ctx.fillStyle = t.ink;
+            ctx.font = '400 ' + sSize + 'px ' + DODUM;
+            ctx.fillText(r.line, inX + sBadgeW + 16 * sc, cy + sBadgeH / 2 + 1);
+          }
+        });
+        if (st.more) {
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'top';
+          ctx.font = '400 ' + Math.round(19 * sc) + 'px ' + JUA;
+          ctx.fillStyle = t.soft;
+          ctx.fillText('외 ' + st.more + '곳', bx + cw - 24 * sc, sry + sRowsH + 2 * sc);
+        }
+        ctx.restore();
+      });
+    }
+
     // ── 이번 주 미션 (카드의 주인공) ──
     if (d.mission) {
       m.gap(26, 1);
@@ -2498,6 +2868,7 @@
   }
 
   function paintCuteFooter(ctx, t, sc) {
+
     var y = CARD_H - 104;
     ctx.save();
     ctx.strokeStyle = t.frame;
@@ -2692,6 +3063,34 @@
     ctx.restore();
   }
 
+  // Classic 세트의 '연습 체크' 라벨 — 금빛 라벨 양옆에 헤드폰 글리프
+  function luxStampLabel(ctx, t, y, sc) {
+    ctx.save();
+    ctx.textBaseline = 'top';
+    var text = '연습 체크';
+    var tr = 4.2 * sc;
+    ctx.font = '600 ' + Math.round(19 * sc) + 'px ' + SERIF;
+    var tw = trackedWidth(ctx, text, tr);
+    ctx.fillStyle = t.gold;
+    drawTracked(ctx, text, CARD_W / 2, y, tr, 'center');
+    var iconR = 9 * sc, gap = 9 * sc;
+    drawHeadphone(ctx, CARD_W / 2 - tw / 2 - gap - iconR, y + 10 * sc, iconR, t.gold, 1.8 * sc);
+    drawHeadphone(ctx, CARD_W / 2 + tw / 2 + gap + iconR, y + 10 * sc, iconR, t.gold, 1.8 * sc);
+    var ruleStart = tw / 2 + gap + iconR * 2 + 8 * sc;
+    var len = 52 * sc;
+    ctx.strokeStyle = t.line;
+    ctx.lineWidth = 1 * sc;
+    ctx.beginPath();
+    ctx.moveTo(CARD_W / 2 - ruleStart, y + 10 * sc);
+    ctx.lineTo(CARD_W / 2 - ruleStart - len, y + 10 * sc);
+    ctx.moveTo(CARD_W / 2 + ruleStart, y + 10 * sc);
+    ctx.lineTo(CARD_W / 2 + ruleStart + len, y + 10 * sc);
+    ctx.stroke();
+    drawDiamond(ctx, CARD_W / 2 - ruleStart - len - 7 * sc, y + 10 * sc, 3 * sc, t.gold);
+    drawDiamond(ctx, CARD_W / 2 + ruleStart + len + 7 * sc, y + 10 * sc, 3 * sc, t.gold);
+    ctx.restore();
+  }
+
   // Classic 세트의 네모칸 블럭 — 금빛 헤어라인 + 옅은 판
   function luxBlock(ctx, t, x, y, w, h, sc, strong) {
     ctx.save();
@@ -2860,6 +3259,61 @@
             px += item.w + gapX;
           });
         });
+        ctx.restore();
+      });
+    }
+
+    // ── 연습 체크 (녹음 타임스탬프) ──
+    var st = stampSet(d);
+    if (st.rows.length) {
+      m.gap(22, 1);
+      var sSize = Math.round(25 * sc);
+      var sBadgeFont = '600 ' + Math.round(21 * sc) + 'px ' + SERIF;
+      var sBadgeW = stampBadgeGeo(ctx, st.rows, sBadgeFont, 16 * sc, 70 * sc);
+      var sBadgeH = Math.round(32 * sc), sRowGap = 10 * sc;
+      var sInW = cw - boxPadX * 2;
+      ctx.font = '400 ' + sSize + 'px ' + SERIF;
+      st.rows.forEach(function (r) {
+        var w = wrapText(ctx, r.text, sInW - sBadgeW - 18 * sc, 1);
+        r.line = w.lines[0] || '';
+        if (w.truncated) m.clip = true;
+      });
+      var sRowsH = st.rows.length * sBadgeH + (st.rows.length - 1) * sRowGap;
+      var sBoxH = 20 * sc * 2 + sRowsH + (st.more ? 22 * sc : 0);
+      m.block(labelH + 8 * sc + sBoxH, function (y) {
+        luxStampLabel(ctx, t, y, sc);
+        var by = y + labelH + 8 * sc;
+        luxBlock(ctx, t, LUX_M, by, cw, sBoxH, sc, false);
+        var sry = by + 20 * sc;
+        ctx.save();
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'left';
+        st.rows.forEach(function (r, i) {
+          var cy = sry + i * (sBadgeH + sRowGap);
+          roundRect(ctx, LUX_M + boxPadX, cy, sBadgeW, sBadgeH, 1.5 * sc);
+          ctx.fillStyle = t.panel;
+          ctx.fill();
+          ctx.strokeStyle = t.line;
+          ctx.lineWidth = 1 * sc;
+          ctx.stroke();
+          ctx.font = sBadgeFont;
+          ctx.fillStyle = t.gold;
+          ctx.textAlign = 'center';
+          ctx.fillText(r.time, LUX_M + boxPadX + sBadgeW / 2, cy + sBadgeH / 2 + 1);
+          ctx.textAlign = 'left';
+          if (r.line) {
+            ctx.fillStyle = t.ink;
+            ctx.font = '400 ' + sSize + 'px ' + SERIF;
+            ctx.fillText(r.line, LUX_M + boxPadX + sBadgeW + 18 * sc, cy + sBadgeH / 2 + 1);
+          }
+        });
+        if (st.more) {
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'top';
+          ctx.font = '500 ' + Math.round(20 * sc) + 'px ' + SERIF;
+          ctx.fillStyle = t.soft;
+          ctx.fillText('외 ' + st.more + '곳', LUX_M + cw - boxPadX, sry + sRowsH + 3 * sc);
+        }
         ctx.restore();
       });
     }
@@ -5328,6 +5782,7 @@
     themeBySet: { clean: 'linen', cute: 'blush', chic: 'sage' },
     subject: 'piano',
     tags: [],
+    stamps: [],
     usage: 0,
     lastLayout: null,
     fontReady: false,
@@ -5373,6 +5828,7 @@
       session: v('session'),
       piece: v('piece'),
       tags: state.tags.slice(0, MAX_TAGS),
+      stamps: state.stamps.map(function (s) { return { sec: s.sec, text: s.text }; }),
       mission: v('mission'),
       note: v('note'),
       // ── 레슨비 정산 ──
@@ -5771,6 +6227,10 @@
     if (all || Object.prototype.hasOwnProperty.call(d, 'tags')) {
       state.tags = (d.tags || []).slice(0, MAX_TAGS);
     }
+    if (all || Object.prototype.hasOwnProperty.call(d, 'stamps')) {
+      state.stamps = sanitizeStamps(d.stamps);
+      renderStampList();
+    }
     renderChips();
     syncNotePresetState();
     syncPresetStates();
@@ -5919,6 +6379,7 @@
     }
     var prevSession = rec.session || '';
     var nextSession = bumpSession(prevSession);
+    if (rec.hasMedia) clearRecFile(true);
     applyData({
       studio: rec.studio || els.studio.value,
       teacher: rec.teacher || els.teacher.value,
@@ -5927,6 +6388,7 @@
       session: nextSession,
       piece: rec.piece,
       tags: rec.tags.slice(),
+      stamps: [],
       mission: rec.mission,
       note: rec.note
     });
@@ -5961,9 +6423,10 @@
 
   function startNewStudent() {
     state.activeStudent = '';
+    if (rec.hasMedia) clearRecFile(true);
     applyData({
       studio: els.studio.value, teacher: els.teacher.value,
-      date: todayISO(), student: '', session: '', piece: '', tags: [], mission: '', note: ''
+      date: todayISO(), student: '', session: '', piece: '', tags: [], stamps: [], mission: '', note: ''
     });
     renderStudentChips();
     if (els.student.focus) els.student.focus();
@@ -6118,6 +6581,440 @@
       els.logoRemove.hidden = true;
       els.logoPick.textContent = '로고 올리기';
     }
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     3-3. 녹음 들으며 시간 찍기 — 연습 체크 타임스탬프
+        파일은 서버로 보내지 않고 URL.createObjectURL 로 브라우저 안에서만 재생한다.
+     ══════════════════════════════════════════════════════════ */
+  var REC_TAGS = ['음정 틀림', '박자 밀림', '왼손 주의', '페달', '강약'];
+  var STAMP_MAX_CHARS = 30;
+  var MAX_STAMPS = 20;
+  var rec = { url: null, hasMedia: false, rate: 1, seeking: false };
+
+  // '1:24' · '84' → 초. 형식이 아니면 null
+  function parseStampTime(str) {
+    var s = String(str == null ? '' : str).trim();
+    if (!s) return null;
+    var m = s.match(/^(\d{1,3})\s*:\s*(\d{1,2})$/);
+    if (m) return parseInt(m[1], 10) * 60 + Math.min(59, parseInt(m[2], 10));
+    if (/^\d{1,4}(\.\d+)?$/.test(s)) return parseFloat(s);
+    return null;
+  }
+
+  function sanitizeStamps(arr) {
+    if (!Array.isArray(arr)) return [];
+    var out = [];
+    arr.forEach(function (it) {
+      if (!it || typeof it !== 'object') return;
+      var sec = Number(it.sec);
+      if (!isFinite(sec) || sec < 0) sec = 0;
+      var text = String(it.text == null ? '' : it.text).replace(/\s+/g, ' ').trim().slice(0, STAMP_MAX_CHARS);
+      out.push({ sec: Math.floor(sec), text: text });
+    });
+    out.sort(function (a, b) { return a.sec - b.sec; });
+    return out.slice(0, MAX_STAMPS);
+  }
+
+  function recTimeNow() {
+    var media = els.recMedia;
+    if (rec.hasMedia && media && isFinite(media.currentTime)) return media.currentTime;
+    var typed = parseStampTime(els.stampTime.value);
+    return typed == null ? 0 : typed;
+  }
+
+  function setStampInput(sec) {
+    if (els.stampTime) els.stampTime.value = fmtStamp(sec);
+  }
+
+  function syncStampChips() {
+    if (!els.stampTags) return;
+    var memo = String(els.stampMemo.value || '').trim();
+    Array.prototype.forEach.call(els.stampTags.children, function (b) {
+      var on = b.getAttribute('data-tag') === memo;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function syncStampUI() {
+    if (!els.stampCount) return;
+    var n = state.stamps.length;
+    els.stampCount.textContent = n + '곳';
+    els.stampEmpty.hidden = n > 0;
+    var hasMedia = rec.hasMedia;
+    els.stampBtnLabel.textContent = hasMedia ? '지금 시간 찍기' : '적은 시간으로 추가';
+    els.stampBtnTime.textContent = fmtStamp(hasMedia ? recTimeNow() : (parseStampTime(els.stampTime.value) || 0));
+  }
+
+  function addStamp(secs, text) {
+    if (state.stamps.length >= MAX_STAMPS) {
+      toast('타임스탬프는 ' + MAX_STAMPS + '곳까지 찍을 수 있어요');
+      return;
+    }
+    var sec = Math.max(0, Math.floor(Number(secs) || 0));
+    var memo = String(text == null ? '' : text).replace(/\s+/g, ' ').trim().slice(0, STAMP_MAX_CHARS);
+    state.stamps.push({ sec: sec, text: memo });
+    state.stamps.sort(function (a, b) { return a.sec - b.sec; });
+    els.stampMemo.value = '';
+    syncStampChips();
+    setStampInput(sec);
+    renderStampList();
+    scheduleRender(true);
+    saveDraft();
+    if (!memo) toast(fmtStamp(sec) + '를 찍었어요 · 목록에서 메모를 붙여 보세요');
+  }
+
+  function captureStamp() {
+    addStamp(recTimeNow(), els.stampMemo.value);
+  }
+
+  function addTypedStamp() {
+    var typed = parseStampTime(els.stampTime.value);
+    if (typed == null) {
+      toast('시간은 0:24 처럼 분:초로 적어 주세요');
+      els.stampTime.focus();
+      return;
+    }
+    addStamp(typed, els.stampMemo.value);
+  }
+
+  function jumpTo(sec) {
+    if (!rec.hasMedia || !els.recMedia) {
+      toast('녹음 파일을 먼저 올려 주세요');
+      return;
+    }
+    var dur = els.recMedia.duration;
+    els.recMedia.currentTime = isFinite(dur) ? Math.min(sec, Math.max(0, dur - 0.05)) : sec;
+    var p = els.recMedia.play();
+    if (p && typeof p.catch === 'function') p.catch(function () {});
+    els.recPlayer.scrollIntoView && els.recPlayer.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function renderStampList() {
+    var list = els.stampList;
+    if (!list) return;
+    list.innerHTML = '';
+    state.stamps.forEach(function (st, i) {
+      var li = document.createElement('li');
+      li.className = 'rec-item';
+
+      var jump = document.createElement('button');
+      jump.type = 'button';
+      jump.className = 'rec-jump';
+      jump.setAttribute('aria-label', fmtStamp(st.sec) + '로 이동해 재생');
+      var ico = document.createElement('span');
+      ico.className = 'rec-jump-ico';
+      ico.setAttribute('aria-hidden', 'true');
+      ico.textContent = '▶';
+      jump.appendChild(ico);
+      var tm = document.createElement('span');
+      tm.textContent = fmtStamp(st.sec);
+      jump.appendChild(tm);
+      jump.addEventListener('click', function () { jumpTo(st.sec); });
+
+      var txt = document.createElement('button');
+      txt.type = 'button';
+      txt.className = 'rec-item-txt' + (st.text ? '' : ' is-empty');
+      txt.textContent = st.text || '메모 추가';
+      txt.setAttribute('aria-label', fmtStamp(st.sec) + ' 타임스탬프 수정');
+      txt.addEventListener('click', function () { startStampEdit(i); });
+
+      var edit = document.createElement('button');
+      edit.type = 'button';
+      edit.className = 'rec-mini';
+      edit.setAttribute('aria-label', fmtStamp(st.sec) + ' 수정');
+      edit.setAttribute('title', '수정');
+      edit.textContent = '✎';
+      edit.addEventListener('click', function () { startStampEdit(i); });
+
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'rec-mini';
+      del.setAttribute('aria-label', fmtStamp(st.sec) + ' 삭제');
+      del.setAttribute('title', '삭제');
+      del.textContent = '×';
+      del.addEventListener('click', function () { removeStamp(i); });
+
+      li.appendChild(jump);
+      li.appendChild(txt);
+      li.appendChild(edit);
+      li.appendChild(del);
+      list.appendChild(li);
+    });
+    syncStampUI();
+  }
+
+  function startStampEdit(i) {
+    var st = state.stamps[i];
+    var li = els.stampList.children[i];
+    if (!st || !li) return;
+    li.innerHTML = '';
+    li.classList.add('edit');
+
+    var time = document.createElement('input');
+    time.className = 'input rec-time-input';
+    time.type = 'text';
+    time.maxLength = 7;
+    time.value = fmtStamp(st.sec);
+    time.setAttribute('aria-label', '시간 (분:초)');
+
+    var memo = document.createElement('input');
+    memo.className = 'input rec-memo';
+    memo.type = 'text';
+    memo.maxLength = STAMP_MAX_CHARS;
+    memo.value = st.text;
+    memo.placeholder = '한 줄 메모';
+    memo.setAttribute('aria-label', '타임스탬프 메모');
+
+    var save = document.createElement('button');
+    save.type = 'button';
+    save.className = 'rec-btn';
+    save.textContent = '저장';
+
+    var cancel = document.createElement('button');
+    cancel.type = 'button';
+    cancel.className = 'rec-btn';
+    cancel.textContent = '취소';
+
+    function commit() {
+      var sec = parseStampTime(time.value);
+      if (sec == null) {
+        toast('시간은 0:24 처럼 분:초로 적어 주세요');
+        time.focus();
+        return;
+      }
+      st.sec = Math.max(0, Math.floor(sec));
+      st.text = String(memo.value || '').replace(/\s+/g, ' ').trim().slice(0, STAMP_MAX_CHARS);
+      state.stamps.sort(function (a, b) { return a.sec - b.sec; });
+      renderStampList();
+      scheduleRender(true);
+      saveDraft();
+    }
+
+    save.addEventListener('click', commit);
+    cancel.addEventListener('click', function () { renderStampList(); });
+    time.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') { ev.preventDefault(); memo.focus(); }
+      if (ev.key === 'Escape') renderStampList();
+    });
+    memo.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') { ev.preventDefault(); commit(); }
+      if (ev.key === 'Escape') renderStampList();
+    });
+
+    li.appendChild(time);
+    li.appendChild(memo);
+    li.appendChild(save);
+    li.appendChild(cancel);
+    time.focus();
+    time.select && time.select();
+  }
+
+  function removeStamp(i) {
+    var st = state.stamps[i];
+    if (!st) return;
+    state.stamps.splice(i, 1);
+    renderStampList();
+    scheduleRender(true);
+    saveDraft();
+    toast(fmtStamp(st.sec) + ' 타임스탬프를 지웠어요', {
+      label: '되돌리기',
+      run: function () {
+        state.stamps.push(st);
+        state.stamps.sort(function (a, b) { return a.sec - b.sec; });
+        renderStampList();
+        scheduleRender(true);
+        saveDraft();
+      }
+    });
+  }
+
+  /* ── 파일 재생 ── */
+  function clearRecFile(silent) {
+    var media = els.recMedia;
+    if (media) {
+      try { media.pause(); } catch (e) {}
+      media.removeAttribute('src');
+      try { media.load(); } catch (e) {}
+    }
+    if (rec.url) {
+      try { URL.revokeObjectURL(rec.url); } catch (e) {}
+      rec.url = null;
+    }
+    rec.hasMedia = false;
+    els.recPlayer.hidden = true;
+    els.recMediaWrap.classList.remove('is-video');
+    els.recRemove.hidden = true;
+    els.recFileName.textContent = '녹음 파일 올리기';
+    els.recDropHint.textContent = 'm4a · mp3 · wav · 영상(mp4·mov) — 끌어다 놓아도 돼요. 서버 업로드 없이 바로 재생';
+    els.recNow.textContent = '0:00';
+    els.recDur.textContent = '0:00';
+    els.recSeek.value = 0;
+    setPlayState(false);
+    syncStampUI();
+    if (!silent) toast('녹음 파일을 뺐어요 · 찍은 시간은 그대로 남아 있어요');
+  }
+
+  function setPlayState(playing) {
+    els.recPlay.setAttribute('aria-pressed', playing ? 'true' : 'false');
+    els.recPlay.querySelector('.rec-btn-ico').textContent = playing ? '❚❚' : '▶';
+    els.recPlayLabel.textContent = playing ? '일시정지' : '재생';
+  }
+
+  function loadRecFile(file) {
+    if (!file) return;
+    var okType = /^(audio|video)\//i.test(file.type || '') || /\.(m4a|mp3|wav|ogg|oga|aac|flac|mp4|mov|m4v|webm)$/i.test(file.name || '');
+    if (!okType) {
+      toast('녹음(m4a·mp3·wav)이나 연주 영상(mp4·mov) 파일만 올릴 수 있어요');
+      return;
+    }
+    clearRecFile(true);
+    var isVideo = /^video\//i.test(file.type || '') || /\.(mp4|mov|m4v|webm)$/i.test(file.name || '');
+    rec.url = URL.createObjectURL(file);
+    rec.hasMedia = true;
+    els.recMedia.src = rec.url;
+    els.recMedia.playbackRate = rec.rate;
+    els.recMediaWrap.classList.toggle('is-video', isVideo);
+    els.recPlayer.hidden = false;
+    els.recRemove.hidden = false;
+    els.recFileName.textContent = file.name || '녹음 파일';
+    var mb = file.size ? (file.size / (1024 * 1024)).toFixed(1) + 'MB · ' : '';
+    els.recDropHint.textContent = mb + (isVideo ? '연주 영상' : '녹음') + ' · 서버 업로드 없이 재생';
+    setPlayState(false);
+    syncStampUI();
+    toast('파일을 열었어요 · ▶로 재생하며 📍를 눌러 보세요');
+  }
+
+  function applyRate(rate) {
+    rec.rate = rate;
+    if (els.recMedia && rec.hasMedia) els.recMedia.playbackRate = rate;
+    Array.prototype.forEach.call(document.querySelectorAll('.rec-speed'), function (b) {
+      var on = parseFloat(b.getAttribute('data-rate')) === rate;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function setupRecorder() {
+    if (!els.recDrop) return;
+
+    REC_TAGS.forEach(function (tag) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'rec-tag';
+      b.setAttribute('data-tag', tag);
+      b.setAttribute('aria-pressed', 'false');
+      b.textContent = tag;
+      b.addEventListener('click', function () {
+        var on = String(els.stampMemo.value || '').trim() === tag;
+        els.stampMemo.value = on ? '' : tag;
+        syncStampChips();
+        els.stampMemo.focus();
+      });
+      els.stampTags.appendChild(b);
+    });
+
+    function openPicker() { els.recInput.click(); }
+    els.recPick.addEventListener('click', function (ev) { ev.stopPropagation(); openPicker(); });
+    els.recDrop.addEventListener('click', function (ev) {
+      if (ev.target === els.recPick || ev.target === els.recRemove || els.recRemove.contains(ev.target) || els.recPick.contains(ev.target)) return;
+      openPicker();
+    });
+    els.recDrop.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openPicker(); }
+    });
+    els.recInput.addEventListener('change', function () {
+      var f = els.recInput.files && els.recInput.files[0];
+      if (f) loadRecFile(f);
+      els.recInput.value = '';
+    });
+    ['dragenter', 'dragover'].forEach(function (evName) {
+      els.recDrop.addEventListener(evName, function (ev) {
+        ev.preventDefault();
+        els.recDrop.classList.add('is-over');
+      });
+    });
+    ['dragleave', 'dragend'].forEach(function (evName) {
+      els.recDrop.addEventListener(evName, function () { els.recDrop.classList.remove('is-over'); });
+    });
+    els.recDrop.addEventListener('drop', function (ev) {
+      ev.preventDefault();
+      els.recDrop.classList.remove('is-over');
+      var f = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0];
+      if (f) loadRecFile(f);
+    });
+    els.recRemove.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      clearRecFile(false);
+    });
+
+    var media = els.recMedia;
+    media.addEventListener('loadedmetadata', function () {
+      var dur = media.duration;
+      els.recDur.textContent = isFinite(dur) ? fmtStamp(dur) : '--:--';
+      els.recSeek.max = isFinite(dur) ? dur : 100;
+      syncStampUI();
+    });
+    media.addEventListener('timeupdate', function () {
+      if (!rec.seeking) {
+        els.recNow.textContent = fmtStamp(media.currentTime);
+        els.recSeek.value = media.currentTime;
+      }
+      syncStampUI();
+    });
+    media.addEventListener('play', function () { setPlayState(true); });
+    media.addEventListener('pause', function () { setPlayState(false); });
+    media.addEventListener('ended', function () { setPlayState(false); });
+    media.addEventListener('error', function () {
+      if (rec.hasMedia) toast('이 파일은 브라우저에서 재생할 수 없어요. 다른 형식으로 다시 올려 주세요');
+    });
+    els.recSeek.addEventListener('input', function () {
+      rec.seeking = true;
+      els.recNow.textContent = fmtStamp(els.recSeek.value);
+    });
+    els.recSeek.addEventListener('change', function () {
+      if (rec.hasMedia) els.recMedia.currentTime = parseFloat(els.recSeek.value) || 0;
+      rec.seeking = false;
+    });
+
+    els.recPlay.addEventListener('click', function () {
+      if (!rec.hasMedia) { toast('녹음 파일을 먼저 올려 주세요'); return; }
+      if (els.recMedia.paused) {
+        var p = els.recMedia.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+      } else {
+        els.recMedia.pause();
+      }
+    });
+    function nudge(delta) {
+      if (!rec.hasMedia) { toast('녹음 파일을 먼저 올려 주세요'); return; }
+      var dur = els.recMedia.duration;
+      var t = els.recMedia.currentTime + delta;
+      if (isFinite(dur)) t = Math.max(0, Math.min(t, dur));
+      els.recMedia.currentTime = Math.max(0, t);
+    }
+    els.recBack5.addEventListener('click', function () { nudge(-5); });
+    els.recFwd5.addEventListener('click', function () { nudge(5); });
+    Array.prototype.forEach.call(document.querySelectorAll('.rec-speed'), function (b) {
+      b.addEventListener('click', function () { applyRate(parseFloat(b.getAttribute('data-rate')) || 1); });
+    });
+
+    els.stampBtn.addEventListener('click', captureStamp);
+    els.stampAddBtn.addEventListener('click', addTypedStamp);
+    els.stampMemo.addEventListener('input', syncStampChips);
+    els.stampMemo.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') { ev.preventDefault(); captureStamp(); }
+    });
+    els.stampTime.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') { ev.preventDefault(); addTypedStamp(); }
+    });
+    els.stampTime.addEventListener('input', function () {
+      if (!rec.hasMedia) syncStampUI();
+    });
+
+    applyRate(1);
+    syncStampUI();
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -6590,7 +7487,11 @@
      'billNote', 'billPresets', 'billDatesCount', 'billNoteCount',
      'recitalTitle', 'recitalSub', 'recitalWhen', 'recitalWhere', 'recitalProgram',
      'recitalNote', 'recitalPresets', 'programCount', 'recitalNoteCount',
-     'formTitle', 'formSub', 'studentHint', 'studentsHint'].forEach(function (k) {
+     'formTitle', 'formSub', 'studentHint', 'studentsHint',
+     'recBlock', 'recDrop', 'recInput', 'recPick', 'recRemove', 'recFileName', 'recDropHint',
+     'recPlayer', 'recMedia', 'recMediaWrap', 'recNow', 'recDur', 'recSeek', 'recPlay', 'recPlayLabel',
+     'recBack5', 'recFwd5', 'stampBtn', 'stampBtnLabel', 'stampBtnTime', 'stampTags',
+     'stampTime', 'stampMemo', 'stampAddBtn', 'stampList', 'stampCount', 'stampEmpty'].forEach(function (k) {
       els[k] = document.getElementById(k);
     });
 
@@ -6676,6 +7577,7 @@
 
     els.exampleBtn.addEventListener('click', function () { fillExample(true); });
     els.resetBtn.addEventListener('click', function () {
+      if (rec.hasMedia) clearRecFile(true);
       applyData({ date: todayISO() }, { reset: true });
       els.autosaveText.textContent = '새 카드로 비웠어요';
       toast('입력을 비웠어요');
@@ -6725,6 +7627,8 @@
       state.fontReady = true;
       scheduleRender(true);
     });
+
+    setupRecorder();
   }
 
   function init() {
@@ -6851,6 +7755,8 @@
       download: downloadCard,
       copyText: buildShareText,
       state: state,
+      stamps: function () { return state.stamps.slice(); },
+      addStamp: addStamp,
       themes: THEMES,
       themeSets: THEME_SETS,
       themeLabels: THEME_LABELS,
