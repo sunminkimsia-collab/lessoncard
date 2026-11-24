@@ -392,7 +392,7 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 검증 — 넘침·잘림 | 9테마 × 타임스탬프 3곳: 넘침 0·잘림 0(스케일 0.820~0.955) · 9테마 × 5곳 + 극단 본문(14자 이름·70자 곡·4태그·120자 미션·110자 한마디): 넘침 0·잘림 0(0.640~0.775) · 콘솔 에러 **0건** |
 | 검증 — 모바일 | 390×844: 가로 오버플로 0, 녹음 패널 332px 폭에 맞춤, 파일 올리기→찍기→목록까지 동작, 카드 캔버스 2160×2700 유지. 드롭존·직접 입력 줄을 모바일에서 세로로 풀어 씀 |
 | 미리보기 | `preview-v12-timestamp.png` (9테마 · 같은 3곳) · 카드 원본 `tests/shots/v12-cards/` · 결과 `tests/shots/v12-report.json` · 화면 `tests/shots/v12-desktop-recorder.png`, `v12-mobile-recorder(-filled).png` |
-| 배포 | 커밋 `6fc08d5` push · `https://lessoncard.kr/index.html` HTTP **200**, 배포본 `index.html` MD5(`bcf3f02c…`) 저장소와 일치 · 배포본에서 9테마 `연습 체크` 블럭·`0:24` 배지 렌더 + 넘침/잘림 0, 정산·발표회에서 녹음 섹션 숨김, 콘솔 에러 **0** · `tests/verify-live-v12.py` · 결과 `tests/shots/v12-live-report.json` · `CNAME`(`lessoncard.kr`) 유지 |
+| 배포 | 커밋 `fa494bb` push · `https://lessoncard.kr/index.html` HTTP **200**, 배포본 `index.html` MD5(`43ab2a38…`) 저장소와 일치 · 배포본에서 9테마 `연습 체크` 블럭·`0:24` 배지 렌더 + 넘침/잘림 0, 정산·발표회에서 녹음 섹션 숨김, 콘솔 에러 **0** · `tests/verify-live-v12.py` · 결과 `tests/shots/v12-live-report.json` · `CNAME`(`lessoncard.kr`) 유지 |
 
 ---
 
