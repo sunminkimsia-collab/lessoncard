@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lessoncard.kr/sitemap.xml
