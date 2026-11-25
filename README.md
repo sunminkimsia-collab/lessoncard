@@ -457,7 +457,8 @@ Playwright(Chromium)로 실제 브라우저에서 확인했습니다.
 | 결제 서버 | `serverless/confirm.js` — Cloudflare Worker 단일 파일. `PRICES`(4,900/49,000) 기준으로 **금액·주문번호·결제상태 재검증**, 중복 승인 시 결제 조회로 **같은 코드 재발급**, 이용권 코드는 `LICENSE_SECRET`(없으면 `TOSS_SECRET_KEY`에서 유도) HMAC 서명. CORS는 `https://lessoncard.kr`만 허용. Vercel 어댑터 동봉 |
 | 유료 전환 대비 | `BETA_OPEN=false`로 바꾸면 신규 방문자는 Free(월 3장). 기존 베타 사용자는 `BETA_GRACE_UNTIL`(기본 2027-02-28)까지 Pro로 자동 유지 — 체험 중인 원장님이 갑자기 잠기지 않게 |
 | 검증 | `tests/test-v15-toss.py` — ① 로컬 원본(OFF): 모달 텍스트가 라이브 v14 스냅샷과 **완전 일치**, 결제 버튼 → 기존 준비 안내, VIP 코드 → Pro, 새 블록 숨김, 4모드×9테마 36회 넘침 0, 모바일 가로 넘침 0, 콘솔 에러 0 ② ON 사본: 요청 파라미터(금액 49,000·주문번호 `lc-yearly-`·successUrl), 성공 리다이렉트 → Pro·`Pro · 30일 남음`·코드 표시·주소 정리·새로고침 유지, 코드 복원(소문자·하이픈), 실패 리다이렉트 안내, 기간 만료 → 베타 복귀, VIP 평생 Pro, `BETA_OPEN=false` 시 신규 Free·베타 사용자 유예, 모바일 성공 화면 ③ `tests/test-v15-serverless.py` — 실제 `confirm.js`를 브라우저에서 실행해 health·CORS·승인 성공/금액 조작 거부/주문 위조 거부/카드 거절·중복 승인 재발급·코드 검증·서명 변조 거부·만료일 변조 거부·preflight·404 전 항목 통과 |
-| 미리보기 | `tests/shots/v15-live-desktop-modal.png`·`v15-live-mobile-modal.png`·`v15-on-success.png`·`v15-on-license-block.png`·`v15-on-mobile-success.png`·`v15-desktop-modal.png` |
+| 미리보기 | `tests/shots/v15-live-desktop-modal.png`·`v15-live-mobile-modal.png`·`v15-on-success.png`·`v15-on-license-block.png`·`v15-on-mobile-success.png` · 결과 JSON `v15-report-live.json`·`v15-report-local.json`·`v15-serverless-report.json` (변경 전 기준선 `v15-baseline-live.json`) |
+| 배포 | 커밋 `4ac1823`(본체)·`e1d3641`(결과 박스 정리) push · `https://lessoncard.kr/` HTTP **200**, 배포본 MD5 `ab2d867eb9ac31f24afbdfffee202a9e` 저장소와 일치 · `CNAME`·`robots.txt`·`sitemap.xml` 유지 · **모달 텍스트가 변경 전 라이브와 완전 일치**, 콘솔 에러 **0**, 결제 결과·이용권 코드 블록 숨김 확인 |
 | 남은 일 | 이용권 코드 이메일 발송(메일 서비스 필요) · 환불/취소 API · 토스 웹훅 · 정기결제 · 서버 요청 제한 — `serverless/README.md` 참고 |
 
 ---
