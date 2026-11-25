@@ -8861,6 +8861,8 @@
   var lastFocused = null;
   function openModal() {
     lastFocused = document.activeElement;
+    var stale = document.getElementById('tossResult');   // 지난 결제 결과는 모달을 다시 열 때 지운다
+    if (stale) stale.hidden = true;
     els.modal.classList.add('is-open');
     els.modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
