@@ -805,6 +805,21 @@
   .free-continue:hover{color:var(--ink-2)}
   .plan-badge.is-pro{background:var(--gold-soft);border-color:var(--gold-line);color:var(--gold-deep)}
   .plan-badge.is-pro .dot{background:var(--gold-deep)}
+  /* ── 결제 결과 · 이용권 코드 (결제 연결 후에만 보인다) ────────── */
+  .toss-result.is-ok{background:#F1F8F2;border-color:rgba(44,106,69,.34)}
+  .toss-result.is-ok b{color:#2C6A45}
+  .toss-result.is-err{background:#FDF3F0;border-color:rgba(168,69,47,.32)}
+  .toss-result.is-err b{color:#A8452F}
+  .lic-code{
+    display:block;margin-top:7px;padding:8px 10px;border-radius:9px;background:#fff;
+    border:1px dashed var(--gold-line);font-family:var(--font-latin);font-size:13px;
+    letter-spacing:.06em;word-break:break-all;color:var(--gold-deep);
+    -webkit-user-select:all;user-select:all;
+  }
+  .lic-row{display:flex;gap:8px;margin-top:6px}
+  .lic-row .btn{height:34px;padding:0 12px;font-size:11.5px;flex:none}
+  .lic-note{margin:6px 0 0;font-size:11px;line-height:1.55;color:var(--muted)}
+  #licenseBlock{border-top:0;padding-top:0;margin-top:2px}
 
   /* ── 약관 모달 ───────────────────────────────────────────── */
   .modal-card.legal-card{max-width:620px;padding:26px 26px 20px;overflow:hidden;display:flex;flex-direction:column}
@@ -1526,6 +1541,17 @@
     <p class="lede">무료로 3장을 만들어 보셨다면, Pro에서는 이용 기간 내내 무제한으로 저장하고 보낼 수 있어요.</p>
     <p class="pro-status" id="proStatus"></p>
 
+    <!-- 결제 결과 (TOSS_LIVE_ENABLED = true 일 때만 채워진다 · 지금은 늘 hidden) -->
+    <div class="pay-notice toss-result" id="tossResult" role="status" hidden>
+      <b id="tossResultTitle"></b>
+      <p id="tossResultBody"></p>
+      <div id="tossLicenseWrap" hidden>
+        <code class="lic-code" id="tossLicense"></code>
+        <div class="lic-row"><button class="btn" type="button" id="tossCopy">이용권 코드 복사</button></div>
+        <p class="lic-note">폰을 바꾸거나 다른 PC에서 쓰실 때 이 코드를 넣으면 Pro가 열립니다. 꼭 저장해 두세요.</p>
+      </div>
+    </div>
+
     <div class="plan-box" id="planFreeBox">
       <div class="plan-head"><span class="plan-name">Free</span><span class="plan-note">계속 무료</span></div>
       <div class="plan-line"><span class="plan-amount">0원</span></div>
@@ -1547,8 +1573,8 @@
         <li>학원 로고 업로드</li>
         <li>학생 기록 · 자주 쓰는 문구 저장</li>
       </ul>
-      <!-- 결제 연결 지점: 토스페이먼츠 SDK 연동 시 아래 두 버튼의 click 핸들러를
-           requestPayment({ amount, orderId, orderName }) 호출로 교체하면 됩니다. -->
+      <!-- 결제 버튼: 스크립트 상단 TOSS_LIVE_ENABLED = true 로 바꾸면 이 버튼이 토스 결제창을 엽니다.
+           서버 주소는 TOSS_API_BASE (serverless/confirm.js), 클라이언트 키는 TOSS_CLIENT_KEY. -->
       <div class="buy-list">
         <button class="buy-btn" type="button" data-checkout="monthly" data-toss-plan="lessoncard-pro-monthly" data-toss-amount="4900">
           <span class="buy-term">1개월 이용권</span>
@@ -1566,6 +1592,21 @@
       <b>결제 연결을 준비하고 있어요</b>
       <p>토스페이먼츠 카드·카카오페이 결제를 붙이는 중이라 아직 결제창이 열리지 않아요. 준비가 끝나면 위 버튼에서 바로 결제할 수 있습니다.</p>
       <p class="pay-picked" id="payPicked"></p>
+    </div>
+
+    <!-- 이용권 코드 복원 — 결제 연결 후에만 보인다(지금은 hidden) -->
+    <div class="vip-block" id="licenseBlock" hidden>
+      <button class="vip-toggle" id="licenseToggle" type="button" aria-expanded="false" aria-controls="licensePanel">
+        <span>이용권 코드로 Pro 복원</span>
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.8 6.2 4.2 4.2 4.2-4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="vip-panel" id="licensePanel" hidden>
+        <div class="vip-row">
+          <input class="input vip-input" id="licenseInput" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="이용권 코드 입력" aria-label="이용권 코드">
+          <button class="btn btn-primary" id="licenseApply" type="button">적용</button>
+        </div>
+        <p class="vip-msg" id="licenseMsg" role="status"></p>
+      </div>
     </div>
 
     <div class="vip-block">
@@ -6546,8 +6587,23 @@
   /* 요금제 — 유료 출시 전 베타 기간에는 Pro 기능을 모두 개방한다(기존 베타 사용자 보호).
      유료를 열 때 BETA_OPEN = false 로 바꾸면 처음 온 사람은 Free(월 3장)로 시작한다. */
   var BETA_OPEN = true;
+  /* 유료 전환(BETA_OPEN = false)할 때, 지금까지 무료로 써 온 베타 사용자를 갑자기 잠그지 않도록
+     이 날짜까지 Pro를 열어 준다. 빈 문자열('')로 두면 베타 사용자도 바로 Free로 내려간다. */
+  var BETA_GRACE_UNTIL = '2027-02-28T23:59:59+09:00';
   var PLAN_BETA = 'beta', PLAN_PRO = 'pro', PLAN_FREE = 'free';
   var VIP_CODES = ['LESSONVIP', 'FRIEND2026'];   // 지인 베타 테스터용 평생 Pro 코드
+
+  /* ── 토스페이먼츠 결제 — 심사 통과 전에는 전부 꺼 둔다 ─────────────
+     켜는 방법은 serverless/README.md 참고. 아래 세 줄만 채우면 결제가 열린다.
+     · TOSS_CLIENT_KEY : 개발자센터 > API 키 > API 개별 연동 키 (test_ck_… / live_ck_…)
+     · TOSS_API_BASE   : serverless/confirm.js 를 배포한 주소 (예: https://lessoncard-api.xxxx.workers.dev)
+     · 시크릿 키는 절대 이 파일에 넣지 않는다(서버 환경변수 TOSS_SECRET_KEY). */
+  var TOSS_LIVE_ENABLED = false;
+  var TOSS_CLIENT_KEY = '';
+  var TOSS_API_BASE = '';
+  var TOSS_SDK_URL = 'https://js.tosspayments.com/v2/standard';
+  var LS_PRO_EXP = 'lessoncard.proExpiresAt.v1';   // Pro 만료일(ISO). 값이 없으면 VIP 평생 Pro
+  var LS_LICENSE = 'lessoncard.license.v1';        // 마지막으로 적용한 이용권 코드
   var LOGO_MAX = 420;      // 로고는 긴 변 기준 420px까지만 보관 (1080px 카드에 충분)
 
   /* ── 카드 종류 3종 ─────────────────────────────────────── */
@@ -6713,6 +6769,7 @@
 
   function safeGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
   function safeSet(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+  function safeRemove(key) { try { localStorage.removeItem(key); } catch (e) {} }
 
   function readData() {
     function v(k) { return els[k] ? String(els[k].value || '').trim() : ''; }
@@ -8438,14 +8495,53 @@
 
   function readPlan() {
     var saved = safeGet(LS_PLAN);
-    if (saved === PLAN_PRO || saved === PLAN_FREE) return saved;
+    if (saved === PLAN_PRO) {
+      var exp = proExpiryMs();
+      if (exp && exp <= Date.now()) {          // 기간이 끝난 이용권은 조용히 무료(베타)로 돌아간다
+        safeSet(LS_PLAN, BETA_OPEN ? PLAN_BETA : PLAN_FREE);
+        safeRemove(LS_PRO_EXP);
+        return BETA_OPEN ? PLAN_BETA : PLAN_FREE;
+      }
+      return saved;
+    }
+    if (saved === PLAN_FREE) return saved;
+    if (saved === PLAN_BETA) {
+      if (BETA_OPEN) return PLAN_BETA;
+      var grace = Date.parse(BETA_GRACE_UNTIL);
+      if (BETA_GRACE_UNTIL && !isNaN(grace) && grace > Date.now()) {   // 베타 사용자는 유예 기간까지 Pro
+        safeSet(LS_PLAN, PLAN_PRO);
+        safeSet(LS_PRO_EXP, new Date(grace).toISOString());
+        return PLAN_PRO;
+      }
+      safeSet(LS_PLAN, PLAN_FREE);
+      return PLAN_FREE;
+    }
     return BETA_OPEN ? PLAN_BETA : PLAN_FREE;
+  }
+
+  /* 이용권 만료 시각(ms). 값이 없으면 null = VIP 평생 Pro */
+  function proExpiryMs() {
+    var raw = safeGet(LS_PRO_EXP);
+    if (!raw) return null;
+    var t = Date.parse(raw);
+    return isNaN(t) ? null : t;
+  }
+
+  function proDateText(iso) {
+    var d = iso ? new Date(iso) : null;
+    if (!d || isNaN(d.getTime())) return '';
+    var p = function (n) { return ('0' + n).slice(-2); };
+    return d.getFullYear() + '. ' + p(d.getMonth() + 1) + '. ' + p(d.getDate()) + '.';
   }
 
   function isProActive() { return state.plan === PLAN_PRO || state.plan === PLAN_BETA; }
 
   function planLabel() {
-    if (state.plan === PLAN_PRO) return 'Pro · 평생 무료';
+    if (state.plan === PLAN_PRO) {
+      var exp = proExpiryMs();
+      if (exp) return 'Pro · ' + Math.max(0, Math.ceil((exp - Date.now()) / 86400000)) + '일 남음';
+      return 'Pro · 평생 무료';
+    }
     if (state.plan === PLAN_BETA) return '베타 · Pro 무료';
     var left = Math.max(0, FREE_LIMIT - state.usage);
     return left > 0 ? ('무료 · ' + left + '장 남음') : '무료 · 3장 다 씀';
@@ -8455,7 +8551,10 @@
     var el = document.getElementById('proStatus');
     if (!el) return;
     if (state.plan === PLAN_PRO) {
-      el.textContent = 'VIP 코드가 적용되어 있어요. Pro 기능을 평생 무료로 쓸 수 있습니다.';
+      var exp = proExpiryMs();
+      el.textContent = exp
+        ? ('Pro 이용권이 ' + proDateText(new Date(exp).toISOString()) + '까지 적용되어 있어요. 기간이 끝나면 자동 결제 없이 무료 플랜으로 돌아갑니다.')
+        : 'VIP 코드가 적용되어 있어요. Pro 기능을 평생 무료로 쓸 수 있습니다.';
     } else if (state.plan === PLAN_BETA) {
       el.textContent = '지금은 베타 기간이에요. Pro 기능을 모두 무료로 쓰고 있고, 무료 3장 제한도 아직 걸리지 않아요.';
     } else {
@@ -8821,6 +8920,200 @@
     return true;
   }
 
+  /* ── 토스페이먼츠 결제 · 이용권 코드 ─────────────────────────
+     TOSS_LIVE_ENABLED = false 이면 이 블록은 아무 일도 하지 않고,
+     기존 '결제 연결을 준비하고 있어요' 안내만 그대로 보인다. */
+  var tossSdkPromise = null;
+
+  function tossOrderName(cycle) {
+    return cycle === 'yearly' ? '레슨카드 Pro 1년 이용권' : '레슨카드 Pro 1개월 이용권';
+  }
+
+  function tossOrderId(cycle) {
+    return 'lc-' + cycle + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
+
+  function loadTossSdk() {
+    if (window.TossPayments) return Promise.resolve(window.TossPayments);
+    if (tossSdkPromise) return tossSdkPromise;
+    tossSdkPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = TOSS_SDK_URL;
+      s.async = true;
+      s.onload = function () {
+        if (window.TossPayments) resolve(window.TossPayments);
+        else reject(new Error('결제 모듈을 불러오지 못했어요'));
+      };
+      s.onerror = function () { reject(new Error('결제 모듈을 불러오지 못했어요')); };
+      document.head.appendChild(s);
+    });
+    return tossSdkPromise;
+  }
+
+  /* 결제 서버(serverless/confirm.js) 호출 */
+  function tossApi(path, body) {
+    if (!TOSS_API_BASE) return Promise.reject(new Error('결제 서버가 아직 연결되지 않았어요'));
+    return fetch(TOSS_API_BASE.replace(/\/+$/, '') + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (data) {
+        if (!res.ok || !data || !data.ok) {
+          var err = new Error((data && data.message) || '결제 서버에서 응답을 받지 못했어요');
+          err.code = data && data.code;
+          throw err;
+        }
+        return data;
+      });
+    });
+  }
+
+  function tossResult(title, body, kind) {
+    var box = document.getElementById('tossResult');
+    var t = document.getElementById('tossResultTitle');
+    var b = document.getElementById('tossResultBody');
+    var wrap = document.getElementById('tossLicenseWrap');
+    if (!box) return;
+    if (t) t.textContent = title || '';
+    if (b) b.textContent = body || '';
+    if (wrap && kind !== 'ok') wrap.hidden = true;
+    box.classList.toggle('is-ok', kind === 'ok');
+    box.classList.toggle('is-err', kind === 'err');
+    box.hidden = !title;
+    if (title && box.scrollIntoView) box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function showLicenseCode(code) {
+    var wrap = document.getElementById('tossLicenseWrap');
+    var el = document.getElementById('tossLicense');
+    if (!wrap || !el) return;
+    el.textContent = code || '';
+    wrap.hidden = !code;
+  }
+
+  function setLicenseMsg(text, kind) {
+    var el = document.getElementById('licenseMsg');
+    if (!el) return;
+    el.textContent = text || '';
+    el.classList.toggle('is-ok', kind === 'ok');
+    el.classList.toggle('is-err', kind === 'err');
+  }
+
+  /* Pro 해금 — 만료일이 있으면 그 기간만, 없으면 VIP 평생 */
+  function applyProUntil(expiresAt, licenseCode) {
+    state.plan = PLAN_PRO;
+    safeSet(LS_PLAN, PLAN_PRO);
+    var ms = expiresAt ? Date.parse(expiresAt) : NaN;
+    if (!isNaN(ms)) safeSet(LS_PRO_EXP, new Date(ms).toISOString());
+    else safeRemove(LS_PRO_EXP);
+    if (licenseCode) safeSet(LS_LICENSE, String(licenseCode).toUpperCase());
+    updatePlan();
+  }
+
+  function applyLicenseCode(raw, quiet) {
+    var code = String(raw || '').toUpperCase().replace(/[^0-9A-Z]/g, '');
+    if (!code) { setLicenseMsg('이용권 코드를 입력해 주세요', 'err'); return Promise.resolve(false); }
+    if (!TOSS_LIVE_ENABLED || !TOSS_API_BASE) {
+      setLicenseMsg('결제 연결 준비 중이라 아직 코드를 확인할 수 없어요', 'err');
+      return Promise.resolve(false);
+    }
+    setLicenseMsg('코드를 확인하고 있어요…', '');
+    return tossApi('/license', { code: code }).then(function (data) {
+      applyProUntil(data.expiresAt, code);
+      setLicenseMsg('이용권이 적용됐어요 · ' + (proDateText(data.expiresAt) || '기간 내') + '까지 Pro', 'ok');
+      if (!quiet) toast('이용권이 적용됐어요 · Pro 기능이 열렸습니다');
+      return true;
+    }).catch(function (err) {
+      setLicenseMsg((err && err.message) || '코드를 확인하지 못했어요. 잠시 후 다시 시도해 주세요', 'err');
+      return false;
+    });
+  }
+
+  function startTossPayment(cycle, amount) {
+    if (!TOSS_CLIENT_KEY) {
+      toast('결제 설정이 아직 끝나지 않았어요 · 곧 열립니다');
+      return;
+    }
+    var picked = document.getElementById('payPicked');
+    var notice = document.getElementById('payNotice');
+    if (notice) notice.hidden = true;
+    if (picked) picked.textContent = '';
+    toast('결제창을 여는 중이에요…');
+    loadTossSdk().then(function (TossPayments) {
+      var payment = TossPayments(TOSS_CLIENT_KEY).payment({ customerKey: TossPayments.ANONYMOUS });
+      return payment.requestPayment({
+        method: 'CARD',                       // 카드·카카오페이·토스페이 통합결제창
+        amount: { currency: 'KRW', value: amount },
+        orderId: tossOrderId(cycle),
+        orderName: tossOrderName(cycle),
+        successUrl: window.location.origin + '/?toss_status=success',
+        failUrl: window.location.origin + '/?toss_status=fail',
+        card: { useEscrow: false, flowMode: 'DEFAULT', useCardPoint: false, useAppCardOnly: false }
+      });
+    }).catch(function (err) {
+      tossResult('결제를 시작하지 못했어요', (err && err.message) || '잠시 후 다시 시도해 주세요.', 'err');
+    });
+  }
+
+  function qparam(name) {
+    var v = null;
+    try { v = new URLSearchParams(window.location.search).get(name); } catch (e) { v = null; }
+    if (v !== null && v !== undefined) return v;
+    var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  function cleanTossQuery() {
+    try {
+      var url = new URL(window.location.href);
+      ['toss_status', 'paymentKey', 'orderId', 'amount', 'code', 'message'].forEach(function (k) {
+        url.searchParams.delete(k);
+      });
+      var q = url.searchParams.toString();
+      window.history.replaceState(null, '', url.pathname + (q ? '?' + q : '') + url.hash);
+    } catch (e) { /* 구형 브라우저는 주소만 그대로 둔다 */ }
+  }
+
+  /* 결제창에서 돌아온 주소(?toss_status=success|fail) 처리 */
+  function handleTossRedirect() {
+    var status = qparam('toss_status');
+    var paymentKey = qparam('paymentKey');
+    var orderId = qparam('orderId');
+    var amount = Number(qparam('amount'));
+    var failCode = qparam('code');
+    if (!status && !paymentKey && !failCode) return;
+    cleanTossQuery();
+    if (!TOSS_LIVE_ENABLED) return;          // 준비 중이면 주소만 정리하고 조용히 넘어간다
+
+    if (paymentKey && orderId && amount) {
+      openModal();
+      tossResult('결제를 확인하고 있어요', '잠시만 기다려 주세요…', '');
+      tossApi('/confirm', { paymentKey: paymentKey, orderId: orderId, amount: amount }).then(function (data) {
+        applyProUntil(data.expiresAt, data.licenseCode);
+        tossResult('결제가 완료됐어요 · Pro가 열렸습니다',
+          (data.orderName ? data.orderName + ' · ' : '') +
+          (proDateText(data.expiresAt) ? proDateText(data.expiresAt) + '까지 이용할 수 있어요.' : '이용 기간 내내 쓸 수 있어요.'), 'ok');
+        showLicenseCode(data.licenseCode);
+      }).catch(function (err) {
+        tossResult('결제를 마무리하지 못했어요',
+          ((err && err.message) || '잠시 후 다시 시도해 주세요.') +
+          ' 카드가 결제됐다면 고객센터(lessoncard@gmail.com)로 알려 주세요.', 'err');
+      });
+      return;
+    }
+    if (status === 'fail' || failCode) {
+      openModal();
+      tossResult('결제가 취소됐어요',
+        (qparam('message') || '결제가 완료되지 않았습니다.') + ' (코드: ' + (failCode || 'UNKNOWN') + ')', 'err');
+    }
+  }
+
+  function initTossUi() {
+    var block = document.getElementById('licenseBlock');
+    if (block) block.hidden = !TOSS_LIVE_ENABLED;
+  }
+
   /* ══════════════════════════════════════════════════════════
      6. 초기화
      ══════════════════════════════════════════════════════════ */
@@ -9024,10 +9317,12 @@
       el.addEventListener('click', closeModal);
     });
 
-    // 요금제 결제 버튼 — 지금은 '결제 준비 중' 안내만 (토스페이먼츠 SDK 연결 지점)
+    // 요금제 결제 버튼 — TOSS_LIVE_ENABLED=false 이면 기존 '결제 준비 중' 안내만
     Array.prototype.forEach.call(document.querySelectorAll('.buy-btn[data-checkout]'), function (btn) {
       btn.addEventListener('click', function () {
         var cycle = btn.getAttribute('data-checkout');
+        var amount = Number(btn.getAttribute('data-toss-amount')) || 0;
+        if (TOSS_LIVE_ENABLED) { startTossPayment(cycle, amount); return; }
         var picked = document.getElementById('payPicked');
         var notice = document.getElementById('payNotice');
         if (picked) picked.textContent = cycle === 'yearly'
@@ -9053,9 +9348,53 @@
     if (els.vipApply) {
       els.vipApply.addEventListener('click', function () { applyVipCode(els.vipInput.value); });
       els.vipInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') { e.preventDefault(); applyVipCode(els.vipInput.value); }
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          applyVipCode(els.vipInput.value);
+        }
       });
       els.vipInput.addEventListener('input', function () { setVipMsg(''); });
+    }
+
+    // 이용권 코드 복원 (결제 연결 후에만 화면에 나타난다)
+    var licToggle = document.getElementById('licenseToggle');
+    var licPanel = document.getElementById('licensePanel');
+    var licInput = document.getElementById('licenseInput');
+    var licApply = document.getElementById('licenseApply');
+    if (licToggle && licPanel) {
+      licToggle.addEventListener('click', function () {
+        var open = licToggle.getAttribute('aria-expanded') === 'true';
+        licToggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+        licPanel.hidden = open;
+        if (!open && licInput) licInput.focus();
+      });
+    }
+    if (licApply && licInput) {
+      licApply.addEventListener('click', function () { applyLicenseCode(licInput.value); });
+      licInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          applyLicenseCode(licInput.value);
+        }
+      });
+      licInput.addEventListener('input', function () { setLicenseMsg(''); });
+    }
+    var tossCopy = document.getElementById('tossCopy');
+    if (tossCopy) {
+      tossCopy.addEventListener('click', function () {
+        var el = document.getElementById('tossLicense');
+        var text = el ? el.textContent : '';
+        if (!text) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            toast('이용권 코드를 복사했어요');
+          }, function () {
+            toast('복사가 안 되면 코드를 길게 눌러 복사해 주세요');
+          });
+        } else {
+          toast('복사가 안 되면 코드를 길게 눌러 복사해 주세요');
+        }
+      });
     }
 
     // 푸터 약관 링크
@@ -9162,6 +9501,8 @@
       if (vm) applyVipCode(decodeURIComponent(vm[1]), true);
     } catch (e) { /* 잘못된 링크는 무시 */ }
     updatePlan();
+    initTossUi();
+    handleTossRedirect();
 
     var hadDraft = loadDraft();
     if (!hadDraft) {
@@ -9226,9 +9567,13 @@
       saveStudentRecord: function () { return persistStudent(true); },
       bumpSession: bumpSession,
       removeLogo: removeLogo,
-      keys: { students: LS_STUDENTS, logo: LS_LOGO, subject: LS_SUBJECT, theme: LS_THEME, themeSet: LS_SET, mode: LS_MODE, account: LS_ACCOUNT, draft: LS_DRAFT, recitalStyle: LS_RECITAL_STYLE, plan: LS_PLAN },
+      keys: { students: LS_STUDENTS, logo: LS_LOGO, subject: LS_SUBJECT, theme: LS_THEME, themeSet: LS_SET, mode: LS_MODE, account: LS_ACCOUNT, draft: LS_DRAFT, recitalStyle: LS_RECITAL_STYLE, plan: LS_PLAN, proExpiresAt: LS_PRO_EXP, license: LS_LICENSE },
       plan: function () { return state.plan; },
-      applyVipCode: applyVipCode
+      applyVipCode: applyVipCode,
+      applyLicenseCode: applyLicenseCode,
+      licenseCode: function () { return safeGet(LS_LICENSE) || ''; },
+      proExpiresAt: function () { var t = proExpiryMs(); return t ? new Date(t).toISOString() : null; },
+      tossEnabled: TOSS_LIVE_ENABLED
     };
   }
 
