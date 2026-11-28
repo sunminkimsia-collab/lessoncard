@@ -929,6 +929,60 @@
   .mobile-bar .btn-outline{height:48px;width:48px;padding:0;flex:none}
   .mobile-bar .btn-outline.share-btn{width:48px;padding:0;flex:none}
 
+  /* ── 선생님 후기 (리뷰) ──────────────────────────────────── */
+  .reviews{margin-top:clamp(26px,3.4vw,42px);padding-top:clamp(20px,2.8vw,30px);border-top:1px solid var(--line)}
+  .rev-head{max-width:660px;margin:0 0 16px}
+  .rev-head h2{font-family:var(--font-display);font-size:clamp(19px,2.5vw,23px);font-weight:700;line-height:1.35;margin:0 0 7px;letter-spacing:-.02em}
+  .rev-head p:not(.eyebrow){margin:0;font-size:13px;line-height:1.7;color:var(--muted)}
+  .rev-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.5vw,16px);align-items:stretch}
+  .rev-card{
+    display:flex;flex-direction:column;gap:9px;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+    padding:19px 19px 17px;box-shadow:var(--shadow-sm);
+  }
+  .rev-card.is-invite{border-color:var(--gold-line);background:linear-gradient(180deg,#FFFDF8 0%,#FAF2E4 100%);box-shadow:0 14px 30px -26px rgba(169,131,90,.75)}
+  .rev-label{
+    display:inline-flex;align-items:center;gap:6px;margin:0;
+    font-family:var(--font-latin);font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);
+  }
+  .rev-label::before{content:"";width:15px;height:1px;background:var(--gold);opacity:.7}
+  .rev-card h3{font-family:var(--font-display);font-size:15px;font-weight:700;line-height:1.45;margin:0;letter-spacing:-.02em}
+  .rev-card p:not(.rev-label):not(.rev-sign){margin:0;font-size:12.8px;line-height:1.72;color:var(--ink-2)}
+  .rev-card .rev-sign{
+    margin:auto 0 0;padding-top:10px;border-top:1px solid var(--line);
+    display:flex;flex-direction:column;gap:1px;font-size:11.2px;line-height:1.55;color:var(--muted);
+  }
+  .rev-card .rev-sign b{font-size:11.6px;font-weight:600;color:var(--ink-2)}
+  .rev-card .btn{margin-top:6px;align-self:flex-start}
+  .rev-published{margin-top:clamp(16px,2vw,22px)}
+  .rev-published-title{font-family:var(--font-display);font-size:14.5px;font-weight:700;margin:0 0 10px;letter-spacing:-.02em;color:var(--ink-2)}
+  .rev-note{margin:14px 0 0;font-size:11.3px;line-height:1.65;color:var(--muted)}
+
+  .modal-card.review-card{max-width:520px;padding:26px 24px 22px}
+  .review-card .lede{margin-bottom:14px}
+  .review-card select.input{
+    height:44px;padding-right:34px;appearance:none;-webkit-appearance:none;cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1.4 6 6.4l5-5' stroke='%238A8075' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat:no-repeat;background-position:right 13px center;
+  }
+  .rv-consent{display:flex;align-items:flex-start;gap:8px;margin:14px 0 0;font-size:12.2px;line-height:1.55;color:var(--ink-2);cursor:pointer}
+  .rv-consent input{margin:2px 0 0;width:15px;height:15px;accent-color:var(--gold);flex:none;cursor:pointer}
+  .rv-status{margin:10px 0 0;font-size:11.8px;line-height:1.6;color:var(--muted);min-height:0}
+  .rv-status.is-err{color:#A5482F}
+  .rv-status.is-ok{color:var(--gold-deep)}
+  .rv-mailto{position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;pointer-events:none}
+  .rv-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+  .rv-actions .btn{height:42px}
+  .rv-actions .btn-primary{flex:1 1 180px}
+  .review-card .rv-field{margin-top:14px}
+  .review-card .rv-note{margin:12px 0 0;padding-top:11px;border-top:1px solid var(--line)}
+  .footer-review{margin:0;font-size:11.9px;line-height:1.7;color:var(--muted)}
+  .footer-review button{
+    background:none;border:0;padding:2px 0;font:inherit;font-size:11.9px;font-weight:600;
+    color:var(--gold-deep);text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+  }
+  .footer-review button:hover{color:var(--ink)}
+
   /* ── 반응형 ────────────────────────────────────────────── */
   @media (max-width:1000px){
     .workspace{grid-template-columns:minmax(0,1fr)}
@@ -944,9 +998,20 @@
     .preview-note{display:none}
     .hero{max-width:none}
     .hero p{font-size:13.6px}
+    .rev-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .rev-card.is-invite{grid-column:1 / -1}
   }
   @media (max-width:600px){
     .shell{padding:18px 14px 92px}
+    .reviews{margin-top:24px;padding-top:18px}
+    .rev-grid{grid-template-columns:minmax(0,1fr);gap:10px}
+    .rev-card.is-invite{grid-column:auto}
+    .rev-card{padding:16px 15px 14px}
+    .rev-card h3{font-size:14.5px}
+    .rev-card p:not(.rev-label):not(.rev-sign){font-size:12.5px}
+    .modal-card.review-card{padding:22px 16px 18px;border-radius:20px}
+    .review-card .grid-2{grid-template-columns:minmax(0,1fr)}
+    .rv-actions .btn{height:44px;flex:1 1 100%}
     .mode-bar{gap:5px;padding:6px;border-radius:15px}
     .mode-tab{gap:6px;padding:8px 6px;border-radius:11px;justify-content:center}
     .mode-tab .mt-ico{display:none}
@@ -1492,6 +1557,46 @@
       </p>
     </section>
   </div>
+
+  <!-- ── 선생님 후기 ────────────────────────────────────── -->
+  <section class="reviews" id="reviews" aria-labelledby="reviewsTitle">
+    <div class="rev-head">
+      <p class="eyebrow">Reviews</p>
+      <h2 id="reviewsTitle">선생님 후기</h2>
+      <p>아직 문을 연 지 얼마 되지 않아 후기가 많지 않습니다. 대신 만든 사람과 먼저 써 본 선생님의 이야기를 꾸밈없이 적어 두었습니다. 써 보시고 남겨 주신 후기는 이 자리에 그대로 올립니다.</p>
+    </div>
+
+    <div class="rev-grid">
+      <article class="rev-card">
+        <p class="rev-label">만든 사람</p>
+        <h3>피아노 강사가 자기 수업에 쓰려고 만들었습니다</h3>
+        <p>레슨이 끝나면 학부모님께 보낼 알림장을 메모장에 적고, 화면을 캡처하고, 다시 다듬는 일이 매주 반복됐습니다. 그 시간이 아까워서 ‘오늘의 곡과 잘한 점만 적으면 카드가 바로 나오게’ 만들었습니다. 지금도 제 레슨에서 먼저 쓰고, 불편한 곳을 하나씩 고치며 업데이트하고 있습니다.</p>
+        <p class="rev-sign"><b>레슨카드 만든 사람</b><span>피아노 강사 · 베타 운영 중</span></p>
+      </article>
+
+      <article class="rev-card">
+        <p class="rev-label">베타에서 받은 말씀</p>
+        <h3>“연습 내용이 더 강조되면 좋겠어요”</h3>
+        <p>지인 강사 선생님이 콩쿠르를 준비하는 학생의 카드를 학부모님 단톡방에 보내 주셨고, 학부모님이 바로 답장을 주셨습니다. 이어서 연습 내용이 더 눈에 띄면 좋겠다는 말씀을 주셔서 v11에서 연습 미션 영역을 키우고 카드 배치를 바꿨습니다. 칭찬만 남는 알림장이 되지 않도록 지금도 이 부분을 가장 신경 쓰고 있습니다.</p>
+        <p class="rev-sign"><b>베타 테스트에 참여한 강사 선생님의 피드백</b><span>2026년 11월 · v11에 반영</span></p>
+      </article>
+
+      <article class="rev-card is-invite">
+        <p class="rev-label">후기 모집</p>
+        <h3>써 보셨다면, 솔직한 후기를 남겨 주세요</h3>
+        <p>좋았던 점만이 아니라 불편했던 점도 그대로 적어 주시면 다음 업데이트에 반영하겠습니다. 보내주신 후기는 확인한 뒤 이 페이지에 올립니다. 이름을 밝히기 어려우시면 익명으로도 괜찮습니다.</p>
+        <button class="btn btn-primary btn-sm" type="button" data-review-open>후기 남기기</button>
+        <p class="rev-sign"><b>lessoncard@gmail.com</b><span>메일로 받고 있어요</span></p>
+      </article>
+    </div>
+
+    <div class="rev-published" id="revPublishedWrap" hidden>
+      <h3 class="rev-published-title">보내주신 후기</h3>
+      <div class="rev-grid" id="revPublished"></div>
+    </div>
+
+    <p class="rev-note">후기는 확인한 뒤 올리며, 학생 실명·연락처처럼 공개되면 곤란한 내용은 적지 마세요. 광고성 글은 올리지 않습니다.</p>
+  </section>
 </main>
 
 <footer class="site-footer">
@@ -1507,6 +1612,7 @@
       <p>사업장 주소 서울특별시 서초구 매헌로 16, 13층 1312호 B06-B (양재동, 하이브랜드)</p>
       <p>고객센터 <a href="tel:01095864802">010-9586-4802</a> · <a href="mailto:lessoncard@gmail.com">lessoncard@gmail.com</a></p>
     </div>
+    <p class="footer-review">써 보셨다면 <button type="button" data-review-open>후기 남기기</button> — 다음 업데이트에 반영합니다.</p>
     <nav class="footer-links" aria-label="약관 및 정책">
       <button type="button" data-legal="terms">이용약관</button>
       <button type="button" data-legal="privacy" class="is-strong">개인정보처리방침</button>
@@ -1516,6 +1622,61 @@
   </div>
 </footer>
 
+
+<!-- ── 후기 남기기 모달 ──────────────────────────────── -->
+<div class="modal" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewTitle" aria-hidden="true">
+  <div class="modal-backdrop" data-review-close></div>
+  <div class="modal-card review-card" role="document">
+    <button class="modal-close" type="button" data-review-close aria-label="닫기">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5.4 5.4 9.2 9.2M14.6 5.4l-9.2 9.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+    <span class="pro-tag">Your review</span>
+    <h3 id="reviewTitle">레슨카드 후기 남기기</h3>
+    <p class="lede">써 보신 그대로 적어 주세요. 좋았던 점도, 불편했던 점도 다음 업데이트에 반영하겠습니다.</p>
+
+    <form id="reviewForm" novalidate>
+      <div class="grid-2">
+        <div class="field">
+          <div class="label-row"><label for="rvName">이름 · 호칭</label><span class="hint">선택</span></div>
+          <input class="input" id="rvName" name="rvName" type="text" maxlength="20" placeholder="예: 피아노 김쌤">
+        </div>
+        <div class="field">
+          <div class="label-row"><label for="rvMode">주로 쓰는 카드</label></div>
+          <select class="input" id="rvMode" name="rvMode">
+            <option value="레슨 노트">레슨 노트</option>
+            <option value="레슨비 정산">레슨비 정산</option>
+            <option value="발표회 팜플렛">발표회 팜플렛</option>
+            <option value="녹음 피드백">녹음 피드백</option>
+            <option value="여러 개 쓰고 있어요">여러 개 쓰고 있어요</option>
+            <option value="아직 둘러보는 중">아직 둘러보는 중</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field rv-field">
+        <div class="label-row"><label for="rvText">후기<span class="req" aria-hidden="true">*</span></label><span class="hint" id="rvCount">0 / 300</span></div>
+        <textarea class="textarea" id="rvText" name="rvText" rows="5" maxlength="300" placeholder="써 보시며 좋았던 점, 불편했던 점을 자유롭게 적어 주세요."></textarea>
+      </div>
+
+      <label class="rv-consent" for="rvConsent">
+        <input type="checkbox" id="rvConsent" name="rvConsent" checked>
+        <span>이 페이지 ‘선생님 후기’에 소개해도 괜찮습니다 (원치 않으시면 체크를 풀어 주세요)</span>
+      </label>
+
+      <p class="rv-status" id="rvStatus" role="status" aria-live="polite"></p>
+
+      <div class="rv-actions">
+        <button class="btn btn-primary" id="rvSend" type="submit">메일로 보내기</button>
+        <button class="btn btn-outline" id="rvCopy" type="button">후기 양식 복사</button>
+        <a id="rvMailTo" class="rv-mailto" href="mailto:lessoncard@gmail.com" tabindex="-1" aria-hidden="true">메일로 보내기</a>
+      </div>
+
+      <p class="mini-note rv-note">
+        <b>메일로 보내기</b>를 누르면 쓰신 내용이 담긴 메일 창이 열립니다. 메일 앱이 없다면 <b>후기 양식 복사</b>로 내용을 복사해 <b>lessoncard@gmail.com</b> 으로 보내 주세요.
+      </p>
+    </form>
+  </div>
+</div>
 
 <div class="zoom" id="zoom" role="dialog" aria-modal="true" aria-label="카드 크게 보기" aria-hidden="true">
   <canvas id="zoomCanvas" width="1080" height="1350"></canvas>
@@ -9596,6 +9757,233 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+})();
+</script>
+<script>
+/* ── 선생님 후기: 후기 모달 · 메일 보내기 · 게시된 후기 불러오기 ── */
+(function () {
+  var REVIEW_EMAIL = 'lessoncard@gmail.com';
+  var modal = document.getElementById('reviewModal');
+  if (!modal) return;
+
+  var form = document.getElementById('reviewForm');
+  var mailEl = document.getElementById('rvMailTo');
+  var nameEl = document.getElementById('rvName');
+  var modeEl = document.getElementById('rvMode');
+  var textEl = document.getElementById('rvText');
+  var countEl = document.getElementById('rvCount');
+  var consentEl = document.getElementById('rvConsent');
+  var statusEl = document.getElementById('rvStatus');
+  var copyBtn = document.getElementById('rvCopy');
+  var lastFocus = null;
+
+  function track(name, params) {
+    try { if (typeof window.gtag === 'function') window.gtag('event', name, params || {}); } catch (e) {}
+  }
+  function setStatus(msg, kind) {
+    if (!statusEl) return;
+    statusEl.textContent = msg || '';
+    statusEl.classList.toggle('is-err', kind === 'err');
+    statusEl.classList.toggle('is-ok', kind === 'ok');
+  }
+
+  function openReview() {
+    lastFocus = document.activeElement;
+    setStatus('');
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    track('review_open', { page_location: location.href });
+    setTimeout(function () { if (nameEl) nameEl.focus(); }, 60);
+  }
+  function closeReview() {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    if (!document.querySelector('.modal.is-open, .zoom.is-open')) document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  function readReview() {
+    return {
+      name: ((nameEl && nameEl.value) || '').trim(),
+      mode: (modeEl && modeEl.value) || '선택 안 함',
+      text: ((textEl && textEl.value) || '').trim(),
+      consent: !!(consentEl && consentEl.checked)
+    };
+  }
+  function reviewSubject(r) { return '[레슨카드 후기] ' + (r.name || '익명'); }
+  function reviewBody(r) {
+    return [
+      '레슨카드 후기',
+      '',
+      '이름·호칭: ' + (r.name || '익명'),
+      '주로 쓰는 카드: ' + r.mode,
+      '페이지 소개 동의: ' + (r.consent ? '예' : '아니요'),
+      '',
+      '--- 후기 ---',
+      r.text,
+      '---',
+      '',
+      '보낸 곳: lessoncard.kr 후기 폼'
+    ].join('\r\n');
+  }
+  function reviewCopyText(r) {
+    return [
+      '[레슨카드 후기] ' + (r.name || '익명'),
+      '이름·호칭: ' + (r.name || '익명'),
+      '주로 쓰는 카드: ' + r.mode,
+      '페이지 소개 동의: ' + (r.consent ? '예' : '아니요'),
+      '',
+      r.text,
+      '',
+      '받는 곳: ' + REVIEW_EMAIL
+    ].join('\n');
+  }
+  function validate(r) {
+    if (!r.text) return '후기 내용을 적어 주세요.';
+    if (r.text.length < 5) return '후기 내용을 5자 이상 적어 주세요.';
+    return '';
+  }
+
+  function legacyCopy(s) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = s;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, s.length);
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  }
+  function copyText(s, done, fail) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(s).then(function () { done(); }, function () { legacyCopy(s) ? done() : fail(); });
+    } else {
+      legacyCopy(s) ? done() : fail();
+    }
+  }
+
+  function mailtoUrl(r) {
+    return 'mailto:' + REVIEW_EMAIL +
+      '?subject=' + encodeURIComponent(reviewSubject(r)) +
+      '&body=' + encodeURIComponent(reviewBody(r));
+  }
+  function syncMailto() {
+    if (mailEl) mailEl.href = mailtoUrl(readReview());
+  }
+
+  if (form) form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var r = readReview();
+    var err = validate(r);
+    if (err) { setStatus(err, 'err'); if (textEl) textEl.focus(); return; }
+    var subject = encodeURIComponent(reviewSubject(r));
+    var body = encodeURIComponent(reviewBody(r));
+    track('review_send', { mode: r.mode, consent: r.consent });
+    syncMailto();
+    try {
+      if (mailEl) mailEl.click();
+      else window.location.href = mailtoUrl(r);
+    } catch (e2) {}
+    if (body.length > 1700) {
+      setStatus('메일 앱이 열렸어요. 내용이 길면 일부 메일 앱에서 잘릴 수 있으니, 그럴 때는 ‘후기 양식 복사’로 보내 주세요.', 'ok');
+    } else {
+      setStatus('메일 앱이 열렸어요. 보내기 버튼을 눌러 주세요. 열리지 않으면 ‘후기 양식 복사’를 이용해 주세요.', 'ok');
+    }
+  });
+
+  if (copyBtn) copyBtn.addEventListener('click', function () {
+    var r = readReview();
+    var err = validate(r);
+    if (err) { setStatus(err, 'err'); if (textEl) textEl.focus(); return; }
+    copyText(reviewCopyText(r), function () {
+      setStatus('후기 양식과 내용을 복사했어요. ' + REVIEW_EMAIL + ' 로 붙여넣어 보내 주세요.', 'ok');
+      track('review_copy', { mode: r.mode });
+    }, function () {
+      setStatus('복사가 되지 않았어요. 내용을 길게 눌러 직접 복사한 뒤 ' + REVIEW_EMAIL + ' 로 보내 주세요.', 'err');
+    });
+  });
+
+  [nameEl, modeEl, textEl, consentEl].forEach(function (el) {
+    if (!el) return;
+    el.addEventListener(el === modeEl || el === consentEl ? 'change' : 'input', syncMailto);
+  });
+
+  if (textEl && countEl) textEl.addEventListener('input', function () {
+    countEl.textContent = textEl.value.length + ' / 300';
+    if (statusEl && statusEl.classList.contains('is-err')) setStatus('');
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-review-open]')).forEach(function (b) {
+    b.addEventListener('click', openReview);
+  });
+  Array.prototype.slice.call(modal.querySelectorAll('[data-review-close]')).forEach(function (b) {
+    b.addEventListener('click', closeReview);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeReview();
+  });
+  syncMailto();
+
+  /* 검수해서 올린 후기 — reviews.json (없거나 비어 있으면 영역을 그리지 않는다) */
+  function fmtDate(s) {
+    if (!s) return '';
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s).trim());
+    if (!m) return String(s);
+    return m[1] + '. ' + Number(m[2]) + '. ' + Number(m[3]) + '.';
+  }
+  function buildPublishedCard(it) {
+    var card = document.createElement('article');
+    card.className = 'rev-card';
+    var label = document.createElement('p');
+    label.className = 'rev-label';
+    label.textContent = it.mode || '후기';
+    card.appendChild(label);
+    if (it.title) {
+      var h = document.createElement('h3');
+      h.textContent = it.title;
+      card.appendChild(h);
+    }
+    var body = document.createElement('p');
+    body.textContent = it.text;
+    card.appendChild(body);
+    var sign = document.createElement('p');
+    sign.className = 'rev-sign';
+    var who = document.createElement('b');
+    who.textContent = (it.name || '익명') + (it.role ? ' · ' + it.role : '');
+    sign.appendChild(who);
+    if (it.date) {
+      var when = document.createElement('span');
+      when.textContent = fmtDate(it.date);
+      sign.appendChild(when);
+    }
+    card.appendChild(sign);
+    return card;
+  }
+  function loadPublished() {
+    var wrap = document.getElementById('revPublishedWrap');
+    var list = document.getElementById('revPublished');
+    if (!wrap || !list || !window.fetch) return;
+    fetch('reviews.json', { cache: 'no-store' })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        var items = (data && Array.isArray(data.reviews)) ? data.reviews : [];
+        items = items.filter(function (it) {
+          return it && typeof it.text === 'string' && it.text.trim() && it.consent !== false && it.hidden !== true;
+        });
+        if (!items.length) return;
+        items.forEach(function (it) { list.appendChild(buildPublishedCard(it)); });
+        wrap.hidden = false;
+      })
+      .catch(function () {});
+  }
+  loadPublished();
 })();
 </script>
 </body>
